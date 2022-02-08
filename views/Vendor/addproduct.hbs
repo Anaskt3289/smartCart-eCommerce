@@ -1,0 +1,178 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<form class="mt-3" action="/vendor/addproduct" method="post" enctype="multipart/form-data">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <h2 class="fw-bold mb-2 text-uppercase">ADD Product</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Product</label>
+                    <input type="text" class="form-control" name="product" required>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Category</label>
+                    <select class="form-control" id="inputGroupSelect01" name="category" required>
+                        <option>Mobiles</option>
+                        <option>Laptops</option>
+                        <option>Cameras</option>
+                        <option>Television</option>
+                        <option>Accessories</option>
+                    </select>
+                </div>
+               
+            </div>
+
+            <div class="row">
+                 <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Brand</label>
+                    <input type="text" class="form-control" name="brand" required>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Quantity</label>
+                    <input type="number" class="form-control" name="quantity" required>
+                </div>
+                
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Price</label>
+                    <input type="text" class="form-control" name="price" required>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Stock details</label>
+                    <select class="custom-select form-control" id="inputGroupSelect01" name="stock" required>
+                        <option>In stock</option>
+                        <option>Out of stock</option>
+                        
+                    </select>
+                </div>
+               
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Description</label>
+                    <textarea name="description" rows="3" class="form-control" required></textarea>
+                </div>
+                 <div class="col-12 col-lg-6">
+                    <label class="form-label mt-2">Company Id</label>
+                    <input type="text" class="form-control" name="companyid" value={{vendorid}} readonly>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="col-12 ">
+                    <label class="form-label mt-2">Specifications</label>
+                    <textarea  name="specs" rows="3" class="form-control" required></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col form-group mt-5">
+                    <div>
+                        <label for="exampleFormControlFile1">Add Image 1</label>
+                    </div>
+                    <div>
+                         <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview1" style="display: none;"><br>
+                        <input type="file" class="form-control-file addprodimg1" id="exampleFormControlFile1" name="productimage1" onchange="viewImage1(event)" accept="image/*" required>
+                        <P id="errmsg1" style="display: none;">Select an image file</P>
+                    </div>
+                </div>
+                 <div class="col form-group mt-5">
+                    <div>
+                        <label for="exampleFormControlFile1">Add Image 2</label>
+                    </div>
+                    <div>
+                         <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview2" style="display: none;"><br>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage2" onchange="viewImage2(event)" accept="image/*" required>
+                     <P id="errmsg2" style="display: none;">Select an image file</P>
+                    </div>
+                </div>
+                </div>
+                 <div class="row">
+                 <div class="col form-group mt-5">
+                    <div>
+                        <label for="exampleFormControlFile1">Add Image 3</label>
+                    </div>
+                    <div>
+                         <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview3" style="display: none;"><br>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage3" onchange="viewImage3(event)" accept="image/*" required>
+                     <P id="errmsg3" style="display: none;">Select an image file</P>
+                    </div>
+                </div>
+                 <div class="col form-group mt-5">
+                    <div>
+                        <label for="exampleFormControlFile1">Add Image 4</label>
+                    </div>
+                    <div>
+                         <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview4" style="display: none;"><br>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage4" onchange="viewImage4(event)" accept="image/*" required>
+                    <P id="errmsg4" style="display: none;">Select an image file</P>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: right;" class="mb-4">
+                <button class="btn btn-outline-success btn-lg px-5 mt-4" type="submit">Add Product</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+ <script>
+        function viewImage1(event){
+            let file = event.target.files[0].name
+             let extension = file.split('.').pop()
+              if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+            document.getElementById('imagePreview1').src=URL.createObjectURL(event.target.files[0])
+             document.getElementById('imagePreview1').style.display='block'
+              document.getElementById('errmsg1').style.display='none'
+
+              }else{
+                $('.addprodimg1').removeData()
+                document.getElementById('errmsg1').style.display='block'
+              }
+            
+        }
+         function viewImage2(event){
+           let file = event.target.files[0].name
+             let extension = file.split('.').pop()
+              if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+            document.getElementById('imagePreview2').src=URL.createObjectURL(event.target.files[0])
+             document.getElementById('imagePreview2').style.display='block'
+              document.getElementById('errmsg2').style.display='none'
+
+              }else{
+                document.getElementById('errmsg2').style.display='block'
+              }
+
+        }
+         function viewImage3(event){
+            let file = event.target.files[0].name
+             let extension = file.split('.').pop()
+              if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+            document.getElementById('imagePreview3').src=URL.createObjectURL(event.target.files[0])
+             document.getElementById('imagePreview3').style.display='block'
+              document.getElementById('errmsg3').style.display='none'
+
+              }else{
+                document.getElementById('errmsg3').style.display='block'
+              }
+        }
+         function viewImage4(event){
+            let file = event.target.files[0].name
+             let extension = file.split('.').pop()
+              if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+            document.getElementById('imagePreview4').src=URL.createObjectURL(event.target.files[0])
+             document.getElementById('imagePreview4').style.display='block'
+              document.getElementById('errmsg4').style.display='none'
+
+              }else{
+                document.getElementById('errmsg4').style.display='block'
+              }
+        }
+
+</script>

@@ -1,0 +1,83 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3>Your Products</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/admindashboard">Home</a></li>
+                <li><a href="#">Products</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title">Products</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table" id="admintable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Brand</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Controls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each products}}
+                                    <tr>
+
+                                        <td><img src="/product-images/{{this._id}}1.jpg" height="70px" width="70px"
+                                                alt=""></td>
+                                        <td>{{this.product}}</td>
+                                        <td>{{this.category}}</td>
+                                        <td>{{this.brand}}</td>
+                                        <td><span style="font-family: Source Serif 4;">₹ </span>{{this.price}}</td>
+                                       <td>
+      <a href="/vendor/editproduct/{{this._id}}" class="btn btn-primary ml-3">Edit</a>
+      <a href="/vendor/deleteproduct?id={{this._id}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete');">Delete</a>
+<!-- Button trigger modal -->
+{{!-- <button type="button" class="delete btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}" data-bs-target="#exampleModal">
+  Delete
+</button> --}}
+
+<!-- Modal -->
+{{!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Do you really want to delete this item? this process cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <a href="" class="btn btn-secondary">Cancel</a>
+        <a href="/vendor/deleteproduct?id={{this._id}}" type="button" id="delete" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div> --}}
+
+      </td>
+                                    </tr>
+                                    {{/each}}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
+    </div>

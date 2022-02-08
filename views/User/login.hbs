@@ -1,0 +1,64 @@
+<section class="main vh-100">
+
+        
+        <div class="content-w3ls">
+            <div class="text-center icon">
+              <h1 style="color: white; font-weight: 500;">smart<span style="color: rgb(216, 74, 9);">C</span>art</h1>
+            </div>
+
+            <div class="content-bottom">
+                <form action="/login" method="post" id="loginpage">
+                
+                    <div class="field-group">
+                        <span class="fa fa-user" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="email" id="text1" type="email" placeholder="Email" required>
+                        </div>
+                    </div>
+                    <div class="field-group mb-2">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="pword" id="myInput" type="Password" placeholder="Password" required>
+                        </div>
+                    </div>  
+                <div style="text-align: center;">
+                    {{#if blocked}}
+                     <p class="text-danger mb-2 ">Your account has been blocked by admin</p>
+                     {{else if logerr}}
+                      <p class="text-white mb-2 ">Incorrect email or password</p>
+                     {{/if}}
+                </div>
+                    <div class="wthree-field mt-3">
+                        <button type="submit" class="btn">Sign in</button>
+                    </div>
+                    <p style="text-align: center;" class="text-white mt-3 mb-3">OR</p>
+                    <ul class="list-login-bottom" style="text-align: center;">
+                        <li class="mt-1 ml-2">
+                            <a href="/otplogin" style="font-size: large; font-weight: 500;">SIGN IN WITH OTP</a>
+                        </li>
+                    {{!-- <ul class="list-login">
+                        <li class="switch-agileits">
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                                keep Logged in
+                            </label>
+                        </li>
+                        <li>
+                            <a href="#" class="text-right">forgot password?</a>
+                        </li>
+                        <li class="clearfix"></li>
+                    </ul> --}}
+                    <ul class="list-login-bottom" style="text-align: center;">
+                        <li class="mt-5">
+                         <p class="text-white">Didnt have an account? , <a href="/signup" class="">Create Account</a></p>
+                        </li>
+                        {{!-- <li class="">
+                            <a href="#url" class="text-right">Need Help?</a>
+                        </li> --}}
+                        <li class="clearfix"></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </section>

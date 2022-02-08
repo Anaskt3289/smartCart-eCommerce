@@ -1,0 +1,65 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3>Vendor Requests</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/admindashboard">Home</a></li>
+                <li><a href="#">Vendor Requests</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title"> New Vendors Requests</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table" id="admintable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Company Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Phone Number</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">License</th>
+                                        <th scope="col">Controls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each vendors}}
+                                    <tr>
+
+                                        <td>{{this.vname}}</td>
+                                        <td>{{this.email}}</td>
+                                        <td>{{this.mobile}}</td>
+                                        <td>{{this.address}}</td>
+                                        <td><img src="/vendorlicense/{{this._id}}.jpg" height="70px" width="70px"
+                                                alt="" id="vendorlicese" ></td>
+                                        <td>
+                                            <a href="/admin/acceptvendor/{{this._id}}" class="btn btn-primary ml-3 "
+                                                onclick="alert('Vendor Accepted');">Accept</a>
+                                            <a href="/admin/rejectvendor/{{this._id}}" class="btn btn-dark ml-3 "
+                                                onclick="alert('Vendor Rejected');">Reject</a>
+
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
+    </div>
+
+  
+    

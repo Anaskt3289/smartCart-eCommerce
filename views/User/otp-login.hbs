@@ -1,0 +1,28 @@
+<section class="main vh-100">
+
+        
+        <div class="content-w3ls">
+            <div class="text-center icon">
+              <h1 style="color: white; font-weight: 500;">smart<span style="color: rgb(216, 74, 9);">C</span>art</h1>
+            </div>
+
+            <div class="content-bottom">
+                <form action="/otplogin" method="post">
+                    <div class="field-group mb-2">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="mobile" id="myInput" type="number" style="width: 300px;" placeholder="Enter your Mobile Number" required>
+                        </div>
+                    </div>
+                    {{#if noMobile}}
+                    <p class="text-danger mb-2">Mobile number not registered</p>
+                    {{/if}}
+                    <div class="wthree-field mt-3">
+                        <button type="submit" class="btn">Generate OTP</button>
+                    </div>
+                   
+                   
+                </form>
+            </div>
+        </div>
+    </section>

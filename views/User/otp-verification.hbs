@@ -1,0 +1,48 @@
+<section class="main vh-100">
+
+        
+        <div class="content-w3ls">
+            <div class="text-center icon">
+              <h1 style="color: white; font-weight: 500;">smart<span style="color: rgb(216, 74, 9);">C</span>art</h1>
+            </div>
+
+            <div class="content-bottom">
+                <form action="/otp" method="post">
+                    <div class="field-group mb-2">
+                        <span class="fa fa-lock" aria-hidden="true"></span>
+                        <div class="wthree-field">
+                            <input name="otp" id="myInput" type="number" placeholder="Enter your OTP" required>
+                        </div>
+                    </div>
+                    {{#if invalidOtp}}
+                    <p class="text-danger mb-2">Invalid OTP</p>
+                    {{/if}}
+                    <div class="wthree-field">
+                        <button type="submit" class="btn">Verify</button>
+                    </div>
+                   
+                   
+                </form>
+               
+               <div style="display: flex;">
+               <p id="timer" class="text-white mt-5"></p>
+               <a href="/resendotp" id="resend" class="text-white mt-5" style="margin-left: 10px;"><u> Resend OTP</u></a>
+               </div>
+            </div>
+        </div>
+<script>
+    document.getElementById('resend').style.visibility='hidden';
+    var timeleft=20;
+    var elem =document.getElementById('timer');
+    var timerId = setInterval(countdown,1000);
+
+    function countdown(){
+        if(timeleft == -1){
+            clearTimeout(timerId);
+            document.getElementById('resend').style.visibility='visible';
+        }else{
+            elem.innerHTML ='Resend OTP in '+timeleft+' seconds ,';
+            timeleft--;
+        }
+        }
+</script>

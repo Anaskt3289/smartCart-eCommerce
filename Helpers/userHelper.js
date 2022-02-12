@@ -7,10 +7,10 @@ const { reject, promise } = require('bcrypt/promises')
 const Razorpay = require('razorpay')
 
 
-
+const razorpaySecret = process.env.razorpaySecret
 var instance = new Razorpay({
     key_id: 'rzp_test_P71kVccMvd0JVS',
-    key_secret: 'lhrJcoiEGENMCMPCxOzHRfJs'
+    key_secret: razorpaySecret
   });
 
 

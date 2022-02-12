@@ -15,12 +15,12 @@ const client = require('twilio')(accountSID, authTocken)
 const fs = require('fs');
 
 const paypal = require('paypal-rest-sdk');
-
+const paypalSecret = process.env.paypalSecret
 
 paypal.configure({
   'mode': 'sandbox', //sandbox or live
   'client_id': 'AWxrFLBMp4bfeaziZpLwLqLOl3YQPtS48KdoXhy5YfhzA-QRG1aibfqYqakfKS9MjGQE-mLHm-r6q-I6',
-  'client_secret': 'EDZW-weNMFMBEDVGJ72GkjiHswAK-3TmIzPlmsCMPU8G3XBqF8PzyklKwC7LYftvV3zijok3c4Yyvyeu'
+  'client_secret': paypalSecret
 });
 
 
@@ -568,5 +568,14 @@ router.get('/cancelorder/', function (req, res, next) {
     res.redirect('/myorders')
   })
 
+});
+
+
+router.get('/Wishlist', function (req, res, next) {
+  res.render('User/wishlist')
+});
+
+router.get('/addtoWishlist/', function (req, res, next) {
+ 
 });
 module.exports = router;

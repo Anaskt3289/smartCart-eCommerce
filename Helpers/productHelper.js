@@ -63,6 +63,8 @@ module.exports = {
     },
     updateproduct: (productid, details) => {
         return new Promise((resolve, reject) => {
+            details.price=parseInt(details.price)
+            details.quantity=parseInt(details.quantity)
             db.get().collection(collection.products).updateOne({ _id: ObjectId(productid) },
                 {
                     $set: {
@@ -73,6 +75,13 @@ module.exports = {
             ).then((response) => {
                 resolve(response)
             })
+        })
+    },
+    productsinBuyNow:(productid)=>{
+        return new Promise(async(resolve, reject) => {
+          let products= await db.get().collection(collection.products).find({ _id: ObjectId(productid) }).toArray()
+                resolve(products)
+           
         })
     }
 }

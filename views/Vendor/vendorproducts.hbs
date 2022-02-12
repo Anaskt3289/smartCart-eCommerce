@@ -1,9 +1,12 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <div class="page-inner">
     <div class="page-title">
         <h3>Your Products</h3>
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
-                <li><a href="/admindashboard">Home</a></li>
+                <li><a href="/vendordashboard">{{vendorname}}</a></li>
                 <li><a href="#">Products</a></li>
             </ol>
         </div>
@@ -40,30 +43,32 @@
                                         <td><span style="font-family: Source Serif 4;">₹ </span>{{this.price}}</td>
                                        <td>
       <a href="/vendor/editproduct/{{this._id}}" class="btn btn-primary ml-3">Edit</a>
-      <a href="/vendor/deleteproduct?id={{this._id}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete');">Delete</a>
-<!-- Button trigger modal -->
-{{!-- <button type="button" class="delete btn btn-danger" data-bs-toggle="modal" data-id="{{this._id}}" data-bs-target="#exampleModal">
+
+      <button type="button"  class="btn btn-danger deletevendor" data-id="{{this._id}}" data-toggle="modal" data-target="#exampleModalCenter">
   Delete
-</button> --}}
+</button>
 
 <!-- Modal -->
-{{!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
       <div class="modal-body">
-        Do you really want to delete this item? this process cannot be undone.
+        Do you really want to delete these records? This process cannot be undone.
       </div>
       <div class="modal-footer">
-        <a href="" class="btn btn-secondary">Cancel</a>
-        <a href="/vendor/deleteproduct?id={{this._id}}" type="button" id="delete" class="btn btn-danger">Delete</a>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="" class="btn btn-danger " id="modaldeletevendor">Delete</a>
       </div>
     </div>
   </div>
-</div> --}}
+</div>
+      
 
       </td>
                                     </tr>
@@ -81,3 +86,15 @@
     <div class="page-footer">
         <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
     </div>
+
+
+     <script>
+  $(document).on("click", ".deletevendor", function () {
+
+    var varid = $(this).data('id');
+
+
+   
+    $('.modal-footer #modaldeletevendor').attr('href','/vendor/deleteproduct?id='+ varid)
+  })
+</script>

@@ -1,5 +1,9 @@
-<div class="container mt-5 pt-4" style="overflow-x: hidden;">
-    <table class="table mt-5 ml-4 pr-4">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div class="container-fluid mt-5 pt-4" style="overflow-x: hidden;">
+    <table class="table mt-5 ml-4 pr-4 mr-4 myorder">
                                             <thead>
                                                 <tr>
                                                     <th><h3>My Orders</h3></th>
@@ -12,6 +16,7 @@
                                                     <th>Ordered Date</th>
                                                     <th>Amount Paid</th>
                                                     <th>Status</th>
+                                                    <th></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -32,8 +37,49 @@
                                                     <td>{{this.date}}</td>
                                                     <td><span style="font-family: Source Serif 4;">₹ </span>{{this.total}}</td>
                                                     <td>{{this.status}}</td>
+                                                     <td>
+
+                                                         <button type="button"  class="btn btn-danger deletevendor" data-id="{{this._id}}" data-toggle="modal" data-target="#exampleModalCenter">
+ Cancel
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Do you really want to cancel this order? This process cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="" class="btn btn-danger " id="modaldeletevendor">Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+                                                     </td>
                                                 </tr>
                                                 {{/each}}
                                             </tbody>
                                         </table>
                                    </div>
+
+
+
+ <script>
+  $(document).on("click", ".deletevendor", function () {
+
+    var varid = $(this).data('id');
+
+
+   
+    $('.modal-footer #modaldeletevendor').attr('href', "/cancelorder?id=" + varid)
+  })
+</script>

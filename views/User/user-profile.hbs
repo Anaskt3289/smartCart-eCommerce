@@ -1,0 +1,175 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<section class="py-5 my-5">
+    <div class="container-fluid">
+        <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+            <div class="row">
+                <div class="col-md-12 col-lg-3">
+                    <div class="profile-tab-nav border-right">
+
+                        <div class="p-4">
+                            <div class="img-circle text-center mb-3">
+                                <img src="/User-Profile-Pics/{{user._id}}.jpg" alt="Image" class="shadow"
+                                    id="userprofilepic">
+                            </div>
+                            <h4 class="text-center">{{user.fname}}</h4>
+                        </div>
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                            aria-orientation="vertical">
+                            <a class="nav-link profilelinks" id="account-tab" data-toggle="pill" href="/userprofile"
+                                role="tab" aria-controls="account" aria-selected="true">
+                                <i class="fa fa-home text-center mr-1"></i>
+                                Account
+                            </a>
+                            <a class="nav-link profilelinks" id="password-tab" href="/changePassword" role="tab"
+                                aria-controls="password" aria-selected="false">
+                                <i class="fa fa-key text-center mr-1"></i>
+                                Password
+                            </a>
+                            <a class="nav-link profilelinks" id="security-tab" href="/userlogout" role="tab"
+                                aria-controls="security" aria-selected="false">
+                                <i class="fa fa-user text-center mr-1"></i>
+                                Logout
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-9">
+                    <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="account" role="tabpanel"
+                            aria-labelledby="account-tab">
+
+
+
+                            <form action="/updateuserdetails" method="post" enctype="multipart/form-data" id="userprofile">
+
+                            <input type="text" name="userId" value={{user._id}} hidden>
+                                <div style="display: flex;">
+                                    <h3 class="mb-4">Account Settings</h3>
+                                    <button type="button" id="changeprofilebtn" class="btn btn-primary"
+                                        style="margin-left: auto; height: 35px;" onclick="editprofile()">Edit
+                                        Profile</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="profilepic" class="text-primary " id="changeuserpic"
+                                            style="cursor: pointer;display: none;">Change
+                                            profile picture...</label>
+                                        <input type="file" class="ml-5 mb-5 " id="profilepic" name="profilepic"
+                                            onchange="viewImage1(event)" accept="image/*">
+                                     
+                                            <label>First Name</label>
+                                            <input type="text" class="form-control change-profile-input" name="fname"
+                                                id="change-profile-input" value="{{user.fname}}" readonly>
+                                       
+                                    </div>
+
+                                    <div class="col-md-12 mt-4">
+                                        
+                                            <label>Email</label>
+                                            <input type="text" class="form-control change-profile-input" name="email"
+                                                id="change-profile-input" value="{{user.email}}" readonly>
+                                      
+                                    </div>
+                                    <div class="col-md-12 mt-4">
+                                        
+                                            <label>Phone number</label>
+                                            <input type="text" class="form-control change-profile-input numbers" name="mobile"
+                                                id="change-profile-input" value={{user.mobile}} readonly>
+                                     
+                                    </div>
+                                    
+                                    <div class="col-md-12 mt-5">
+                                        <h5>Address:</h5>
+                                            {{#each useraddress}}
+                                        <div style="display: flex;">
+                                           
+                                            <textarea class="mt-3 form-control" id="user-address" cols="60" rows="2" readonly>{{this.address}}</textarea>
+                                            <a href="/removeaddress?value={{this.address}}" class="text-danger mt-3 mr-1 ml-5"
+                                                >Remove</a>
+                                        </div>
+                                            {{/each}}
+                                           
+                                        <button type="button" class="btn btn-light  ml-4 mt-3" data-toggle="modal"
+                                            data-target="#exampleModalCenter">
+                                            Add address
+                                        </button>
+                                      
+
+
+                                </div>
+                                <div class="mt-5" style="display: flex;">
+                                    <button type="submit" class="btn btn-primary" id="updateprofilebtn"
+                                        style="display: none;">Update</button>
+                                    <a href="" class="btn btn-light ml-4" id="cancelbtn" style="display: none;">Cancel
+                                        </a>
+
+                                </div>
+                            </form>
+                              <!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLongTitle">Add address</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="/addAddress" method="post" id="addAddress">
+				<div class="modal-body">
+                    <input type="text" name="page" value="profile" hidden>
+					<textarea name="address" id="" cols="60" rows="3" placeholder="Enter your address"
+						style=" border: solid 0.5px rgba(160, 141, 141, 0.356);" required minlength="10"></textarea>
+					<input type="text" name="pin" class="mt-3 numbers" placeholder="PIN Number"
+						style=" border: solid 0.5px rgba(160, 141, 141, 0.356); height: 30px;" pattern=".{4,6}" required title="4 to 6 digits">
+					<input type="text" name="mobile" class="mt-3 numbers" placeholder="Contact Number"
+						style=" border: solid 0.5px rgba(160, 141, 141, 0.356); height: 30px;" pattern=".{10,10}" required title="10 digits"> 
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Add address</button>
+			</div>
+			</form>
+		</div>
+	</div>
+    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+
+
+    <script>
+        function viewImage1(event) {
+            document.getElementById('userprofilepic').src = URL.createObjectURL(event.target.files[0])
+
+        }
+
+    </script>
+
+    <script>
+        function editprofile() {
+            document.getElementById('changeuserpic').style.display = 'block'
+            document.getElementById('updateprofilebtn').style.display = 'block'
+            document.getElementById('cancelbtn').style.display = 'block'
+            document.getElementById('changeprofilebtn').style.display = 'none'
+            $(".change-profile-input").attr("readonly", false);
+        }
+    </script>
+
+
+    <script>
+    $('.numbers').keyup(function () {
+        this.value = this.value.replace(/[^0-9\.]/g, '');
+    });
+</script>

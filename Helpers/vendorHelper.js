@@ -3,6 +3,7 @@ var collection = require('../Config/Collection')
 const async = require('hbs/lib/async')
 const bcrypt=require('bcrypt')
 const { reject } = require('bcrypt/promises')
+const { ObjectId } = require('mongodb')
 
 
 module.exports={
@@ -62,6 +63,45 @@ module.exports={
                 response=false
                 resolve(response)
             }
+        })
+    },
+    getvendor:(vendorId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let vendor= await db.get().collection(collection.vendorcollection).findOne({_id:ObjectId(vendorId)})
+            resolve(vendor)
+        })
+    },
+    updatevendor:(details)=>{
+        return new Promise((resolve,reject)=>{
+            
+            db.get().collection(collection.vendorcollection).updateOne({_id:ObjectId(details.vendorId)},{
+                $set:{vname:details.vname,email:details.email, mobile:details.mobile, address:details.address}}).then(()=>{
+                    resolve()
+                })
+            })
+      
+    },
+    changepassword:(vendorId,details)=>{
+        let response={}
+        return new Promise(async(resolve,reject)=>{
+            let vendor= await db.get().collection(collection.vendorcollection).findOne({_id:ObjectId(vendorId)})
+            bcrypt.compare(details.oldpword, vendor.pword).then(async(state)=>{
+                if(state){
+                    response.vendorpwordNoMatch=false
+                    newpword = await bcrypt.hash(details.newpword, 10)
+                    newrepeatpword = newpword
+                    db.get().collection(collection.vendorcollection).updateOne({_id:ObjectId(vendorId)},
+                    {
+                        $set:{pword:newpword,repeatpword:newrepeatpword}
+                    }).then(()=>{
+                        resolve(response)
+                    })
+                }
+                else{
+                    response.vendorpwordNoMatch=true
+                    resolve(response)
+                }
+            })
         })
     }
 }

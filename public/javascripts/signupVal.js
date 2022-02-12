@@ -17,7 +17,9 @@ jQuery.validator.addMethod('myemail', function(value, element)
              myemail:true
           },
           mobile:{
-             required:true
+             required:true,
+             minlength:10,
+             maxlength:10
           },
           pword:{
               required: true,

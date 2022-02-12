@@ -1,7 +1,7 @@
 <form class="bg0 p-t-75 p-b-85" action="" method="post" id="checkout-form">
 	<div class="container mt-5">
 		<div class="row">
-			<div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+			<div class="col-sm-10 col-lg-10  col-xl-7 m-lr-auto m-b-50">
 				<div class="m-l-25 m-r--38 m-lr-0-xl">
 					<div class="checkoutbox pb-4">
 						<div class="delivery-add pt-3 pl-3">
@@ -9,9 +9,9 @@
 						</div>
 						{{#each address}}
 						<div style="display: flex;">
-							<input type="radio" name="address" id="address" value="{{this.address}}"
+							<input type="radio" name="address" id="{{this.address}}" value="{{this.address}}"
 								style=" -webkit-appearance: radio;" class="mt-3 ml-4" required>
-							<label class="ml-3 mt-3" for="address"
+							<label class="ml-3 mt-3" for="{{this.address}}"
 								style=" max-width:400px; word-wrap:break-word;">{{this.address}}</label>
 						</div>
 						{{/each}}
@@ -23,23 +23,25 @@
 							Add address
 						</button>
 
+
+
 						<div class="delivery-add pt-3 pl-3 mt-5">
 							<h5>Payment methods</h5>
 						</div>
 						<div style="display: flex;">
-							<input type="radio" name="paymentmethod" id="paymentmethod" value="COD"
-								style=" -webkit-appearance: radio;" class="mt-3 ml-4" required>
-							<label class="ml-3 mt-3" for="paymentmethod">COD</label>
+							<input type="radio" name="paymentmethod" id="cod" value="COD"
+								style=" -webkit-appearance: radio;" class="mt-4 ml-4" required>
+							<label class="ml-3 mt-2" for="cod"><img src="/images/cashonDelivery.png" height="40px" width="135px" alt=""></label>
 						</div>
 						<div style="display: flex;">
-							<input type="radio" name="paymentmethod" id="paymentmethod" value="UPI"
-								style=" -webkit-appearance: radio;" class="mt-3 ml-4" required>
-							<label class="ml-3 mt-3" for="paymentmethod">UPI</label>
+							<input type="radio" name="paymentmethod" id="razorpay" value="razorpay"
+								style=" -webkit-appearance: radio;" class="mt-4 ml-4" required>
+							<label class="ml-3 mt-3" for="razorpay"><img src="/images/razorpay.png" height="25px" width="130px" alt=""></label>
 						</div>
 						<div style="display: flex;">
-							<input type="radio" name="paymentmethod" id="paymentmethod" value="Net Banking"
-								style=" -webkit-appearance: radio;" class="mt-3 ml-4" required>
-							<label class="ml-3 mt-3" for="paymentmethod">Net Banking</label>
+							<input type="radio" name="paymentmethod" id="paypal" value="paypal"
+								style=" -webkit-appearance: radio;" class="mt-4 ml-4" required>
+							<label class="ml-3 mt-3" for="paypal"><img src="/images/paypal.png" height="30px" width="120px" alt=""></label>
 						</div>
 					</div>
 
@@ -146,7 +148,7 @@
 			</div>
 			<form action="/addAddress" method="post" id="addAddress">
 				<div class="modal-body">
-					<textarea name="address" id="" cols="60" rows="3" placeholder="Enter your address"
+					<textarea name="address" id="" cols="45" rows="3" placeholder="Enter your address"
 						style=" border: solid 0.5px rgba(160, 141, 141, 0.356);" required minlength="10"></textarea>
 					<input type="text" name="pin" class="mt-3 numbers" placeholder="PIN Number"
 						style=" border: solid 0.5px rgba(160, 141, 141, 0.356); height: 30px;" pattern=".{4,6}" required title="4 to 6 digits">

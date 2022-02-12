@@ -1,5 +1,11 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<form class="mt-3" action="/vendor/addproduct" method="post" enctype="multipart/form-data">
+
+
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<form class="mt-3" action="/vendor/addproduct" method="post" enctype="multipart/form-data" id="addproduct">
     <div class="container">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -9,11 +15,11 @@
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Product</label>
-                    <input type="text" class="form-control" name="product" required>
+                    <input type="text" class="form-control" name="product">
                 </div>
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Category</label>
-                    <select class="form-control" id="inputGroupSelect01" name="category" required>
+                    <select class="form-control" id="inputGroupSelect01" name="category">
                         <option>Mobiles</option>
                         <option>Laptops</option>
                         <option>Cameras</option>
@@ -25,13 +31,20 @@
             </div>
 
             <div class="row">
-                 <div class="col-12 col-lg-6">
+                 
+                   
+                    <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Brand</label>
-                    <input type="text" class="form-control" name="brand" required>
+                    <select class="form-control" id="inputGroupSelect01" name="brand">
+                        <option>Apple</option>
+                        <option>Samsung</option>
+                        <option>Oneplus</option>
+                    </select>
                 </div>
+                
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Quantity</label>
-                    <input type="number" class="form-control" name="quantity" required>
+                    <input type="number" class="form-control" name="quantity">
                 </div>
                 
             </div>
@@ -39,11 +52,11 @@
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Price</label>
-                    <input type="text" class="form-control" name="price" required>
+                    <input type="text" class="form-control numbers" name="price">
                 </div>
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Stock details</label>
-                    <select class="custom-select form-control" id="inputGroupSelect01" name="stock" required>
+                    <select class="custom-select form-control" id="inputGroupSelect01" name="stock">
                         <option>In stock</option>
                         <option>Out of stock</option>
                         
@@ -55,17 +68,17 @@
             <div class="row">
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Description</label>
-                    <textarea name="description" rows="3" class="form-control" required></textarea>
+                    <textarea name="description" rows="3" class="form-control"></textarea>
                 </div>
                  <div class="col-12 col-lg-6">
-                    <label class="form-label mt-2">Company Id</label>
-                    <input type="text" class="form-control" name="companyid" value={{vendorid}} readonly>
+                   
+                    <input type="text" class="form-control" name="companyid" value={{vendorid}} hidden>
                 </div>
             </div>
             <div class="row">
                  <div class="col-12 ">
                     <label class="form-label mt-2">Specifications</label>
-                    <textarea  name="specs" rows="3" class="form-control" required></textarea>
+                    <textarea  name="specs" rows="3" class="form-control" ></textarea>
                 </div>
             </div>
             <div class="row">
@@ -75,7 +88,7 @@
                     </div>
                     <div>
                          <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview1" style="display: none;"><br>
-                        <input type="file" class="form-control-file addprodimg1" id="exampleFormControlFile1" name="productimage1" onchange="viewImage1(event)" accept="image/*" required>
+                        <input type="file" class="form-control-file addprodimg1" id="prodimg1" name="productimage1" onchange="viewImage1(event)" accept="image/*">
                         <P id="errmsg1" style="display: none;">Select an image file</P>
                     </div>
                 </div>
@@ -85,7 +98,7 @@
                     </div>
                     <div>
                          <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview2" style="display: none;"><br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage2" onchange="viewImage2(event)" accept="image/*" required>
+                        <input type="file" class="form-control-file" id="prodimg2" name="productimage2" onchange="viewImage2(event)" accept="image/*">
                      <P id="errmsg2" style="display: none;">Select an image file</P>
                     </div>
                 </div>
@@ -97,7 +110,7 @@
                     </div>
                     <div>
                          <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview3" style="display: none;"><br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage3" onchange="viewImage3(event)" accept="image/*" required>
+                        <input type="file" class="form-control-file" id="prodimg3" name="productimage3" onchange="viewImage3(event)" accept="image/*">
                      <P id="errmsg3" style="display: none;">Select an image file</P>
                     </div>
                 </div>
@@ -107,7 +120,7 @@
                     </div>
                     <div>
                          <img src="" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview4" style="display: none;"><br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage4" onchange="viewImage4(event)" accept="image/*" required>
+                        <input type="file" class="form-control-file" id="prodimg4" name="productimage4" onchange="viewImage4(event)" accept="image/*">
                     <P id="errmsg4" style="display: none;">Select an image file</P>
                     </div>
                 </div>
@@ -129,11 +142,12 @@
               if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
             document.getElementById('imagePreview1').src=URL.createObjectURL(event.target.files[0])
              document.getElementById('imagePreview1').style.display='block'
-              document.getElementById('errmsg1').style.display='none'
+             
 
               }else{
-                $('.addprodimg1').removeData()
+               
                 document.getElementById('errmsg1').style.display='block'
+                $("#prodimg1").val(null);
               }
             
         }
@@ -143,10 +157,11 @@
               if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
             document.getElementById('imagePreview2').src=URL.createObjectURL(event.target.files[0])
              document.getElementById('imagePreview2').style.display='block'
-              document.getElementById('errmsg2').style.display='none'
+              
 
               }else{
                 document.getElementById('errmsg2').style.display='block'
+                $("#prodimg2").val(null);
               }
 
         }
@@ -156,10 +171,11 @@
               if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
             document.getElementById('imagePreview3').src=URL.createObjectURL(event.target.files[0])
              document.getElementById('imagePreview3').style.display='block'
-              document.getElementById('errmsg3').style.display='none'
+             
 
               }else{
                 document.getElementById('errmsg3').style.display='block'
+                $("#prodimg3").val(null);
               }
         }
          function viewImage4(event){
@@ -168,11 +184,17 @@
               if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
             document.getElementById('imagePreview4').src=URL.createObjectURL(event.target.files[0])
              document.getElementById('imagePreview4').style.display='block'
-              document.getElementById('errmsg4').style.display='none'
+              
 
               }else{
                 document.getElementById('errmsg4').style.display='block'
+                $("#prodimg4").val(null);
               }
         }
-
 </script>
+<script>
+    $('.numbers').keyup(function () {
+        this.value = this.value.replace(/[^0-9\.]/g, '');
+    });
+</script>
+

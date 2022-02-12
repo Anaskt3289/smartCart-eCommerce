@@ -1,233 +1,271 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-   
-   
-    {{#if admin}}
-    {{!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
-  
- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables.css">
-   <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/css/jquery.dataTables_themeroller.css">
-   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.1.min.js"></script>
-   <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.0/jquery.dataTables.min.js"></script> --}}
-  
- 
-	 <!-- Styles -->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-        <link href="/adminpage-assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet"/>
-        <link href="/adminpage-assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet"/>
-        <link href="/adminpage-assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css"/>	
-        
-        	
-        <!-- Theme Styles -->
-        <link href="/adminpage-assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/css/custom.css" rel="stylesheet" type="text/css"/>
-        
-        <script src="/adminpage-assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
-        <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
-        
-  
 
-    {{/if}}
+<head>
+  <title>{{title}}</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+
+
+  {{#if admin}}
 
 
 
-    {{#if user}}
-    <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="/icons/favicon.png"/>
-<!--===============================================================================================-->
-	
+  <!-- Styles -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+  <link href="/adminpage-assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" />
+  <link href="/adminpage-assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" />
+  <link href="/adminpage-assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet"
+    type="text/css" />
+  <link href="/adminpage-assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css" />
+
+
+  <!-- Theme Styles -->
+  <link href="/adminpage-assets/css/modern.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/css/custom.css" rel="stylesheet" type="text/css" />
+
+  <script src="/adminpage-assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+  <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+
+
+
+  {{/if}}
+
+
+
+  {{#if user}}
+
+
+
+
+  <!--===============================================================================================-->
+
   <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.min.css">
-<!--===============================================================================================-->
-	
+  <!--===============================================================================================-->
+
   <link rel="stylesheet" type="text/css" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/fonts/linearicons-v1.0.0/icon-font.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
-<!--===============================================================================================-->	
-	<link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/slick/slick.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/MagnificPopup/magnific-popup.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/vendor/perfect-scrollbar/perfect-scrollbar.css">
-<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="/stylesheets/util.css">
-	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
-<!--===============================================================================================-->
-    {{/if}}
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/fonts/iconic/css/material-design-iconic-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/fonts/linearicons-v1.0.0/icon-font.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/animate/animate.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/css-hamburgers/hamburgers.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/animsition/css/animsition.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/select2/select2.min.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/daterangepicker/daterangepicker.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/slick/slick.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/MagnificPopup/magnific-popup.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/vendor/perfect-scrollbar/perfect-scrollbar.css">
+  <!--===============================================================================================-->
+  <link rel="stylesheet" type="text/css" href="/stylesheets/util.css">
+  <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+  <!--===============================================================================================-->
+  {{/if}}
 
 
-    {{#if vendor}}
-
-
-    
-       <!-- Styles -->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
-        <link href="/adminpage-assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet"/>
-        <link href="/adminpage-assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet"/>
-        <link href="/adminpage-assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet" type="text/css"/>	
-        <link href="/adminpage-assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css"/>	
-        
-        	
-        <!-- Theme Styles -->
-        <link href="/adminpage-assets/css/modern.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css"/>
-        <link href="/adminpage-assets/css/custom.css" rel="stylesheet" type="text/css"/>
-        
-        <script src="/adminpage-assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
-        <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
-    {{/if}}
-    
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-   {{!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
-
-<!-- style CSS -->
-    <link rel="stylesheet" href="/stylesheets/loginstyle.css" type="text/css" media="all">
+  {{#if vendor}}
 
 
 
-    <!-- google fonts -->
-    <link href="//fonts.googleapis.com/css?family=Mukta:300,400,500" rel="stylesheet">
-
-   
-  </head>
-  <body>
-    {{#if admin}}
-    {{>adminHeader}}
-  
-    {{/if}}
-
-	  {{#if user}}
-	  {{>userHeader}}
-	  {{/if}}
-
-    {{#if vendor}}
-	  {{>vendorHeader}}
-	  {{/if}}
+  <!-- Styles -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+  <link href="/adminpage-assets/plugins/pace-master/themes/blue/pace-theme-flash.css" rel="stylesheet" />
+  <link href="/adminpage-assets/plugins/uniform/css/uniform.default.min.css" rel="stylesheet" />
+  <link href="/adminpage-assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/waves/waves.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet"
+    type="text/css" />
+  <link href="/adminpage-assets/plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css" />
 
 
-    {{{body}}}
-    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
-<script src="https://cdnis.cloudflare.com/ajax/libs/popper.is/1.12.9/umd/popper.min.is" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfaOb4Q" crossorigin="anonymous"></script>
- {{!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> --}}
-<script src="/javascripts/ajax-scripts.js"></script>
-<script src="/javascripts/place-order.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    {{#if vendor}}
- <!-- Javascripts -->
-        <script src="/adminpage-assets/plugins/jquery/jquery-2.1.4.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-        <script src="/adminpage-assets/plugins/pace-master/pace.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-blockui/jquery.blockui.js"></script>
-        <script src="/adminpage-assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-        <script src="/adminpage-assets/plugins/switchery/switchery.min.js"></script>
-        <script src="/adminpage-assets/plugins/uniform/jquery.uniform.min.js"></script>
-        <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/classie.js"></script>
-        <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/main.js"></script>
-        <script src="/adminpage-assets/plugins/waves/waves.min.js"></script>
-        <script src="/adminpage-assets/plugins/3d-bold-navigation/js/main.js"></script>
-        <script src="adminpage-assets/plugins/waypoints/jquery.waypoints.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-counterup/jquery.counterup.min.js"></script>
-        <script src="/adminpage-assets/plugins/toastr/toastr.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.time.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.symbol.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.resize.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
-        <script src="/adminpage-assets/plugins/curvedlines/curvedLines.js"></script>
-        <script src="/adminpage-assets/plugins/metrojs/MetroJs.min.js"></script>
-        <script src="/adminpage-assets/js/modern.js"></script>
-        <script src="/adminpage-assets/js/pages/dashboard.js"></script>
-    {{/if}}
+  <!-- Theme Styles -->
+  <link href="/adminpage-assets/css/modern.min.css" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/css/custom.css" rel="stylesheet" type="text/css" />
+
+  <script src="/adminpage-assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
+  <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+  {{/if}}
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  {{!--
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
+
+  <!-- style CSS -->
+  <link rel="stylesheet" href="/stylesheets/loginstyle.css" type="text/css" media="all">
 
 
-    {{#if user}}
 
-    {{>userFooter}}
-
-
-    
-    <link rel="stylesheet" href="/stylesheets/image-zoom.css" />
-<script src="/javascripts/image-zoom.js" defer></script>
-<script src="/javascripts/image-zoom.min.js" defer></script>
-
-    {{/if}}
-	{{#if admin}}
+  <!-- google fonts -->
+  <link href="//fonts.googleapis.com/css?family=Mukta:300,400,500" rel="stylesheet">
 
 
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+</head>
 
-	 <!-- Javascripts -->
-        <script src="/adminpage-assets/plugins/jquery/jquery-2.1.4.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-        <script src="/adminpage-assets/plugins/pace-master/pace.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-blockui/jquery.blockui.js"></script>
-        <script src="/adminpage-assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-        <script src="/adminpage-assets/plugins/switchery/switchery.min.js"></script>
-        <script src="/adminpage-assets/plugins/uniform/jquery.uniform.min.js"></script>
-        <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/classie.js"></script>
-        <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/main.js"></script>
-        <script src="/adminpage-assets/plugins/waves/waves.min.js"></script>
-        <script src="/adminpage-assets/plugins/3d-bold-navigation/js/main.js"></script>
-        <script src="adminpage-assets/plugins/waypoints/jquery.waypoints.min.js"></script>
-        <script src="/adminpage-assets/plugins/jquery-counterup/jquery.counterup.min.js"></script>
-        <script src="/adminpage-assets/plugins/toastr/toastr.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.time.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.symbol.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.resize.min.js"></script>
-        <script src="/adminpage-assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
-        <script src="/adminpage-assets/plugins/curvedlines/curvedLines.js"></script>
-        <script src="/adminpage-assets/plugins/metrojs/MetroJs.min.js"></script>
-        <script src="/adminpage-assets/js/modern.js"></script>
-        <script src="/adminpage-assets/js/pages/dashboard.js"></script>
-         
-	{{/if}}
+<body>
+  {{#if admin}}
+  {{>adminHeader}}
 
-    <script src="/javascripts/signupVal.js"></script>
-	<script src="/javascripts/vendor-registerVal.js"></script>
-  	
-  
-  </body>
+  {{/if}}
+
+  {{#if user}}
+  {{>userHeader}}
+  {{/if}}
+
+  {{#if vendor}}
+  {{>vendorHeader}}
+  {{/if}}
+
+
+  {{{body}}}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  {{!--
+  <script src="https://code.jquery.com/jquery-3.6.0.slim.js"
+    integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script> --}}
+  {{!--
+  <script src="https://cdnis.cloudflare.com/ajax/libs/popper.is/1.12.9/umd/popper.min.is"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfaOb4Q"
+    crossorigin="anonymous"></script> --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+    integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  {{!--
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script> --}}
+  {{!--
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script> --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="/javascripts/vendor-registerVal.js"></script>
+  <script src="/javascripts/signupVal.js"></script>
+
+
+  <script src="/javascripts/addproduct-val.js"></script>
+  <script src="/javascripts/editproduct-val.js"></script>
+
+  {{#if vendor}}
+
+  <!-- Javascripts -->
+  <script src="/adminpage-assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <script src="/adminpage-assets/plugins/pace-master/pace.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-blockui/jquery.blockui.js"></script>
+  <script src="/adminpage-assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="/adminpage-assets/plugins/switchery/switchery.min.js"></script>
+  <script src="/adminpage-assets/plugins/uniform/jquery.uniform.min.js"></script>
+  <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/classie.js"></script>
+  <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/main.js"></script>
+  <script src="/adminpage-assets/plugins/waves/waves.min.js"></script>
+  <script src="/adminpage-assets/plugins/3d-bold-navigation/js/main.js"></script>
+  <script src="adminpage-assets/plugins/waypoints/jquery.waypoints.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-counterup/jquery.counterup.min.js"></script>
+  <script src="/adminpage-assets/plugins/toastr/toastr.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.time.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.symbol.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.resize.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
+  <script src="/adminpage-assets/plugins/curvedlines/curvedLines.js"></script>
+  <script src="/adminpage-assets/plugins/metrojs/MetroJs.min.js"></script>
+  <script src="/adminpage-assets/js/modern.js"></script>
+  <script src="/adminpage-assets/js/pages/dashboard.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+    integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/javascripts/changepassword-val.js"></script>
+  {{/if}}
+
+
+  {{#if user}}
+
+  {{>userFooter}}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+    integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="/stylesheets/image-zoom.css" />
+  <script src="/javascripts/image-zoom.js" defer></script>
+  <script src="/javascripts/image-zoom.min.js" defer></script>
+  <script src="/javascripts/userprofile-val.js"></script>
+  <script src="/javascripts/changepassword-val.js"></script>
+  <script src="/javascripts/ajax-scripts.js"></script>
+  <script src="/javascripts/place-order.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  {{/if}}
+  {{#if admin}}
+
+
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+  <!-- Javascripts -->
+  <script src="/adminpage-assets/plugins/jquery/jquery-2.1.4.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <script src="/adminpage-assets/plugins/pace-master/pace.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-blockui/jquery.blockui.js"></script>
+  <script src="/adminpage-assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="/adminpage-assets/plugins/switchery/switchery.min.js"></script>
+  <script src="/adminpage-assets/plugins/uniform/jquery.uniform.min.js"></script>
+  <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/classie.js"></script>
+  <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/main.js"></script>
+  <script src="/adminpage-assets/plugins/waves/waves.min.js"></script>
+  <script src="/adminpage-assets/plugins/3d-bold-navigation/js/main.js"></script>
+  <script src="adminpage-assets/plugins/waypoints/jquery.waypoints.min.js"></script>
+  <script src="/adminpage-assets/plugins/jquery-counterup/jquery.counterup.min.js"></script>
+  <script src="/adminpage-assets/plugins/toastr/toastr.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.time.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.symbol.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.resize.min.js"></script>
+  <script src="/adminpage-assets/plugins/flot/jquery.flot.tooltip.min.js"></script>
+  <script src="/adminpage-assets/plugins/curvedlines/curvedLines.js"></script>
+  <script src="/adminpage-assets/plugins/metrojs/MetroJs.min.js"></script>
+  <script src="/adminpage-assets/js/modern.js"></script>
+  <script src="/adminpage-assets/js/pages/dashboard.js"></script>
+
+  {{/if}}
+
+
+
+
+
+</body>
+
 </html>

@@ -207,3 +207,60 @@
   width: 200px;
   border-radius: 30px;
 }
+
+@media (max-width: 991px){
+  .myorder,.productspage{
+    min-height: 1000px;
+  }
+  }
+
+
+  
+.shadow {
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.profile-tab-nav {
+	min-width: 250px;
+}
+
+.tab-content {
+	flex: 1;
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+}
+
+.nav-pills a.nav-link {
+	padding: 15px 20px;
+	border-bottom: 1px solid #ddd;
+	border-radius: 0;
+	color: #333;
+}
+.nav-pills a.nav-link i {
+	width: 20px;
+}
+
+.img-circle img {
+	height: 100px;
+	width: 100px;
+	border-radius: 100%;
+	border: 5px solid #fff;
+}
+#change-pword-input{
+  width: 350px;
+}
+#change-profile-input{
+  width: 350px;
+}
+.profilelinks:hover{
+  background-color: #0063cc54;
+}
+#user-address{
+  width: 700px;
+}
+#newpsword{
+  width: 350px;
+}
+

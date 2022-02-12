@@ -1,5 +1,4 @@
 
-	
 	<!-- Product Detail -->
 	<section class="sec-product-detail bg0 p-t-65 p-b-60" >
 		<div class="container">
@@ -83,22 +82,49 @@
 							<div class="flex-w flex-r-m p-b-10 mt-5">
 								<div class="size-204 flex-w flex-m respon6-next">
 									<div class="wrap-num-product flex-w m-r-20 m-tb-10">
+										<button type="button" onclick="changeproductquantity(-1)" style="border: none;">
 										<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 											<i class="fs-16 zmdi zmdi-minus"></i>
 										</div>
+										</button>
 
-										<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product" value="1">
+										<input class="mtext-104 cl3 txt-center num-product" type="number" id="productquantity" name="num-product" value="1">
 
+										<button type="button" onclick="changeproductquantity(1)" style="border: none;">
 										<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 											<i class="fs-16 zmdi zmdi-plus"></i>
 										</div>
+										</button>
 									</div>
 								    {{#if loggined}}
-									<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail text-white mt-4" onclick="addToCart('{{product._id}}')">Add to cart</button>
+									<div  style="display: flex;">
+								
+									<button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail text-white mt-4" id="addtoCart" onclick="addToCart('{{product._id}}',2)" data-toggle="modal" data-target="#exampleModalCenter" >Add to cart</button>
+
+
+<!-- Modal -->
+<div class="modal fade mt-5 pt-3" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog mt-5" role="document" style="float: right;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Item added to cart</h5>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+									<a class="ml-3 flex-c-m stext-101 btn-dark cl0 size-101 btn-dark bor1 hov-btn1 p-lr-15 text-white mt-4" href="/buynow?id={{product._id}}">
+										Buy now
+									</a>
+									</div>
 									{{else}}
+									<div>
 									<a class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 text-white mt-4" href="/login">
 										Add to cart
 									</a>
+									
+									</div>
 									{{/if}}
 								</div>
 							</div>	
@@ -566,7 +592,11 @@
 				{{!-- </div> --}}
 			</div>
 		</div>
+		
+
+
 	</section>
+
 		
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
@@ -595,3 +625,19 @@
   $('.imageZoom4').imageZoom();
 });
 </script>
+
+<script>
+	function changeproductquantity(count){
+		count=parseInt(count)
+		 let quantity=parseInt(document.getElementById('productquantity').value)
+		 if(quantity>1){
+		 document.getElementById('productquantity').value=quantity+count
+		 }else if(quantity==1&&count==1){
+			  document.getElementById('productquantity').value=quantity+count
+		 }
+		
+	}
+
+</script>
+
+

@@ -1,7 +1,5 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-
-
 <!-- Header -->
 	<header>
 		<!-- Header desktop -->
@@ -78,9 +76,9 @@
 						
 
 				<div class="dropdown">
-  <button class="dropbtn ml-3">Anas</button>
+  <button class="dropbtn ml-3">{{username}}</button>
   <div class="dropdown-content">
-    <a href="#">Profile</a>
+    <a href="/userprofile">Profile</a>
     <a href="/myorders">My Orders</a>
     <a href="/userlogout">Signout</a>
   </div>
@@ -88,6 +86,7 @@
 
 {{!-- dropdown css --}}
 <style>
+	
 	.dropbtn {
   
   color: rgb(0, 0, 0);
@@ -165,53 +164,34 @@
 						{{/if}}
 			</div>
 
-			<!-- Button show menu -->
-			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+		
+			
+
+		
+  <button class="navbar-toggler first-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent20"
+    aria-controls="navbarSupportedContent20" aria-expanded="false" aria-label="Toggle navigation">
+    {{!-- <div class="animated-icon1"><span></span><span></span><span></span></div> --}}
+	<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
 				<span class="hamburger-box">
 					<span class="hamburger-inner"></span>
 				</span>
 			</div>
+  </button>
+
 		</div>
 
+  <!-- Collapsible content -->
+  <div class="menu-mobile pb-0 mb-0" id="navbarSupportedContent20">
 
-		<!-- Menu Mobile -->
-		<div class="menu-mobile">
-			{{!-- <ul class="topbar-mobile">
-				<li>
-					<div class="left-top-bar">
-						Free shipping for standard order over $100
-					</div>
-				</li>
-
-				<li>
-					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							Help & FAQs
-						</a>
-
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m p-lr-10 trans-04">
-							USD
-						</a>
-					</div>
-				</li>
-			</ul> --}}
-
-			<ul class="main-menu-m">
-				<li >
+    <!-- Links -->
+    <ul class="main-menu-m">
+     <li >
 					<a href="/home" >Home</a>
 					
 				</li>
 				{{#if loggined}}
 				<li>
-					<a href="" style="font-size: 24px;" class="text-white">Profile</a>
+					<a href="/userprofile" style="font-size: 24px;" class="text-white">Profile</a>
 				</li>
 				<li>
 					<a href="/myorders">My Orders</a>
@@ -223,7 +203,53 @@
 				{{/if}}
 
 				<li>
-					<a href="/showallproducts">Shop</a>
+					<a href="/showallproducts?category=Allproducts">Shop</a>
+				</li>
+
+				<li>
+					<a href="about.html">About</a>
+				</li>
+
+				<li>
+					<a href="contact.html">Contact</a>
+				</li>
+				{{#if loggined}}
+				<li>
+					<a href="/userlogout">Signout</a>
+				</li>
+				{{/if}}
+    </ul>
+    <!-- Links -->
+
+  </div>
+
+		
+
+
+		<!-- Menu Mobile -->
+		{{!-- <div class="menu-mobile">
+			
+
+			<ul class="main-menu-m">
+				<li >
+					<a href="/home" >Home</a>
+					
+				</li>
+				{{#if loggined}}
+				<li>
+					<a href="/userprofile" style="font-size: 24px;" class="text-white">Profile</a>
+				</li>
+				<li>
+					<a href="/myorders">My Orders</a>
+				</li>
+				{{else}}
+                <li>
+					<a href="/login" style="font-size: 24px;" class="text-white">Login</a>
+				</li>
+				{{/if}}
+
+				<li>
+					<a href="/showallproducts?category=Allproducts">Shop</a>
 				</li>
 
 				<li>
@@ -239,7 +265,9 @@
 				</li>
 				{{/if}}
 			</ul>
-		</div>
+		</div> --}}
+
+	
 
 		<!-- Modal Search -->
 		<div class="modal-search-header flex-c-m trans-04 js-hide-modal-search">

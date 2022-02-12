@@ -1,0 +1,134 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="page-inner">
+    <div class="page-title">
+        <h3>{{vendordetail.vname}}</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/vendordashboard">{{vendordetail.vname}}</a></li>
+                <li><a href="#">Profile</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                   
+                    <div class="panel-body">
+
+
+<section>
+    <div class="container-fluid">
+        <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+            <div class="row">
+               
+                <div class="col-md-12 col-lg-9">
+                    <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+                        <div class="tab-pane fade show active" id="account" role="tabpanel"
+                            aria-labelledby="account-tab">
+
+
+                            <div>
+                                <h3 class="mb-4">License :</h3>
+                                    <img src="/vendorlicense/{{vendordetail._id}}.jpg" height="140px" width="250px" alt="">
+                                    <div class="row ml-3 mt-3">
+                                    <h5 class="mr-3">verified</h5>
+                                    <img src="/images/verified.png" alt="" height="15px" width="15px">
+                                    </div>
+                                </div>
+
+                            <form action="/vendor/updatevendor" method="post"  id="vendorprofile">
+
+                                <div style="display: flex;" class="mt-5">
+                                    <h3 class="mb-4">Account Settings</h3>
+                                    <button type="button" id="changeprofilebtn" class="btn btn-primary"
+                                        style="margin-left: auto; height: 35px; font-size: 15px;" onclick="editprofile()">Edit
+                                        Profile</button>
+                                </div>
+                                <input type="text"  value={{vendordetail._id}} name="vendorId" hidden>
+                               
+                                <div class="row">
+                                    <div class="col-md-12">
+
+                                            <label style="font-size: 16px" class="mt-4">Company Name</label>
+                                            <input type="text" class="form-control change-profile-input mb-4" name="vname"
+                                                id="change-profile-input" style="font-size: 15px" value="{{vendordetail.vname}}" readonly>
+
+                                                <a href="/vendor/changepassword" style="font-size: 16px;">change password...</a>
+                                       
+                                    </div>
+
+                                    <div class="col-md-12 mt-4">
+                                        
+                                            <label style="font-size: 16px">Email</label>
+                                            <input type="text" class="form-control change-profile-input" name="email"
+                                                id="change-profile-input" style="font-size: 15px" value="{{vendordetail.email}}" readonly>
+                                      
+                                    </div>
+                                    <div class="col-md-12 mt-4">
+                                        
+                                            <label style="font-size: 16px">Phone number</label>
+                                            <input type="text" class="form-control change-profile-input numbers" name="mobile"
+                                                id="change-profile-input" style="font-size: 15px" value="{{vendordetail.mobile}}" readonly>
+                                     
+                                    </div>
+                                    
+                                    <div class="col-md-12 mt-5">
+                                        <h3>Address:</h3>
+                                           
+                                        <div style="display: flex;">
+                                           
+                                            <textarea name="address" class="mt-3 form-control change-profile-input" id="user-address" style="font-size: 15px" cols="60" rows="2" readonly>{{vendordetail.address}}</textarea>
+                                            
+                                        </div>
+                                
+                                      
+
+
+                                </div>
+                                <div class="mt-5  ml-4" style="display: flex;">
+                                    <button type="submit" class="btn btn-primary" id="updateprofilebtn"
+                                        style="display: none; font-size: 16px;">Update</button>
+                                    <a href="" class="btn btn-light ml-4" id="cancelbtn" style="display: none;font-size: 16px;">Cancel
+                                        </a>
+
+                                </div>
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</section>
+
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
+    </div>
+
+
+    <script>
+        function editprofile() {
+            document.getElementById('updateprofilebtn').style.display = 'block'
+            document.getElementById('cancelbtn').style.display = 'block'
+            document.getElementById('changeprofilebtn').style.display = 'none'
+            $(".change-profile-input").attr("readonly", false);
+        }
+    </script>
+
+<script src="/javascripts/vendor-profile-val.js"></script>
+
+    <script>
+    $('.numbers').keyup(function () {
+        this.value = this.value.replace(/[^0-9\.]/g, '');
+    });
+</script>

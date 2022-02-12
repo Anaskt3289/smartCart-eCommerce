@@ -6,7 +6,31 @@ const { response } = require('express');
 const { redirect } = require('express/lib/response');
 const fs = require('fs')
 
-router.get('/', function (req, res, next) {
+const verifyBlocked = async (req, res, next) => {
+ 
+    let vendor = await vendorhelper.getvendor(req.session.vendorId)
+    if (vendor) {
+      if (vendor.blocked) {
+        req.session.vendor = false
+      } else {
+        req.session.vendorname =vendor.vname
+        req.session.vendorId = vendor._id
+      }
+    } else {
+      req.session.vendor = false
+    }
+  
+  next()
+}
+
+const verifyLogin = (req, res, next) => {
+  if (req.session.vendor) {
+    next()
+  } else {
+    res.redirect('/vendor')
+  }
+}
+router.get('/',verifyBlocked, function (req, res, next) {
   if (req.session.vendor == true) {
     res.render('Vendor/Vendorhome', { 'vendor': true, 'vendorname': req.session.vendorname });
   } else {
@@ -69,12 +93,10 @@ router.get('/logout', function (req, res, next) {
 
 });
 
-router.get('/addproduct', function (req, res, next) {
-  if (req.session.vendor) {
+router.get('/addproduct',verifyLogin,verifyBlocked, function (req, res, next) {
+
     res.render('Vendor/addproduct', { 'vendorid': req.session.vendorId, 'productfound': req.session.productfound })
-  } else {
-    res.redirect('/vendor')
-  }
+   
 });
 router.post('/addproduct', function (req, res, next) {
   producthelper.addproduct(req.body).then((response) => {
@@ -84,7 +106,6 @@ router.post('/addproduct', function (req, res, next) {
       req.session.productfound = true
       res.redirect('/vendor/addproduct')
     } else {
-      
         let image1 = req.files.productimage1
         let image2 = req.files.productimage2
         let image3 = req.files.productimage3
@@ -100,14 +121,12 @@ router.post('/addproduct', function (req, res, next) {
   })
 
 });
-router.get('/viewproducts', function (req, res, next) {
-  if (req.session.vendor) {
+router.get('/viewproducts',verifyLogin,verifyBlocked, function (req, res, next) {
+ 
     producthelper.getproducts(req.session.vendorId).then((products) => {
       res.render('Vendor/vendorproducts', { vendor: true, products, 'vendorname': req.session.vendorname });
     })
-  } else {
-    res.redirect('/vendor')
-  }
+ 
 });
 router.get('/deleteproduct/', function (req, res, next) {
   producthelper.deleteproduct(req.query.id)
@@ -120,7 +139,7 @@ router.get('/deleteproduct/', function (req, res, next) {
 router.get('/editproduct/:id', async function (req, res, next) {
   let product = await producthelper.getoneproduct(req.params.id)
   if (req.session.vendor) {
-    console.log(product);
+   
     res.render('Vendor/edit-product', { product })
   } else {
     res.redirect('/vendor')
@@ -131,6 +150,7 @@ router.get('/vendordashboard', async function (req, res, next) {
 });
 router.post('/updateproduct/:id', async function (req, res, next) {
   producthelper.updateproduct(req.params.id, req.body).then(() => {
+    if(req.files){
     if (req.files.productimage1) {
       let image1 = req.files.productimage1
       image1.mv('./public/product-images/' + req.params.id + '1.jpg')
@@ -147,8 +167,36 @@ router.post('/updateproduct/:id', async function (req, res, next) {
       let image4 = req.files.productimage4
       image4.mv('./public/product-images/' + req.params.id + '4.jpg')
     }
+  }
     res.redirect('/vendor/viewproducts')
   })
 });
 
+router.get('/vendorprofile',verifyLogin,verifyBlocked, async function (req, res, next) {
+  vendorhelper.getvendor(req.session.vendorId).then((vendordetail)=>{
+
+    res.render('vendor/vendor-profile',{vendor:true,vendordetail})
+  })
+});
+router.post('/updatevendor',function (req, res, next) {
+  vendorhelper.updatevendor(req.body).then(()=>{
+    res.redirect('/vendor/vendorprofile')
+  })
+});
+
+router.get('/changepassword',verifyLogin,verifyBlocked, function (req, res, next) {
+ res.render('Vendor/change-vendorpassword',{vendor:true,'pwordNoMatch':req.session.vendorpwordNoMatch})
+});
+
+router.post('/changepassword',function (req, res, next) {
+  vendorhelper.changepassword(req.session.vendorId,req.body).then((response)=>{
+    if(response.vendorpwordNoMatch){
+      req.session.vendorpwordNoMatch=true
+      res.redirect('/vendor/changepassword')
+    }else{
+
+      res.redirect('/vendor/vendorprofile')
+    }
+  })
+ });
 module.exports = router;

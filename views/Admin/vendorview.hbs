@@ -1,3 +1,6 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <div class="page-inner">
     <div class="page-title">
         <h3>Vendors</h3>
@@ -49,7 +52,7 @@
                                             <input type="text" value="{{this._id}}" id="vendorid" hidden>
                                             {{!-- <a href="/deletevendor/{{this._id}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete');">Delete</a> --}}
                        
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">
+<button type="button"  class="btn btn-danger deletevendor" data-id="{{this._id}}" data-toggle="modal" data-target="#exampleModalCenter">
   Delete
 </button>
 
@@ -68,7 +71,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-danger" onclick="deletevendor()">Delete</button>
+        <a href="" class="btn btn-danger " id="modaldeletevendor">Delete</a>
       </div>
     </div>
   </div>
@@ -98,26 +101,16 @@
    
 
 
-    <script>
-        $(document).ready(function () {
-            $('#admintable').DataTable();
-        });
+    <
 
 
-        
-    </script>
+  <script>
+  $(document).on("click", ".deletevendor", function () {
 
-    <script>
-        function deletevendor(){
-    let vendorId=document.getElementById('vendorid').value
-    $.ajax({
-        url:'/admin/deletevendor?id='+vendorId,
-        method:'get',
-        success:(response)=>{
-            if(response.status){
-                location.reload()
-            }
-        }
-    })
-}
-    </script>
+    var varid = $(this).data('id');
+
+
+   
+    $('.modal-footer #modaldeletevendor').attr('href', "/admin/deletevendor?id=" + varid)
+  })
+</script>

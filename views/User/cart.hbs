@@ -5,7 +5,10 @@
 				<div class="col-12 col-lg-10 col-xl-7 m-lr-auto m-b-50">
 					<div class="m-l-25 m-r--38 m-lr-0-xl">
 						<div class="wrap-table-shopping-cart">
-							<table class="table-shopping-cart">
+									<table class="table-shopping-cart">
+
+									
+						
 								<tr class="table_head">
 									<th class="column-1">Product</th>
 									<th class="column-2">Price</th>
@@ -13,8 +16,10 @@
 									<th class="column-4">Total</th>
 									<th class="column-5"></th>
 								</tr>
+								
 								{{#each products}}
 								<tr class="table_row">
+									
 									
 									<td class="column-1">
 										<div class="how-itemcart1">
@@ -48,6 +53,13 @@
 
 
 							</table>
+
+								{{#if noCartProducts}}
+			<div style="text-align: center;" class="mt-5">
+			<img src="/images/cartEmpty.png" alt="" height="230px" width="240px">
+				<h6 class="mb-5">Looks like you have not added anything to your cart. <br> Go ahead and explore the top categories</h6>
+				</div>
+				{{/if}}
 						</div>
 
 					

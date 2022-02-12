@@ -1,8 +1,13 @@
 
 
-function addToCart(prodId) {
+function addToCart(prodId, count) {
+    if(count==1){
+      quantity=1
+    }else{
+        quantity=parseInt(document.getElementById('productquantity').value)
+    }
     $.ajax({
-        url:'/addToCart?id='+prodId,
+        url:'/addToCart/'+prodId+'/'+quantity,
         method:'get',
         success:(response)=>{
             if(response.status){

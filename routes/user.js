@@ -57,10 +57,25 @@ let getcartcount = async (req, res, next) => {
   next()
 }
 
+let wishlistcount = async (req, res, next) => {
+  wishCount = null;
+  if (req.session.user) {
+    wishCount = await userhelper.wishlistCount(req.session.userId)
+  }
+  next()
+}
+
+const verifyOfferExpiry = async (req, res, next) => {
+  await userhelper.verifyOfferExpiry()
+  next()
+}
+
+
 /* GET home page. */
-router.get('/', verifyBlocked, getcartcount, async function (req, res, next) {
+router.get('/', verifyOfferExpiry, verifyBlocked, getcartcount, wishlistcount, async function (req, res, next) {
 
   userhelper.getproducts('Allproducts').then((products) => {
+
     adminhelper.getbanners().then((banners) => {
       Slider01 = banners[0]
       Slider02 = banners[1]
@@ -69,7 +84,7 @@ router.get('/', verifyBlocked, getcartcount, async function (req, res, next) {
       Banner02 = banners[4]
       Banner03 = banners[5]
 
-      res.render('User/index', { 'user': true, 'username': req.session.username, 'loggined': req.session.user, 'cartCount': cartCount, products, Slider01, Slider02, Slider03, Banner01, Banner02, Banner03 })
+      res.render('User/index', { 'user': true, 'username': req.session.username, 'loggined': req.session.user, 'cartCount': cartCount, products, Slider01, Slider02, Slider03, Banner01, Banner02, Banner03, 'wishlistCount': wishCount })
 
     })
   })
@@ -245,51 +260,81 @@ router.get('/userlogout', async function (req, res, next) {
   res.redirect('/login')
 });
 
-router.get('/productdetails/', getcartcount, async function (req, res, next) {
+router.get('/productdetails/', getcartcount, wishlistcount, async function (req, res, next) {
 
   if (req.query.id) {
     req.session.productDetailId = req.query.id
     let product = await producthelper.getoneproduct(req.query.id)
-    res.render('User/product-detail', { 'user': true, product, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
+
+    res.render('User/product-detail', { 'user': true, product, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'wishlistCount': wishCount })
   } else if (req.session.user) {
     let product = await producthelper.getoneproduct(req.session.productDetailId)
-    res.render('User/product-detail', { 'user': true, product, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
+
+    res.render('User/product-detail', { 'user': true, product, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'wishlistCount': wishCount })
   } else {
     res.redirect('/')
   }
 });
-router.get('/home', function (req, res, next) {
-  res.redirect('/')
-
-});
-
-router.get('/showallproducts/', getcartcount, async function (req, res, next) {
 
 
-  userhelper.getproducts(req.query.category).then((products) => {
-    if (products.length === 0) {
-      req.session.noproducts = true
-    }
-    res.render('User/products', { 'user': true, products, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noProducts': req.session.noproducts })
-    req.session.noproducts = false
-  })
-});
+router.get('/showallproducts/', getcartcount, wishlistcount, async function (req, res, next) {
 
-router.get('/cart', verifyBlocked, verifyLogin, getcartcount, async function (req, res, next) {
+  let products;
+  let category;
+  if(req.query.category){
+    category = req.query.category
+  }else{
+    category = 'Allproducts'
+  }
+
+  if (req.session.priceFilter) {
+    products = await userhelper.priceFilter(req.session.priceFilter.first, req.session.priceFilter.last)
+ 
+  } else if (req.session.brandFilter) {
+    products = await userhelper.brandFilter(req.session.brandFilter.value)
+  }else if(req.session.sortProduct){
+    products = await userhelper.sortProducts(req.session.sortProduct.value)
+  }else {
+    products = await userhelper.getproducts(category)
+
+  }
+
+
+  if (products.length === 0) {
+    req.session.noproducts = true
+  }
+  res.render('User/products', { 'user': true, products, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noProducts': req.session.noproducts, 'wishlistCount': wishCount })
+  req.session.noproducts = false
+  req.session.priceFilter = null
+  req.session.brandFilter = null
+  req.session.sortProduct = null
+
+}); 
+
+router.get('/cart', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
 
   userhelper.getCartProducts(req.session.userId).then((products) => {
-    userhelper.getCartTotal(req.session.userId).then((subtotal) => {
-      let total = 0
-      for (let element of subtotal) {
-        total = total + element.subtotal
+    req.session.couponapplied = null
+    let total = 0
+    for (let element of products) {
+      if (element.product.discountDetails) {
+        element.subtotal = element.product.discountDetails.subtotal
       }
-      grandTotal = total + 80
-      if (cartCount === 0) {
-        req.session.noCartProducts = true
-      }
-      res.render('User/cart', { user: true, products, 'total': total, 'grandTotal': grandTotal, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noCartProducts': req.session.noCartProducts })
-      req.session.noCartProducts = false
-    })
+      total = total + element.subtotal
+    }
+
+
+
+    grandtotal = total + 80
+
+
+
+    if (cartCount === 0) {
+      req.session.noCartProducts = true
+    }
+    res.render('User/cart', { user: true, products, 'total': total, 'grandtotal': grandtotal, 'wishlistCount': wishCount, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noCartProducts': req.session.noCartProducts })
+    req.session.noCartProducts = false
+
   })
 });
 
@@ -306,9 +351,14 @@ router.get('/addToCart/:id/:quantity', function (req, res, next) {
 
 router.post('/changeCartQuantity', function (req, res, next) {
   userhelper.changeCartQuantity(req.body).then(async (response) => {
-    subtotal = await userhelper.getCartTotal(req.session.userId)
+    subtotal = await userhelper.getCartProducts(req.session.userId)
+    console.log(subtotal);
+    let subTotalCart
     let total = 0
     for (let element of subtotal) {
+      if (element.product.discountDetails) {
+        element.subtotal = element.product.discountDetails.subtotal
+      }
       total = total + element.subtotal
       if (element.item == req.body.product) {
         subTotalCart = element.subtotal
@@ -326,24 +376,56 @@ router.post('/removeCartProduct', function (req, res, next) {
     res.json({ status: true })
   })
 });
-router.get('/checkout', verifyBlocked, verifyLogin, getcartcount, async function (req, res, next) {
-
+router.get('/checkout', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
+  let coupons = await userhelper.getAllCoupons(req.session.userId)
   userhelper.getaddress(req.session.userId).then((address) => {
+
     if (req.session.buynow) {
+      discount = 0, couponcode = null;
       producthelper.getoneproduct(req.session.buynow).then((product) => {
-        subtotal = parseInt(product.price)
+        if (product.discountDetails) {
+          subtotal = parseInt(product.discountDetails.currentprice)
+        } else {
+          subtotal = parseInt(product.price)
+        }
+
         total = subtotal
-        grandtotal = total + 80
-        res.render('User/checkout', { user: true, address, 'subtotal': total, 'total': grandtotal, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
+        if (req.session.couponapplied) {
+
+          couponcode = req.session.couponapplied.couponcode
+          discount = (total + 80) * parseInt(req.session.couponapplied.discount) / 100
+          grandtotal = (total + 80) - discount
+        } else {
+          grandtotal = total + 80
+        }
+
+        res.render('User/checkout', { user: true, address, coupons, 'wishlistCount': wishCount, 'subtotal': total, 'total': grandtotal, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'discount': discount, 'couponcode': couponcode })
+
+
+
       })
     } else {
-      userhelper.getCartTotal(req.session.userId).then((subtotal) => {
+      discount = 0, couponcode = null;
+
+      userhelper.getCartProducts(req.session.userId).then((products) => {
         let total = 0
-        for (let element of subtotal) {
+        for (let element of products) {
+          if (element.product.discountDetails) {
+            element.subtotal = element.product.discountDetails.subtotal
+          }
           total = total + element.subtotal
         }
-        grandtotal = total + 80
-        res.render('User/checkout', { user: true, address, 'subtotal': total, 'total': grandtotal, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
+        if (req.session.couponapplied) {
+
+          couponcode = req.session.couponapplied.couponcode
+          discount = (total + 80) * parseInt(req.session.couponapplied.discount) / 100
+          grandtotal = (total + 80) - discount
+        } else {
+          grandtotal = total + 80
+        }
+        res.render('User/checkout', { user: true, address, coupons, 'wishlistCount': wishCount, 'subtotal': total, 'total': grandtotal, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'discount': discount, 'couponcode': couponcode })
+
+
       })
 
     }
@@ -371,86 +453,100 @@ router.post('/placeorder', verifyBlocked, verifyLogin, async function (req, res,
     products = await userhelper.orderPlacedProducts(req.session.userId)
     type = 'cart';
   }
-  userhelper.placeorder(req.body, products, type).then((response) => {
-    req.session.orderId = response.insertedId
-    if (req.body.paymentmethod === 'COD') {
-
+  if (req.body.paymentmethod === 'COD') {
+    userhelper.placeorder(req.body, products, type).then(async (response) => {
+      req.session.orderId = response.insertedId
+      if (req.session.couponapplied) {
+        await userhelper.addAppliedCoupons(req.session.userId, req.session.couponapplied.couponcode)
+        req.session.couponapplied = null
+      }
       res.json({ codSuccess: true })
-    } else if (req.body.paymentmethod === 'razorpay') {
+    })
+  } else if (req.body.paymentmethod === 'razorpay') {
+    req.session.orderDetails = { details: req.body, products: products, type: type }
 
-      userhelper.generateRazorpay(response.insertedId, req.body.total).then((response) => {
+    userhelper.generateRazorpay(req.body.total).then((response) => {
+      response.razorpay = true
+      res.json(response)
+    })
+  } else {
 
-        response.razorpay = true
-        res.json(response)
-      })
-    } else {
-
-      const create_payment_json = {
-        "intent": "sale",
-        "payer": {
-          "payment_method": "paypal"
-        },
-        "redirect_urls": {
-          "return_url": "http://localhost:3000/successpage?method=paypal",
-          "cancel_url": "/checkout"
-        },
-        "transactions": [{
-          "item_list": {
-            "items": [{
-              "name": products.product,
-              "sku": "001",
-              "price": parseInt(req.body.total) / 75,
-              "currency": "USD",
-              "quantity": 1
-            }]
-          },
-          "amount": {
+    req.session.orderDetails = { details: req.body, products: products, type: type };
+    const create_payment_json = {
+      "intent": "sale",
+      "payer": {
+        "payment_method": "paypal"
+      },
+      "redirect_urls": {
+        "return_url": "http://localhost:3000/successpage?method=paypal",
+        "cancel_url": "http://localhost:3000/checkout"
+      },
+      "transactions": [{
+        "item_list": {
+          "items": [{
+            "name": products.product,
+            "sku": "001",
+            "price": parseInt(parseInt(req.body.total) / 75),
             "currency": "USD",
-            "total": parseInt(req.body.total) / 75
-          },
-          "description": "smartCart Product"
-        }]
-      };
+            "quantity": 1
+          }]
+        },
+        "amount": {
+          "currency": "USD",
+          "total": parseInt(parseInt(req.body.total) / 75)
+        },
+        "description": "smartCart Product"
+      }]
+    };
 
-      paypal.payment.create(create_payment_json, function (error, payment) {
-        if (error) {
-          throw error;
-        } else {
-          for (let i = 0; i < payment.links.length; i++) {
-            if (payment.links[i].rel === 'approval_url') {
-              response.paymentlink = payment.links[i].href
-            }
+    paypal.payment.create(create_payment_json, function (error, payment) {
+      if (error) {
+        throw error;
+      } else {
+
+        console.log(payment);
+        for (let i = 0; i < payment.links.length; i++) {
+          if (payment.links[i].rel === 'approval_url') {
+            res.json(payment.links[i].href)
           }
-          res.json(response)
         }
-      });
-    }
 
-  })
+      }
+    });
+  }
+
+
 });
 
-router.get('/successpage/', verifyBlocked, verifyLogin, getcartcount, async function (req, res, next) {
+router.get('/successpage/', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
   if (req.query.method === 'paypal') {
-    await userhelper.changeOrderStatus(req.session.orderId)
+    await userhelper.placeorder(req.session.orderDetails.details, req.session.orderDetails.products, req.session.orderDetails.type).then(async (response) => {
+      req.session.orderId = response.insertedId
+      req.session.orderDetails = null;
+      if (req.session.couponapplied) {
+        await userhelper.addAppliedCoupons(req.session.userId, req.session.couponapplied.couponcode)
+        req.session.couponapplied = null
+      }
+    })
   }
 
   userhelper.getOrderDetails(req.session.orderId).then((order) => {
-    res.render('User/success-page', { user: true, order, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
+    res.render('User/success-page', { user: true, 'wishlistCount': wishCount, order, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
   })
 
 });
 
 
-router.get('/myorders', verifyBlocked, verifyLogin, getcartcount, async function (req, res, next) {
+router.get('/myorders', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
 
   userhelper.myOrders(req.session.userId).then((orders) => {
     orders = orders.reverse()
-    res.render('User/my-orders', { user: true, orders, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
+    res.render('User/my-orders', { user: true, orders, 'wishlistCount': wishCount, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
 
   })
 });
 
-router.post('/viewOrderedProduct', verifyBlocked, verifyLogin, getcartcount, async function (req, res, next) {
+router.post('/viewOrderedProduct', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
 
 
   userhelper.getOrderDetails(req.body.orderId).then((order) => {
@@ -472,7 +568,7 @@ router.post('/viewOrderedProduct', verifyBlocked, verifyLogin, getcartcount, asy
       delivered = true
     }
     console.log(placed, shipped, delivered);
-    res.render('User/ordered-product-details', { user: true, order, product, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, placed: placed, 'shipped': shipped, 'delivered': delivered })
+    res.render('User/ordered-product-details', { user: true, order, 'wishlistCount': wishCount, product, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, placed: placed, 'shipped': shipped, 'delivered': delivered })
     placed = false
     shipped = false
     delivered = false
@@ -481,7 +577,7 @@ router.post('/viewOrderedProduct', verifyBlocked, verifyLogin, getcartcount, asy
 
 });
 
-router.post('/search', getcartcount, async function (req, res, next) {
+router.post('/search', getcartcount, wishlistcount, async function (req, res, next) {
 
   let nosearchresults = null;
   if (req.body.searchkey == "") {
@@ -495,14 +591,14 @@ router.post('/search', getcartcount, async function (req, res, next) {
     if (nosearchresults) {
       searchedProducts = null
     }
-    res.render('User/products', { 'user': true, 'username': req.session.username, searchedProducts, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'nosearchresults': nosearchresults })
+    res.render('User/products', { 'user': true, 'username': req.session.username, 'wishlistCount': wishCount, searchedProducts, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'nosearchresults': nosearchresults })
   })
 });
 
-router.get('/userprofile', verifyBlocked, verifyLogin, getcartcount, function (req, res, next) {
+router.get('/userprofile', verifyBlocked, verifyLogin, getcartcount, wishlistcount, function (req, res, next) {
   userhelper.getUser(req.session.userId).then((user) => {
     let useraddress = user.address
-    res.render('User/user-profile', { user: true, 'username': req.session.username, 'loggined': req.session.user, user, useraddress, 'cartCount': cartCount })
+    res.render('User/user-profile', { user: true, 'username': req.session.username, 'wishlistCount': wishCount, 'loggined': req.session.user, user, useraddress, 'cartCount': cartCount })
 
   })
 });
@@ -525,8 +621,8 @@ router.post('/updateuserdetails', function (req, res, next) {
   })
 });
 
-router.get('/changePassword', verifyBlocked, verifyLogin, getcartcount, function (req, res, next) {
-  res.render('User/change-password', { user: true, 'loggined': req.session.user, 'username': req.session.username, 'userId': req.session.userId, 'pwordNoMatch': req.session.pwordNoMatch, 'cartCount': cartCount })
+router.get('/changePassword', verifyBlocked, verifyLogin, getcartcount, wishlistcount, function (req, res, next) {
+  res.render('User/change-password', { user: true, 'loggined': req.session.user, 'wishlistCount': wishCount, 'username': req.session.username, 'userId': req.session.userId, 'pwordNoMatch': req.session.pwordNoMatch, 'cartCount': cartCount })
 });
 
 router.post('/changePassword', function (req, res, next) {
@@ -543,23 +639,26 @@ router.post('/changePassword', function (req, res, next) {
 
 router.get('/buynow/', function (req, res, next) {
   req.session.buynow = req.query.id
+  req.session.couponapplied = null
   res.redirect('/checkout')
 });
 
 
 router.post('/verifyPayment', function (req, res, next) {
-  console.log(req.body);
-  userhelper.verifyPayment(req.body).then(() => {
 
-    userhelper.changeOrderStatus(req.body['order[receipt]']).then(() => {
+  userhelper.verifyPayment(req.body).then(() => {
+    userhelper.placeorder(req.session.orderDetails.details, req.session.orderDetails.products, req.session.orderDetails.type).then(async (response) => {
+      req.session.orderId = response.insertedId
+      req.session.orderDetails = null;
+      if (req.session.couponapplied) {
+        await userhelper.addAppliedCoupons(req.session.userId, req.session.couponapplied.couponcode)
+        req.session.couponapplied = null
+      }
       res.json({ paymentSuccess: true })
     })
   }).catch((err) => {
     console.log(err);
-    userhelper.removePendingOrder(req.body['order[receipt]']).then(() => {
-      res.json({ paymentSuccess: false })
 
-    })
   })
 });
 
@@ -571,11 +670,58 @@ router.get('/cancelorder/', function (req, res, next) {
 });
 
 
-router.get('/Wishlist', function (req, res, next) {
-  res.render('User/wishlist')
+router.get('/wishlist', verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
+
+  userhelper.getWishlistProducts(req.session.userId).then((products) => {
+
+    if (wishCount === 0) {
+      req.session.noWishlistProducts = true
+    }
+
+    res.render('User/wishlist', { user: true, 'loggined': req.session.user, products, 'wishlistCount': wishCount, 'username': req.session.username, 'cartCount': cartCount, 'noWishlist': req.session.noWishlistProducts })
+    req.session.noWishlistProducts = false
+  })
 });
 
 router.get('/addtoWishlist/', function (req, res, next) {
- 
+
+  userhelper.addtoWishlist(req.query.id, req.session.userId).then((response) => {
+    response.productInWishlist
+    response.status = true
+    res.json(response)
+  })
+});
+
+
+router.get('/removefromWishlist/', function (req, res, next) {
+
+  userhelper.removefromWishlist(req.query.id, req.session.userId).then(() => {
+    res.redirect('/wishlist')
+  })
+});
+
+router.get('/applyCoupon/:discount/:couponcode', function (req, res, next) {
+  req.session.couponapplied = { couponcode: req.params.couponcode, discount: req.params.discount }
+  res.redirect('/checkout')
+});
+
+
+router.get('/removecoupon', function (req, res, next) {
+  req.session.couponapplied = null
+  res.redirect('/checkout')
+});
+
+
+router.get('/filter/', function (req, res, next) {
+  if (req.query.type === 'price') {
+    req.session.priceFilter = { first: req.query.first, last: req.query.last }
+    res.redirect('showallproducts')
+  } else if(req.query.type === 'brand') {
+    req.session.brandFilter = { value: req.query.value }
+    res.redirect('showallproducts')
+  }else{
+    req.session.sortProduct = { value: req.query.value }
+    res.redirect('showallproducts')
+  }
 });
 module.exports = router;

@@ -1,138 +1,148 @@
 <!-- Shoping Cart -->
-	<form class="bg0 p-t-75 p-b-85">
-		<div class="container-fluid mt-5">
-			<div class="row">
-				<div class="col-12 col-lg-10 col-xl-7 m-lr-auto m-b-50">
-					<div class="m-l-25 m-r--38 m-lr-0-xl">
-						<div class="wrap-table-shopping-cart">
-									<table class="table-shopping-cart">
+<form class="bg0 p-t-75 p-b-85">
+	<div class="container-fluid mt-5">
+		<div class="row">
+			<div class="col-12 col-lg-10 col-xl-7 m-lr-auto m-b-50">
+				<div class="m-l-25 m-r--38 m-lr-0-xl">
+					<div class="wrap-table-shopping-cart">
+						<table class="table-shopping-cart">
 
-									
-						
-								<tr class="table_head">
-									<th class="column-1">Product</th>
-									<th class="column-2">Price</th>
-									<th class="column-3">Quantity</th>
-									<th class="column-4">Total</th>
-									<th class="column-5"></th>
-								</tr>
-								
-								{{#each products}}
-								<tr class="table_row">
-									
-									
-									<td class="column-1">
-										<div class="how-itemcart1">
-											<img src="/product-images/{{this.product._id}}1.jpg" alt="IMG">
-										</div>
-									<div >{{this.product.product}}</div>
-									</td>
-									<td class="column-2"><span style="font-family: Source Serif 4;">₹ </span> {{this.product.price}}</td>
-									
-									<td class="column-3">
-										<div class="wrap-num-product flex-w m-l-auto m-r-0">
-											<button type="button" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',-1)">
+
+
+							<tr class="table_head">
+								<th class="column-1">Product</th>
+								<th class="column-2">Price</th>
+								<th class="column-3">Quantity</th>
+								<th class="column-4">Total</th>
+								<th class="column-5"></th>
+							</tr>
+
+							{{#each products}}
+							<tr class="table_row">
+
+
+								<td class="column-1">
+									<div class="how-itemcart1">
+										<img src="/product-images/{{this.product._id}}1.jpg" alt="IMG">
+									</div>
+									<div>{{this.product.product}}</div>
+								</td>
+								{{#if this.product.discountDetails}}
+								<td class="column-2">
+									<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span> {{this.product.discountDetails.currentprice}} <br>
+									<div style="display:flex ; font-size: 12px;">
+									<strike><span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">₹ </span> {{this.product.price}}</strike>
+									<p class="text-success ml-1">{{this.product.discountDetails.discount}} % off</p>
+									</div>
+								</td>
+								{{else}}
+								<td class="column-2"><span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span> {{this.product.price}}
+								</td>
+								{{/if}}
+
+								<td class="column-3">
+									<div class="wrap-num-product flex-w m-l-auto m-r-0">
+										<button type="button"
+											onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',-1)">
 											<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-minus"></i>
 											</div>
-											</button>
+										</button>
 
-											<input class="mtext-104 cl3 txt-center num-product cartQuantity" id="{{this.product._id}}" type="number" value={{this.quantity}}>
+										<input class="mtext-104 cl3 txt-center num-product cartQuantity"
+											id="{{this.product._id}}" type="number" value={{this.quantity}}>
 
-											<button type="button" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',1)">
+										<button type="button"
+											onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../userId}}',1)">
 											<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus"></i>
 											</div>
-											</button>
-										</div>
-									</td>
-									<td class="column-4"><span style="font-family: Source Serif 4;">₹ </span><span  id="{{this.product._id}}1">{{this.subtotal}}</span></td>
-									<td class="column-5"><button type="button" class="text-danger removeCartProduct" onclick="removeCartProduct('{{this._id}}','{{this.product._id}}')">Remove</button></td>
-								</tr>
-								{{/each}}
+										</button>
+									</div>
+								</td>
+								<td class="column-4"><span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span><span
+										id="{{this.product._id}}1">{{this.subtotal}}</span></td>
+								<td class="column-5"><button type="button" class="text-danger removeCartProduct"
+										onclick="removeCartProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
+								</td>
+							</tr>
+							{{/each}}
 
 
-							</table>
+						</table>
 
-								{{#if noCartProducts}}
-			<div style="text-align: center;" class="mt-5">
-			<img src="/images/cartEmpty.png" alt="" height="230px" width="240px">
-				<h6 class="mb-5">Looks like you have not added anything to your cart. <br> Go ahead and explore the top categories</h6>
-				</div>
-				{{/if}}
+						{{#if noCartProducts}}
+						<div style="text-align: center;" class="mt-5">
+							<img src="/images/cartEmpty.jpg" alt="" height="170px" width="260px">
+							{{!-- <h6 class="mb-5">Looks like you have not added anything to your cart. <br> Go ahead
+								and explore the top categories</h6> --}}
 						</div>
-
-					
+						{{/if}}
 					</div>
+
+
 				</div>
+			</div>
 
-				<div class="col-12 col-lg-7 col-xl-5 m-lr-auto m-b-50">
-					<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
-						<h4 class="mtext-109 cl2 p-b-30">
-							Cart Totals
-						</h4>
-				
-						<div class="flex-w flex-t bor12 p-b-13">
-							<div class="size-208">
-								<span class="stext-110 cl2">
-									Subtotal:
-								</span>
-							</div>
+			<div class="col-12 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+				<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
+					<h4 class="mtext-109 cl2 p-b-30">
+						Cart Totals
+					</h4>
 
-							<div class="size-209">
-								<span class="mtext-110 cl2">
-									<span style="font-family: Source Serif 4;">₹ </span><span id="total">{{total}}</span>
-								</span>
-							</div>
-						</div>
-						
-
-						<div class="flex-w flex-t bor12 p-b-13 mt-3">
-							<div class="size-208">
-								<span class="stext-110 cl2">
-									Shipping:
-								</span>
-							</div>
-
-							<div class="size-209">
-								<span class="mtext-110 cl2">
-									<span style="font-family: Source Serif 4;">₹ </span> 80
-								</span>
-							</div>
+					<div class="flex-w flex-t bor12 p-b-13">
+						<div class="size-208">
+							<span class="stext-110 cl2">
+								Subtotal:
+							</span>
 						</div>
 
-							<div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-							<div class="flex-w flex-m m-r-20 m-tb-5">
-								<input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text" name="coupon" placeholder="Coupon Code">
-									
-								<div class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
-									Apply coupon
-								</div>
-							</div>
+						<div class="size-209">
+							<span class="mtext-110 cl2">
+								<span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span><span id="total">{{total}}</span>
+							</span>
 						</div>
-
-						
-
-						<div class="flex-w flex-t p-t-27 p-b-33">
-							<div class="size-208">
-								<span class="mtext-101 cl2">
-									Total:
-								</span>
-							</div>
-
-							<div class="size-209 p-t-1">
-								<span class="mtext-110 cl2">
-									<span style="font-family: Source Serif 4;">₹ </span><span id="grandtotal">{{grandTotal}}</span>
-								</span>
-							</div>
-						</div>
-
-						<a href="/checkout" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer text-white">
-							Proceed to Checkout
-						</a>
 					</div>
+
+
+					<div class="flex-w flex-t bor12 p-b-13 mt-3">
+						<div class="size-208">
+							<span class="stext-110 cl2">
+								Shipping:
+							</span>
+						</div>
+
+						<div class="size-209">
+							<span class="mtext-110 cl2">
+								<span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span> 80
+							</span>
+						</div>
+					</div>
+
+
+
+
+
+					<div class="flex-w flex-t p-t-27 p-b-33">
+						<div class="size-208">
+							<span class="mtext-101 cl2">
+								Total:
+							</span>
+						</div>
+
+						<div class="size-209 p-t-1">
+							<span class="mtext-110 cl2">
+								<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span><span id="grandtotal">{{grandtotal}}</span>
+							</span>
+						</div>
+					</div>
+
+					<a href="/checkout"
+						class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer text-white">
+						Proceed to Checkout
+					</a>
 				</div>
 			</div>
 		</div>
-	</form>
-
+	</div>
+</form>

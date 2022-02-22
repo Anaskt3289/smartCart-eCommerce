@@ -29,13 +29,14 @@
 
   <!-- Theme Styles -->
   <link href="/adminpage-assets/css/modern.min.css" rel="stylesheet" type="text/css" />
-  <link href="/adminpage-assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/css/themes/dark.css" class="theme-color" rel="stylesheet" type="text/css" />
   <link href="/adminpage-assets/css/custom.css" rel="stylesheet" type="text/css" />
 
   <script src="/adminpage-assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
   <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
 
-
+  <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet">
 
   {{/if}}
 
@@ -102,11 +103,14 @@
 
   <!-- Theme Styles -->
   <link href="/adminpage-assets/css/modern.min.css" rel="stylesheet" type="text/css" />
-  <link href="/adminpage-assets/css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css" />
+  <link href="/adminpage-assets/css/themes/dark.css" class="theme-color" rel="stylesheet" type="text/css" />
   <link href="/adminpage-assets/css/custom.css" rel="stylesheet" type="text/css" />
 
   <script src="/adminpage-assets/plugins/3d-bold-navigation/js/modernizr.js"></script>
   <script src="/adminpage-assets/plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
+
+   <link href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css" rel="stylesheet">
   {{/if}}
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -117,17 +121,20 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
 
   <!-- style CSS -->
-  <link rel="stylesheet" href="/stylesheets/loginstyle.css" type="text/css" media="all">
+  
 
 
 
   <!-- google fonts -->
   <link href="//fonts.googleapis.com/css?family=Mukta:300,400,500" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.css">
 
 </head>
 
 <body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.js"></script>
   {{#if admin}}
   {{>adminHeader}}
 
@@ -178,6 +185,8 @@
 
   {{#if vendor}}
 
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
   <!-- Javascripts -->
   <script src="/adminpage-assets/plugins/jquery/jquery-2.1.4.min.js"></script>
   <script src="/adminpage-assets/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -193,7 +202,7 @@
   <script src="/adminpage-assets/plugins/3d-bold-navigation/js/main.js"></script>
   <script src="adminpage-assets/plugins/waypoints/jquery.waypoints.min.js"></script>
   <script src="/adminpage-assets/plugins/jquery-counterup/jquery.counterup.min.js"></script>
-  <script src="/adminpage-assets/plugins/toastr/toastr.min.js"></script>
+ 
   <script src="/adminpage-assets/plugins/flot/jquery.flot.min.js"></script>
   <script src="/adminpage-assets/plugins/flot/jquery.flot.time.min.js"></script>
   <script src="/adminpage-assets/plugins/flot/jquery.flot.symbol.min.js"></script>
@@ -208,6 +217,15 @@
     integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="/javascripts/changepassword-val.js"></script>
+ 
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+ <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script> 
+
+        <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+
+        <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
   {{/if}}
 
 
@@ -249,7 +267,7 @@
   <script src="/adminpage-assets/plugins/3d-bold-navigation/js/main.js"></script>
   <script src="adminpage-assets/plugins/waypoints/jquery.waypoints.min.js"></script>
   <script src="/adminpage-assets/plugins/jquery-counterup/jquery.counterup.min.js"></script>
-  <script src="/adminpage-assets/plugins/toastr/toastr.min.js"></script>
+  
   <script src="/adminpage-assets/plugins/flot/jquery.flot.min.js"></script>
   <script src="/adminpage-assets/plugins/flot/jquery.flot.time.min.js"></script>
   <script src="/adminpage-assets/plugins/flot/jquery.flot.symbol.min.js"></script>
@@ -259,7 +277,15 @@
   <script src="/adminpage-assets/plugins/metrojs/MetroJs.min.js"></script>
   <script src="/adminpage-assets/js/modern.js"></script>
   <script src="/adminpage-assets/js/pages/dashboard.js"></script>
+  <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 
+      <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script> 
+
+        <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+
+        <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
   {{/if}}
 
 

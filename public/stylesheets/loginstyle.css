@@ -5,7 +5,7 @@
 
 /* reset code */
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: content-w3lssmooth;
 }
 
 body,
@@ -13,6 +13,7 @@ html {
     margin: 0;
     padding: 0;
     color: #585858;
+    overflow-y: hidden;
 }
 
 * {
@@ -23,35 +24,22 @@ html {
 /*  wrapper */
 .wrapper {
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
+    
+  
 }
 
-@media (min-width: 576px) {
-    .wrapper {
-        max-width: 540px;
+@media (max-width: 991px){
+    .loginUser{
+      width: 580px;
+      height: 40px;
     }
-}
+    .loginUserInput{
+        height: 75px;
+        font-size: 34px;
+    }
+    }
 
-@media (min-width: 768px) {
-    .wrapper {
-        max-width: 720px;
-    }
-}
 
-@media (min-width: 992px) {
-    .wrapper {
-        max-width: 960px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .wrapper {
-        max-width: 1140px;
-    }
-}
 
 /*  /wrapper */
 
@@ -123,7 +111,7 @@ body {
 	font-family: 'Mukta', sans-serif;
 }
 .main {
-    background: url(../images/bg.jpg) no-repeat center;
+   
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;

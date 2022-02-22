@@ -17,13 +17,11 @@
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Category</label>
                     <select class="form-control" id="inputGroupSelect01" name="category">
-                        <option>{{product.category}}</option>
-                        <option>Mobiles</option>
-                        <option>Laptops</option>
-                        <option>Cameras</option>
-                        <option>Television</option>
-                        <option>Accessories</option>
-                        <option>Gaming Consoles</option>
+                        <option selected>{{product.category}}</option>
+                        {{#each category}}
+                        <option>{{this.category}}</option>
+                        {{/each}}
+                      
                     </select>
                 </div>
                
@@ -32,7 +30,14 @@
             <div class="row">
                  <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Brand</label>
-                    <input type="text" class="form-control" name="brand" value={{product.brand}}>
+                    <select class="form-control" id="inputGroupSelect01" name="brand">
+                        <option selected>{{product.brand}}</option>
+                        {{#each brand}}
+                        <option>{{this.brand}}</option>
+                        {{/each}}
+                        
+                    </select>
+                    
                 </div>
                 <div class="col-12 col-lg-6">
                     <label class="form-label mt-2">Quantity</label>
@@ -74,6 +79,12 @@
                     <textarea  name="specs" rows="3" class="form-control">{{product.specs}}</textarea>
                 </div>
             </div>
+
+             <div class="col-lg-6 mt-4">
+                <div id="image-box" style="width: 430px; height: 430px; display: none;"></div>
+             <button class="btn btn-primary mt-3" type="button" style="display: none;" id="crop-btn">Crop</button>
+            </div>
+
             <div class="row">
                 <div class="col form-group mt-5">
                     <div>
@@ -81,7 +92,7 @@
                     </div>
                     <div>
                          <img src="/product-images/{{product._id}}1.jpg" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview1"><br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage1" onchange="viewImage1(event)">
+                        <input type="file" class="form-control-file" id="prodimg1" name="productimage1" onchange="viewImage1(event)">
                     </div>
                 </div>
                  <div class="col form-group mt-5">
@@ -90,7 +101,7 @@
                     </div>
                     <div>
                          <img src="/product-images/{{product._id}}2.jpg" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview2"><br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage2" onchange="viewImage2(event)">
+                        <input type="file" class="form-control-file" id="prodimg2" name="productimage2" onchange="viewImage2(event)">
                     </div>
                 </div>
                 </div>
@@ -101,7 +112,7 @@
                     </div>
                     <div>
                          <img src="/product-images/{{product._id}}3.jpg" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview3"><br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage3" onchange="viewImage4(event)">
+                        <input type="file" class="form-control-file" id="prodimg3" name="productimage3" onchange="viewImage4(event)">
                     </div>
                 </div>
                  <div class="col form-group mt-5">
@@ -110,12 +121,12 @@
                     </div>
                     <div>
                          <img src="/product-images/{{product._id}}4.jpg" alt="" height="70px" width="70px" class="mt-2 mb-2" id="imagePreview4"><br>
-                        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="productimage4" onchange="viewImage4(event)">
+                        <input type="file" class="form-control-file" id="prodimg4" name="productimage4" onchange="viewImage4(event)">
                     </div>
                 </div>
             </div>
             <div>
-                <button class="btn btn-outline-success btn-lg px-5 mt-4" type="submit">Update Product</button>
+                <button class="btn btn-outline-success btn-lg px-5 mt-4" id="confirm-btn" type="submit">Update Product</button>
             </div>
 
         </div>
@@ -141,3 +152,5 @@
         }
 
 </script>
+
+<script src="/javascripts/addproduct-scripts.js"></script>

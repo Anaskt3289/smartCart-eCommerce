@@ -1,0 +1,124 @@
+<div class="page-inner">
+    <div class="page-title">
+        <h3>Category & Brand Management</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/admin">Home</a></li>
+                <li><a href="#">Categories & Brands</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <div class="panel panel-white" >
+                    <div class="panel-heading clearfix" >
+                        <button class="btn btn-primary" style="float: right;font-size: 14px;" id="addCat" onclick="addcategoryform()">Add Category</button>
+                        <h4 class="panel-title" style="font-size: 17px;">Category Management</h4>
+                    </div>
+                    <form action="/admin/addCategory" method="post" id="category-form" style="display: none;">
+                        <div style="display: flex;" class="mt-5">
+                            <input type="text" class="form-control ml-4" name="category" placeholder="Category Name..." style="width: 60%;font-size: 14px;" required>
+                            <a href="" class="btn btn-danger ml-3" style="font-size: 14px;">Cancel</a>
+                            <button type="submit" class="btn btn-primary ml-3" style="font-size: 14px;">Add</button>
+                        </div>
+                    </form>
+                            {{#if categoryExist}}
+                            <p class="text-danger ml-4">Category already exists..</p>
+                            {{/if}}
+
+
+                    <div class="panel-body mt-4">
+                        <div class="table-responsive">
+                            <table class="table" id="admintable" style="font-size: 16px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Controls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each category}}
+                                    <tr>
+
+                                        <td>{{this.category}}</td>
+                                        <td>
+
+                                            <a href="/admin/deletecategory?category={{this.category}}" class="btn btn-danger ml-3 "><i class="glyphicon glyphicon-trash"></i></a>
+
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6">
+                <div class="panel panel-white" >
+                    <div class="panel-heading clearfix">
+                        <button class="btn btn-primary" style="float: right; font-size: 14px;" id="addBrand" onclick="addbrandform()">Add Brand</button>
+                        <h4 class="panel-title" style="font-size: 17px;">Brand Management</h4>
+                    </div>
+
+                    <form action="/admin/addBrand" method="post" id="brand-form" style="display: none;">
+                        <div style="display: flex;" class="mt-5">
+                            <input type="text" class="form-control ml-4" name="brand" placeholder="Brand Name..." style="width: 60%; font-size: 14px;" required>
+                            <a href="" class="btn btn-danger ml-3" style="font-size: 14px;">Cancel</a>
+                            <button type="submit" class="btn btn-primary ml-3" style="font-size: 14px;">Add</button>
+                        </div>
+                    </form>
+
+                    {{#if brandExist}}
+                            <p class="text-danger ml-4">Brand already exists..</p>
+                            {{/if}}
+
+                    <div class="panel-body mt-4">
+                        <div class="table-responsive" >
+                            <table class="table" id="admintable" style="font-size: 16px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Brands</th>
+                                        <th scope="col">Controls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each brand}}
+                                    <tr>
+                                        <td>{{this.brand}}</td>
+                                        <td>
+
+                                            <a href="/admin/deletebrand?brand={{this.brand}}" class="btn btn-danger ml-3 "><i class="glyphicon glyphicon-trash"></i></a>
+
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
+    </div>
+
+
+    <script>
+        function addcategoryform(){
+            document.getElementById('category-form').style.display='block'
+            document.getElementById('addCat').style.display='none'
+        }
+        function addbrandform(){
+            document.getElementById('brand-form').style.display='block'
+            document.getElementById('addBrand').style.display='none'
+        }
+    </script>

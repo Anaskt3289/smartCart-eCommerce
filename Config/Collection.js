@@ -5,5 +5,10 @@ module.exports={
     products:'products',
     cart:'cart',
     orders:'orders',
-    banners:'banners'
+    banners:'banners',
+    wishlist:'wishlist',
+    brands:'brands',
+    categories:'categories',
+    coupons:'coupons',
+    offers:'offers'
     }

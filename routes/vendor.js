@@ -2,9 +2,14 @@ var express = require('express');
 var router = express.Router();
 const vendorhelper = require('../Helpers/vendorHelper')
 const producthelper = require('../Helpers/productHelper');
-const { response } = require('express');
+const adminhelper = require('../Helpers/adminHelper');
+const userhelper = require('../Helpers/userHelper')
+
+
 const { redirect } = require('express/lib/response');
-const fs = require('fs')
+const fs = require('fs');
+const { ObjectId } = require('mongodb');
+const async = require('hbs/lib/async');
 
 const verifyBlocked = async (req, res, next) => {
  
@@ -30,9 +35,36 @@ const verifyLogin = (req, res, next) => {
     res.redirect('/vendor')
   }
 }
-router.get('/',verifyBlocked, function (req, res, next) {
+
+const verifyOfferExpiry = async(req, res, next) => {
+  await userhelper.verifyOfferExpiry()
+  next()
+ }
+
+
+router.get('/',verifyBlocked,async function (req, res, next) {
+
+  
   if (req.session.vendor == true) {
-    res.render('Vendor/Vendorhome', { 'vendor': true, 'vendorname': req.session.vendorname });
+    let orders = await vendorhelper.getOrderedVendorProducts()
+      let  pendingorders=[]
+      activeOrders=0
+      totalPurchases=0
+      for(let element of orders){
+        if(element.companyId+""===req.session.vendorId+""){
+          totalPurchases++
+          if(element.status==='Order Placed'){
+            pendingorders.push(element)
+            activeOrders++
+          }
+        }
+      }
+      pendingorders=pendingorders.reverse()
+
+     
+    let products = await producthelper.getproducts(req.session.vendorId)
+    let totalproducts = products.length
+    res.render('Vendor/Vendorhome', { 'vendor': true, 'vendorname': req.session.vendorname ,'activeOrders':activeOrders,'totalproducts':totalproducts,'totalPurchases':totalPurchases,pendingorders});
   } else {
     res.render('Vendor/vendorlogin', { 'notapproved': req.session.vendornotapproved, 'blocked': req.session.vendorblocked, 'loginerr': req.session.vendorlogerr });
     req.session.vendornotapproved = false
@@ -94,8 +126,17 @@ router.get('/logout', function (req, res, next) {
 });
 
 router.get('/addproduct',verifyLogin,verifyBlocked, function (req, res, next) {
-
-    res.render('Vendor/addproduct', { 'vendorid': req.session.vendorId, 'productfound': req.session.productfound })
+  adminhelper.getCategoryBrandProducts().then((response)=>{
+    if(response.category){
+      category = response.category
+    }
+    if(response.brand){
+      brand = response.brand
+    }
+   
+    res.render('Vendor/addproduct', { 'vendorid': req.session.vendorId,category,brand, 'productfound': req.session.productfound })
+   
+  })
    
 });
 router.post('/addproduct', function (req, res, next) {
@@ -136,18 +177,22 @@ router.get('/deleteproduct/', function (req, res, next) {
   fs.unlinkSync('./public/product-images/' + req.query.id + '4.jpg')
   res.redirect('/vendor/viewproducts')
 })
-router.get('/editproduct/:id', async function (req, res, next) {
+router.get('/editproduct/:id',verifyLogin, async function (req, res, next) {
   let product = await producthelper.getoneproduct(req.params.id)
-  if (req.session.vendor) {
+  adminhelper.getCategoryBrandProducts().then((response)=>{
+    if(response.category){
+      category = response.category
+    }
+    if(response.brand){
+      brand = response.brand
+    }
    
-    res.render('Vendor/edit-product', { product })
-  } else {
-    res.redirect('/vendor')
-  }
+    res.render('Vendor/edit-product', { product,category,brand })
+  })
+   
+  
 });
-router.get('/vendordashboard', async function (req, res, next) {
-  res.redirect('/vendor')
-});
+
 router.post('/updateproduct/:id', async function (req, res, next) {
   producthelper.updateproduct(req.params.id, req.body).then(() => {
     if(req.files){
@@ -199,4 +244,112 @@ router.post('/changepassword',function (req, res, next) {
     }
   })
  });
+
+ router.get('/orders',verifyLogin,verifyBlocked, function (req, res, next) {
+   vendorhelper.getOrderedVendorProducts().then((orders)=>{
+     let vendorproducts=[]
+     for(let element of orders){
+       if(element.companyId+""===req.session.vendorId+""){
+         vendorproducts.push(element)
+       }
+     }
+     vendorproducts=vendorproducts.reverse()
+
+     res.render('Vendor/orders',{vendor:true,'vendorname': req.session.vendorname,vendorproducts})
+   })
+ });
+
+
+ router.get('/cancelorder/', function (req, res, next) {
+  userhelper.cancelOrder(req.query.id).then(() => {
+   res.redirect('/vendor/orders')
+  })
+ 
+});
+
+
+router.get('/changeorderstatus/:id/:state', function (req, res, next) {
+  vendorhelper.changeOrderStatus(req.params.id,req.params.state).then(()=>{
+    res.redirect("/vendor/orders")
+  })
+ 
+});
+
+router.get('/coupons',verifyLogin,verifyBlocked, function (req, res, next) {
+
+  adminhelper.getCoupons(req.session.vendorId+"").then((vendorcoupons)=>{
+  
+    
+    res.render('Vendor/coupons-vendor',{vendor:true,vendorcoupons,'couponExist':req.session.couponExist})
+    req.session.couponExist=false;
+
+  })
+});
+
+router.post('/addvendorcoupon',function (req, res, next) {
+  adminhelper.addcoupon(req.body,req.session.vendorId).then((response)=>{
+    if(response.couponExist){
+      req.session.couponExist=true
+      
+    }
+
+      res.redirect('/vendor/coupons')
+    
+  })
+ })
+
+ router.get('/offers',verifyOfferExpiry,verifyLogin,async function (req, res, next) {
+  adminhelper.getCategoryBrandProducts().then((response)=>{
+    if(response.category){
+      categories=response.category
+    }
+    producthelper.getproducts(req.session.vendorId).then((products) => {
+      vendorhelper.getoffers(req.session.vendorId).then((offers)=>{
+        let categoryoffers = offers.categoryoffers
+        let productoffers = offers.productoffers
+        res.render('Vendor/offers',{vendor:true,categoryoffers,productoffers, products,categories,'vendorId':req.session.vendorId, 'categoryOfferExist': req.session.categoryOfferExist ,'productOfferExist':req.session.productOfferExist})
+        req.session.categoryOfferExist=null
+        req.session.productOfferExist=null
+      })
+    })
+  })
+ })
+
+
+
+ router.post('/addOffer',verifyLogin,async function (req, res, next) {
+  vendorhelper.addOffer(req.body).then((response)=>{
+    if(response.categoryOfferExist){
+      req.session.categoryOfferExist=true
+  
+      
+    }
+    if(response.productOfferExist){
+      req.session.productOfferExist=true
+  
+    }
+
+      res.redirect('/vendor/offers')
+    
+  })
+ })
+
+ router.get('/deleteoffer/',verifyLogin,verifyBlocked, function (req, res, next) {
+vendorhelper.deleteOffer(req.query.id).then(()=>{
+  res.redirect('/vendor/offers')
+})
+
+});
+
+router.get('/getchartdata',verifyLogin,verifyBlocked,async function (req, res, next) {
+  // let orderdetails = await adminhelper.getOrderDetails()
+
+  let vendorDashboardDetails = await vendorhelper.getVendorDashboardDetails(req.session.vendorId)
+ 
+  let topselling = await adminhelper.getTopSelling(req.session.vendorId)
+  // console.log(topselling.topsellingCat);
+  res.json({vendorDashboardDetails:vendorDashboardDetails,topselling:topselling})
+  
+  });
+
 module.exports = router;

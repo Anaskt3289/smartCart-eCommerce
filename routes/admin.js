@@ -2,8 +2,10 @@ const { response } = require('express');
 var express = require('express');
 var router = express.Router();
 const adminhelper = require('../Helpers/adminHelper')
+const userhelper = require('../Helpers/userHelper')
 const producthelper = require('../Helpers/productHelper');
-const fs = require('fs')
+const fs = require('fs');
+const async = require('hbs/lib/async');
 
 
 
@@ -15,9 +17,13 @@ const verifyLogin = (req, res, next) => {
   }
 }
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
   if (req.session.admin == true) {
-    res.render('Admin/adminpage', { 'admin': true });
+let usercount = await adminhelper.getUserCount()
+let vendorcount = await adminhelper.getVendorCount()
+let recentOrders = await adminhelper.recentOrders()
+
+    res.render('Admin/adminpage', { 'admin': true ,'usercount':usercount,'vendorcount':vendorcount,recentOrders});
   } else {
     res.render('Admin/adminlogin', { 'loginerr': req.session.adminlogerr });
     req.session.adminlogerr = false
@@ -63,12 +69,6 @@ router.get('/viewproducts/', verifyLogin, function (req, res, next) {
     res.redirect('/admin')
   }
 })
-
-
-router.get('/admindashboard', function (req, res, next) {
-  res.redirect('/admin')
-})
-
 
 router.get('/deleteproduct/:id', function (req, res, next) {
   producthelper.deleteproduct(req.params.id)
@@ -161,8 +161,13 @@ router.get('/banners', verifyLogin, function (req, res, next) {
 
 router.get('/editbanners/', function (req, res, next) {
   adminhelper.getOneBanner(req.query.id).then((banner) => {
-
-    res.render('Admin/edit-banners', { admin: true, banner })
+    adminhelper.getCategoryBrandProducts().then((response)=>{
+      if(response.category){
+        category = response.category
+      }
+      res.render('Admin/edit-banners', { admin: true, banner ,category})
+     
+    })
 
   })
 })
@@ -177,4 +182,95 @@ router.post('/updatebanners', function (req, res, next) {
     res.redirect('/admin/banners')
   })
 })
+
+
+router.get('/category&brands',verifyLogin,function (req, res, next) {
+   category=null
+   brand=null
+  adminhelper.getCategoryBrandProducts().then((response)=>{
+    if(response.category){
+      category = response.category
+    }
+    if(response.brand){
+      brand = response.brand
+    }
+    res.render('Admin/category&brands',{admin:true,category,brand,'categoryExist':req.session.categoryExist,'brandExist':req.session.brandExist})
+    req.session.brandExist=false
+    req.session.categoryExist=false
+  })
+
+})
+router.post('/addCategory',function (req, res, next) {
+  adminhelper.addCategory(req.body).then((response)=>{
+    if(response.categoryExist){
+      req.session.categoryExist=true
+    }
+    res.redirect('/admin/category&brands')
+  })
+})
+
+router.post('/addBrand',function (req, res, next) {
+  adminhelper.addBrand(req.body).then((response)=>{
+    if(response.brandExist){
+      req.session.brandExist=true
+    }
+    res.redirect('/admin/category&brands')
+  })
+})
+router.get('/deletecategory/',function (req, res, next) {
+  adminhelper.deleteCategory(req.query.category).then(()=>{
+    res.redirect('/admin/category&brands')
+  })
+ 
+})
+
+router.get('/deletebrand/',function (req, res, next) {
+  adminhelper.deleteBrand(req.query.brand).then(()=>{
+    res.redirect('/admin/category&brands')
+  })
+ 
+})
+
+router.get('/coupons', verifyLogin, function (req, res, next) {
+  adminhelper.getCoupons('admin').then((admincoupons)=>{
+    res.render('Admin/coupons',{admin:true ,admincoupons, 'couponExist':req.session.couponExist})
+    req.session.couponExist=false;
+
+  })
+})
+
+
+router.post('/addcoupon',function (req, res, next) {
+  authorizer='admin'
+  adminhelper.addcoupon(req.body,authorizer).then((response)=>{
+    if(response.couponExist){
+      req.session.couponExist=true
+      
+    }
+
+      res.redirect('/admin/coupons')
+    
+  })
+ })
+
+
+ router.get('/deletecoupon/',function (req, res, next) {
+  adminhelper.deleteCoupon(req.query.id).then(()=>{
+    res.redirect('/admin/coupons')
+
+  })
+})
+
+router.get('/getchartdata',async function (req, res, next) {
+ 
+  let orderdetails = await adminhelper.getOrderDetails()
+ 
+  let topselling = await adminhelper.getTopSelling('admin')
+  console.log(topselling.topsellingCat);
+  res.json({orderdetails:orderdetails,topselling:topselling})
+})
+
+
+
+
 module.exports = router;

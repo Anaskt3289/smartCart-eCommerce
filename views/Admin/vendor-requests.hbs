@@ -1,9 +1,13 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
 <div class="page-inner">
     <div class="page-title">
         <h3>Vendor Requests</h3>
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
-                <li><a href="/admindashboard">Home</a></li>
+                <li><a href="/admin">Home</a></li>
                 <li><a href="#">Vendor Requests</a></li>
             </ol>
         </div>
@@ -16,8 +20,8 @@
                         <h4 class="panel-title"> New Vendors Requests</h4>
                     </div>
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table" id="admintable">
+                        <div class="table-responsive pr-4" style="overflow-x: hidden;">
+                            <table class="table" id="admintable" style="font-size: 13px;">
                                 <thead>
                                     <tr>
                                         <th scope="col">Company Name</th>
@@ -40,9 +44,9 @@
                                                 alt="" id="vendorlicese" ></td>
                                         <td>
                                             <a href="/admin/acceptvendor/{{this._id}}" class="btn btn-primary ml-3 "
-                                                onclick="alert('Vendor Accepted');">Accept</a>
+                                                class="btn btn-primary" onclick="alert('Vendor Accepted')">Accept</a>
                                             <a href="/admin/rejectvendor/{{this._id}}" class="btn btn-dark ml-3 "
-                                                onclick="alert('Vendor Rejected');">Reject</a>
+                                                class="btn btn-primary" onclick="alert('Vendor Rejected')">Reject</a>
 
                                         </td>
                                     </tr>
@@ -61,5 +65,13 @@
         <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
     </div>
 
-  
-    
+ <script>
+$(document).ready(function () {
+  $('#admintable').DataTable()
+});
+</script>
+
+
+
+
+

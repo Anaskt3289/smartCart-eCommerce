@@ -6,7 +6,7 @@
         <h3>Vendor Products</h3>
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
-                <li><a href="/admindashboard">Home</a></li>
+                <li><a href="/admin">Home</a></li>
                 <li><a href="#">Vendor Products</a></li>
             </ol>
         </div>
@@ -19,8 +19,8 @@
                         <h4 class="panel-title">Vendors Products</h4>
                     </div>
                     <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table" id="admintable">
+                        <div class="table-responsive pr-4" style="overflow-x: hidden;">
+                            <table class="table" id="admintable" style="font-size: 13px;">
                                 <thead>
                                     <tr>
                                         <th scope="col">Image</th>
@@ -40,7 +40,7 @@
                                         <td>{{this.product}}</td>
                                         <td>{{this.category}}</td>
                                         <td>{{this.brand}}</td>
-                                        <td><span style="font-family: Source Serif 4;">₹ </span>{{this.price}}</td>
+                                        <td><span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.price}}</td>
                                         <td>
 
 
@@ -87,6 +87,12 @@
         <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
     </div>
 
+
+ <script>
+$(document).ready(function () {
+  $('#admintable').DataTable()
+});
+</script>
 
       <script>
   $(document).on("click", ".deletevendor", function () {

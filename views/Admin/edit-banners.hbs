@@ -3,7 +3,7 @@
         <h3>Edit Banners</h3>
         <div class="page-breadcrumb">
             <ol class="breadcrumb">
-                <li><a href="/admindashboard">Home</a></li>
+                <li><a href="/admin">Home</a></li>
                 <li><a href="#">Edit banners</a></li>
             </ol>
         </div>
@@ -41,11 +41,10 @@
      <select class="form-select form-control" name="btnurl" aria-label="Default select example" style="font-size: 16px;height: 40px;">
         
      <option value="/showallproducts?category=Allproducts" style="font-size: 16px;">All products</option>
-     <option value="/showallproducts?category=Mobiles" style="font-size: 16px;">Mobiles</option>
-     <option value="/showallproducts?category=Laptops" style="font-size: 16px;">Laptops</option>
-     <option value="/showallproducts?category=Television" style="font-size: 16px;">Televisions</option>
-     <option value="/showallproducts?category=Cameras" style="font-size: 16px;">Cameras</option>
-     <option value="/showallproducts?category=Accessories" style="font-size: 16px;">Accessories</option>
+     {{#each category}}
+     <option value="/showallproducts?category={{this.category}}" style="font-size: 16px;">{{this.category}}</option>
+     {{/each}}
+    
      </select>
 
    <button type="submit" class="btn btn-success mt-5 pt-2" style="float: right; width: 100px; height: 40px;text-align: center; font-size: 16px;">Update</button>

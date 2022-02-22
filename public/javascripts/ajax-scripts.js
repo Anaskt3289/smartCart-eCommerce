@@ -1,6 +1,7 @@
 
 
 function addToCart(prodId, count) {
+   
     if(count==1){
       quantity=1
     }else{
@@ -59,6 +60,26 @@ function removeCartProduct(cartId,productId){
             if(response.status){
                 alert('Product removed from cart')
                 location.reload()
+            }
+        }
+    })
+}
+
+function addtoWishlist(prodId) {
+    
+    $.ajax({
+        url:'/addtoWishlist?id='+prodId,
+        method:'get',
+        success:(response)=>{
+            if(response.status){
+                if(response.productInWishlist){
+                    alert("Product already in wishlist")
+                }else{
+                    let count = document.getElementById("wishlist-count").getAttribute("data-notify");
+                    count=parseInt(count)+1
+                    document.getElementById("wishlist-count").setAttribute("data-notify", count);
+                    alert("Product added to wishlist")
+                }
             }
         }
     })

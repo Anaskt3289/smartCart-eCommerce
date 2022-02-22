@@ -1,24 +1,27 @@
-<section class="main vh-100">
+<link rel="stylesheet" href="/stylesheets/loginstyle.css" type="text/css" media="all">
+
+
+<section class="main ">
 
         
-        <div class="content-w3ls">
+        <div class="content-w3ls loginUser">
             <div class="text-center icon">
-              <h1 style="color: white; font-weight: 500;">smart<span style="color: rgb(216, 74, 9);">C</span>art</h1>
+              <a href="/"><h1 style="color: white; font-weight: 500;">smart<span style="color: rgb(216, 74, 9);">C</span>art</h1></a>
             </div>
 
             <div class="content-bottom">
                 <form action="/login" method="post" id="loginpage">
                 
-                    <div class="field-group">
+                    <div class="field-group ">
                         <span class="fa fa-user" aria-hidden="true"></span>
-                        <div class="wthree-field">
-                            <input name="email" id="text1" type="email" placeholder="Email" required>
+                        <div class="wthree-field ">
+                            <input class="loginUserInput" name="email" id="text1" type="email" placeholder="Email" required>
                         </div>
                     </div>
-                    <div class="field-group mb-2">
+                    <div class="field-group mb-2 ">
                         <span class="fa fa-lock" aria-hidden="true"></span>
                         <div class="wthree-field">
-                            <input name="pword" id="myInput" type="Password" placeholder="Password" required>
+                            <input class="loginUserInput" name="pword" id="myInput" type="Password" placeholder="Password" required>
                         </div>
                     </div>  
                 <div style="text-align: center;">
@@ -28,8 +31,8 @@
                       <p class="text-white mb-2 ">Incorrect email or password</p>
                      {{/if}}
                 </div>
-                    <div class="wthree-field mt-3">
-                        <button type="submit" class="btn">Sign in</button>
+                    <div class="wthree-field mt-4 ">
+                        <button type="submit" class="btn loginUserInput">Sign in</button>
                     </div>
                     <p style="text-align: center;" class="text-white mt-3 mb-3">OR</p>
                     <ul class="list-login-bottom" style="text-align: center;">
@@ -62,3 +65,4 @@
             </div>
         </div>
     </section>
+        

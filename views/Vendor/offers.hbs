@@ -1,0 +1,266 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="page-inner">
+    <div class="page-title">
+        <h3>Offer Management</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/admin">Home</a></li>
+                <li><a href="#">Offer Management</a></li>
+            </ol>
+            <button style="float: right; border: none;" data-toggle="modal" data-target="#modalLRForm"><img
+                    src="/images/addbtn.png" alt="" height="40px" width="40px"></button>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                {{#if categoryOfferExist}}
+
+                <h4 class="text-danger mb-3">Offer already exists for this category...</h4>
+                {{/if}}
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title" style="font-size:large;">Category Offers</h4>
+                    </div>
+                    <div class="panel-body">
+
+
+
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                {{#each categoryoffers}}
+                                <div class="col-md-12 col-lg-6">
+
+                                    <div class="card text-white  mb-3" style="background-color: blueviolet;">
+                                        <div class="card-body">
+                                            <h5 class="card-title" style="font-size: 18px;">Offer to :
+                                                {{this.offercategory}}</h5>
+                                            <p class="card-text" style="font-size: 15px;">Discount :{{this.discount}} %
+                                                <br>
+                                                Valid upto : {{this.expirydate}}
+                                            </p>
+                                        </div>
+                                        <div class="card-header" style="font-size: 16px;"><a class="text-white"
+                                                href="/vendor/deleteoffer?id={{this._id}}">Delete</a></div>
+                                    </div>
+
+                                </div>
+
+
+
+                                {{/each}}
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6">
+                {{#if productOfferExist}}
+
+                <h4 class="text-danger mb-3">Offer already exists for this product...</h4>
+                {{/if}}
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        <h4 class="panel-title" style="font-size:large;">Product Offers</h4>
+                    </div>
+                    <div class="panel-body">
+
+
+
+                        <div class="container-fluid">
+
+                            <div class="row">
+                                {{#each productoffers}}
+                                <div class="col-md-12 col-lg-6">
+
+                                    <div class="card text-white mb-3" style="background-color: blueviolet;">
+                                        <div class="card-body">
+                                            <h5 class="card-title" style="font-size: 18px;">Offer to :
+                                                {{this.offerproduct}}</h5>
+                                            <p class="card-text" style="font-size: 15px;">Discount : {{this.discount}} %
+                                                <br>
+                                                Valid upto : {{this.expirydate}}
+                                            </p>
+                                        </div>
+                                        <div class="card-header" style="font-size: 16px;"><a class="text-white"
+                                                href="/vendor/deleteoffer?id={{this._id}}">Delete</a></div>
+                                    </div>
+
+                                </div>
+
+
+
+                                {{/each}}
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
+    </div>
+
+
+
+
+    <div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered cascading-modal" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Modal cascading tabs-->
+                <div class="modal-c-tabs">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                        <li class="nav-item ">
+                            <a class="nav-link bg-primary text-white" style="font-size: 14px;" data-toggle="tab"
+                                href="#panel7" role="tab"><i class="fas fa-user "></i>
+                                Add Offer to category</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link bg-primary text-white" style="font-size: 14px;" data-toggle="tab"
+                                href="#panel8" role="tab"><i class="fas fa-user-plus"></i>
+                                Add offer to product</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panels -->
+                    <div class="tab-content">
+                        <!--Panel 7-->
+                        <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+                            <div class="modal-header ">
+                                <h5 class="modal-title" id="exampleModalLongTitle" style="font-size: 20px;"><b>Add
+                                        Offer</b>
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="/vendor/addOffer" method="post" id="addOffer">
+                                <div class="modal-body ">
+
+                                    <label for="" class="mt-3"><b>Select Category...</b></label>
+                                    <input type="text" name="offercategory" list="datalist1" class="pl-3 form-control"
+                                        style="font-size: 16px;" required/>
+
+                                    <datalist id="datalist1">
+                                        {{#each categories}}
+                                        <option value="{{this.category}}">
+                                            {{/each}}
+
+                                    </datalist>
+                                    <input type="text" name="companyid" value="{{vendorId}}" hidden>
+
+                                    <label for="" class="mt-3"><b>Discount Percentage</b></label>
+                                    <input type="text" class="form-control" name="discount" style="font-size: 16px;" maxlength="2" required>
+
+
+                                    <label for="" class="mt-3"><b>Valid Upto</b></label>
+                                    <input type="date" name="expirydate" class="form-control" style="font-size: 16px;"
+                                        id="dtpick" required>
+
+                                </div>
+                                <div class="modal-footer pt-3">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        style="font-size: 14px;">Close</button>
+                                    <button type="Submit" class="btn btn-primary" style="font-size: 14px;">Add
+                                        Offer</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!--/.Panel 7-->
+
+                        <!--Panel 8-->
+                        <div class="tab-pane fade" id="panel8" role="tabpanel">
+
+                            <div class="modal-header ">
+                                <h5 class="modal-title" id="exampleModalLongTitle" style="font-size: 20px;"><b> Add
+                                        Offer</b>
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="/vendor/addOffer" method="post" id="addOffer">
+                                <div class="modal-body ">
+
+
+                                    <label for="" class="mt-3"><b>Select Product</b></label>
+                                    <input type="text" name="offerproduct" list="datalist2" class="pl-3 form-control"
+                                        style="font-size: 16px;" required/>
+
+                                    <datalist id="datalist2">
+                                        {{#each products}}
+                                        <option value="{{this.product}}" />
+                                        {{/each}}
+
+                                    </datalist>
+                                    <input type="text" name="companyid" value="{{vendorId}}" hidden>
+
+                                    <label for="" class="mt-3"><b>Discount Percentage</b></label>
+                                    <input type="text" class="form-control " name="discount" style="font-size: 16px;" maxlength="2" required>
+
+
+                                    <label for="" class="mt-3"><b>Valid Upto</b></label>
+                                    <input type="date" name="expirydate" class="form-control" style="font-size: 16px;"
+                                        id="dtpick" required>
+
+                                </div>
+                                <div class="modal-footer pt-3">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                        style="font-size: 14px;">Close</button>
+                                    <button type="Submit" class="btn btn-primary" style="font-size: 14px;">Add
+                                        Coupon</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!--/.Panel 8-->
+                    </div>
+
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!--Modal: Login / Register Form-->
+
+
+    <script>
+        $(document).ready(function () {
+            var today = new Date();
+            var year = today.getFullYear()
+            var month = today.getMonth() + 1
+            var date = today.getDate() + 1
+            if (date < 10) {
+                date = '0' + date;
+            }
+
+            if (month < 10) {
+                month = '0' + month;
+            }
+            today = year + '-' + month + '-' + date;
+
+            document.getElementById("dtpick").setAttribute("min", today);
+        })
+    </script>

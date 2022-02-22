@@ -11,9 +11,11 @@ $('#checkout-form').submit((e)=>{
             if(response.codSuccess){
                 window.location.href='/successpage?method=cod'
             }else if(response.razorpay){
+               
                 razorpayment(response)
+                
             }else{
-               window.location.href=response.paymentlink
+               window.location.href=response
             }
         }
     })
@@ -27,7 +29,7 @@ function razorpayment(order){
         "currency": "INR",
         "name": "smartCart",
         "description": "smartCart Transaction",
-        "image": "https://example.com/your_logo",
+        // "image": "https://example.com/your_logo",
         "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the previous step
         "handler": function (response){
             // alert(response.razorpay_payment_id);
@@ -36,9 +38,9 @@ function razorpayment(order){
             verifyPayment(response,order)
         },
         "prefill": {
-            "name": "Gaurav Kumar",
-            "email": "gaurav.kumar@example.com",
-            "contact": "9999999999"
+            "name": "Anas KT",
+            "email": "anas@gmail.com",
+            "contact": "9072254711"
         },
         "notes": {
             "address": "Razorpay Corporate Office"
@@ -65,12 +67,14 @@ function razorpayment(order){
 }
 
 function verifyPayment(paymentdetails,order){
+
  $.ajax({
      url:'/verifyPayment',
      method:'post',
      data:{
          paymentdetails,
-         order
+         order,
+        
      },
      success:(response)=>{
          if(response.paymentSuccess){

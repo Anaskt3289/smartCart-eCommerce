@@ -5,18 +5,36 @@ const bcrypt = require('bcrypt')
 const { ObjectId } = require('mongodb')
 
 module.exports = {
-    addproduct: (details) => {
-        let prodObj = {
-            product: details.product,
-            category: details.category,
-            brand: details.brand,
-            quantity: parseInt(details.quantity),
-            price: parseInt(details.price),
-            stock: details.stock,
-            description: details.description,
-            companyid: ObjectId(details.companyid),
-            specs: details.specs
+    addproduct: async (details) => {
+        let categoryOffer = await db.get().collection(collection.offers).findOne({ offercategory: details.category })
+        if (categoryOffer) {
+            prodObj = {
+                product: details.product,
+                category: details.category,
+                brand: details.brand,
+                quantity: parseInt(details.quantity),
+                price: parseInt(details.price),
+                stock: details.stock,
+                description: details.description,
+                companyid: ObjectId(details.companyid),
+                specs: details.specs,
+                categorydiscount:categoryOffer.discount
+
+            }
+        } else {
+            prodObj = {
+                product: details.product,
+                category: details.category,
+                brand: details.brand,
+                quantity: parseInt(details.quantity),
+                price: parseInt(details.price),
+                stock: details.stock,
+                description: details.description,
+                companyid: ObjectId(details.companyid),
+                specs: details.specs
+            }
         }
+      
         return new Promise(async (resolve, reject) => {
             let product = await db.get().collection(collection.products).findOne({ product: details.product, companyid: ObjectId(details.companyid) })
             response = {}
@@ -27,7 +45,7 @@ module.exports = {
             } else {
                 details.quantity = parseInt(details.quantity)
                 details.price = parseInt(details.price)
-                db.get().collection(collection.products).insertOne(prodObj).then((response)=>{
+                db.get().collection(collection.products).insertOne(prodObj).then((response) => {
 
                     response.productfound = false
                     resolve(response)
@@ -50,6 +68,38 @@ module.exports = {
     getoneproduct: (productid) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.products).findOne({ _id: ObjectId(productid) }).then((product) => {
+                discountDetails = {}
+
+                if (product.categorydiscount && product.productdiscount) {
+                    categorydiscount = parseInt(product.categorydiscount)
+                    productdiscount = parseInt(product.productdiscount)
+
+                    discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+                    discountDetails.discountedamount = (product.price) * discountDetails.discount / 100
+                    discountDetails.currentprice = (product.price) - discountDetails.discountedamount
+                    product.discountDetails = discountDetails
+
+                } else if (product.categorydiscount) {
+                    categorydiscount = parseInt(product.categorydiscount)
+
+                    discountDetails.discount = categorydiscount
+                    discountDetails.discountedamount = (product.price) * discountDetails.discount / 100
+                    discountDetails.currentprice = (product.price) - discountDetails.discountedamount
+                    product.discountDetails = discountDetails
+
+
+
+                } else if (product.productdiscount) {
+                    productdiscount = parseInt(product.productdiscount)
+
+                    discountDetails.discount = productdiscount
+                    discountDetails.discountedamount = (product.price) * discountDetails.discount / 100
+                    discountDetails.currentprice = (product.price) - discountDetails.discountedamount
+                    product.discountDetails = discountDetails
+
+
+
+                }
                 resolve(product)
             })
         })
@@ -63,8 +113,8 @@ module.exports = {
     },
     updateproduct: (productid, details) => {
         return new Promise((resolve, reject) => {
-            details.price=parseInt(details.price)
-            details.quantity=parseInt(details.quantity)
+            details.price = parseInt(details.price)
+            details.quantity = parseInt(details.quantity)
             db.get().collection(collection.products).updateOne({ _id: ObjectId(productid) },
                 {
                     $set: {
@@ -77,11 +127,11 @@ module.exports = {
             })
         })
     },
-    productsinBuyNow:(productid)=>{
-        return new Promise(async(resolve, reject) => {
-          let products= await db.get().collection(collection.products).find({ _id: ObjectId(productid) }).toArray()
-                resolve(products)
-           
+    productsinBuyNow: (productid) => {
+        return new Promise(async (resolve, reject) => {
+            let products = await db.get().collection(collection.products).find({ _id: ObjectId(productid) }).toArray()
+            resolve(products)
+
         })
     }
 }

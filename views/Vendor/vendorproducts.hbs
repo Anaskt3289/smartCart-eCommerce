@@ -41,6 +41,14 @@
                                         <td>{{this.category}}</td>
                                         <td>{{this.brand}}</td>
                                         <td><span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.price}}</td>
+
+                                         {{#ifEquals this.stock 'In stock'}}
+
+                                         <td>
+                                          <p class="ml-3 text-danger">Out of stock</p>
+                                          <a href="" class="btn btn-dark ml-3">Add stock</a>
+                                         </td>
+                                         {{else}}
                                        <td>
       <a href="/vendor/editproduct/{{this._id}}" class="btn btn-primary ml-3">Edit</a>
 
@@ -68,7 +76,7 @@
     </div>
   </div>
 </div>
-      
+{{/ifEquals}}
 
       </td>
                                     </tr>

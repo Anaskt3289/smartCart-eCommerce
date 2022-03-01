@@ -1,5 +1,5 @@
 <!-- Shoping Cart -->
-<form class="bg0 p-t-75 p-b-85">
+<form class="bg0 p-t-75 p-b-85 productspage">
 	<div class="container-fluid mt-5">
 		<div class="row">
 			<div class="col-12 col-lg-10 col-xl-7 m-lr-auto m-b-50">
@@ -29,14 +29,19 @@
 								</td>
 								{{#if this.product.discountDetails}}
 								<td class="column-2">
-									<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span> {{this.product.discountDetails.currentprice}} <br>
+									<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+									</span> {{this.product.discountDetails.currentprice}} <br>
 									<div style="display:flex ; font-size: 12px;">
-									<strike><span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">₹ </span> {{this.product.price}}</strike>
-									<p class="text-success ml-1">{{this.product.discountDetails.discount}} % off</p>
+										<strike><span
+												style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">₹
+											</span> {{this.product.price}}</strike>
+										<p class="text-success ml-1">{{this.product.discountDetails.discount}} % off</p>
 									</div>
 								</td>
 								{{else}}
-								<td class="column-2"><span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span> {{this.product.price}}
+								<td class="column-2"><span
+										style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>
+									{{this.product.price}}
 								</td>
 								{{/if}}
 
@@ -60,13 +65,37 @@
 										</button>
 									</div>
 								</td>
-								<td class="column-4"><span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span><span
-										id="{{this.product._id}}1">{{this.subtotal}}</span></td>
-								<td class="column-5"><button type="button" class="text-danger removeCartProduct"
-										onclick="removeCartProduct('{{this._id}}','{{this.product._id}}')">Remove</button>
+								<td class="column-4"><span
+										style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+									</span><span id="{{this.product._id}}1">{{this.subtotal}}</span></td>
+								<td class="column-5">
+									<button type="button" class="text-danger removeCartProduct deletevendor"
+										data-id="{{this.product._id}}" data-toggle="modal" data-target="#exampleModalCenter">Remove</button>
 								</td>
 							</tr>
 							{{/each}}
+							
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Are you sure ?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Do you really want to delete these records? This process cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <a href="" class="btn btn-danger " id="modaldeletevendor">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 						</table>
@@ -84,6 +113,7 @@
 				</div>
 			</div>
 
+			{{#if cartHasProducts}}
 			<div class="col-12 col-lg-7 col-xl-5 m-lr-auto m-b-50">
 				<div class="bor10 p-lr-40 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-15-sm">
 					<h4 class="mtext-109 cl2 p-b-30">
@@ -99,7 +129,8 @@
 
 						<div class="size-209">
 							<span class="mtext-110 cl2">
-								<span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span><span id="total">{{total}}</span>
+								<span style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+								</span><span id="total">{{total}}</span>
 							</span>
 						</div>
 					</div>
@@ -132,7 +163,8 @@
 
 						<div class="size-209 p-t-1">
 							<span class="mtext-110 cl2">
-								<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span><span id="grandtotal">{{grandtotal}}</span>
+								<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+								</span><span id="grandtotal">{{grandtotal}}</span>
 							</span>
 						</div>
 					</div>
@@ -143,6 +175,19 @@
 					</a>
 				</div>
 			</div>
+			{{/if}}
 		</div>
 	</div>
 </form>
+
+
+<script>
+  $(document).on("click", ".deletevendor", function () {
+
+    var varid = $(this).data('id');
+
+
+   
+    $('.modal-footer #modaldeletevendor').attr('href', "/removeCartProduct?id=" + varid)
+  })
+</script>

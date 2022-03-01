@@ -1234,13 +1234,14 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 }
 
 .item-slick1 {
-  height: calc(100vh - 40px);
+  /* height: calc(100vh - 40px); */
   background-size: cover;
+ 
   background-repeat: no-repeat;
   background-position: center center;
 }
 
-.rs1-slick1 .item-slick1 {
+/* .rs1-slick1 .item-slick1 {
   height: calc(100vh - 84px);
 }
 
@@ -1252,7 +1253,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   .item-slick1 {
     height: calc(100vh - 70px) !important;
   }
-}
+} */
 
 .arrow-slick1 {
   display: -webkit-box;
@@ -2376,12 +2377,14 @@ input.num-product::-webkit-inner-spin-button {
 [ L-Text >= 26 ]*/
 .ltext-101 {
   font-family: Poppins-Regular;
+  color: black;
   font-size: 28px;
   line-height: 1.2857;
 }
 
 .ltext-102 {
   font-family: Poppins-Bold;
+  
   font-size: 28px;
   line-height: 1.1;
 }
@@ -2434,6 +2437,7 @@ input.num-product::-webkit-inner-spin-button {
 /*---------------------------------------------*/
 .ltext-201 {
   font-family: PlayfairDisplay-Bold;
+  color: black;
   font-size: 60px;
   line-height: 1.1;
   text-transform: uppercase;

@@ -17,7 +17,7 @@ const razorpaySecret = process.env.razorpaySecret
 var instance = new Razorpay({
     key_id: 'rzp_test_P71kVccMvd0JVS',
     key_secret: razorpaySecret
-  });
+});
 
 
 
@@ -66,84 +66,86 @@ module.exports = {
         })
     },
     getproducts: (category) => {
-        response={}
+        response = {}
         if (category == 'Allproducts') {
             return new Promise(async (resolve, reject) => {
-                products = await db.get().collection(collection.products).find({}).toArray();
-               
+                products = await db.get().collection(collection.products).find({ quantity: { $ne: 0 },disabled:{ $exists : false } }).toArray();
 
-                for(element of products){
-                    discountDetails={}
+
+                for (element of products) {
                     
-                    if(element.categorydiscount&&element.productdiscount){
-                        categorydiscount=parseInt(element.categorydiscount)
-                        productdiscount=parseInt(element.productdiscount)
-                      
-                        discountDetails.discount=(categorydiscount>productdiscount)?categorydiscount:productdiscount
-                        discountDetails.discountedamount = (element.price)*discountDetails.discount/100
+                    discountDetails = {}
+
+                    if (element.categorydiscount && element.productdiscount) {
+                        categorydiscount = parseInt(element.categorydiscount)
+                        productdiscount = parseInt(element.productdiscount)
+
+                        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
                         discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails=discountDetails
-                        
-                    }else if(element.categorydiscount){
-                        categorydiscount=parseInt(element.categorydiscount)
-                       
+                        element.discountDetails = discountDetails
+
+                    } else if (element.categorydiscount) {
+                        categorydiscount = parseInt(element.categorydiscount)
+
                         discountDetails.discount = categorydiscount
-                        discountDetails.discountedamount = (element.price)*discountDetails.discount/100
+                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
                         discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails=discountDetails
-                       
-                       
+                        element.discountDetails = discountDetails
 
-                    }else if(element.productdiscount){
-                        productdiscount=parseInt(element.productdiscount)
-                       
+
+
+                    } else if (element.productdiscount) {
+                        productdiscount = parseInt(element.productdiscount)
+
                         discountDetails.discount = productdiscount
-                        discountDetails.discountedamount = (element.price)*discountDetails.discount/100
+                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
                         discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails=discountDetails
-                        
+                        element.discountDetails = discountDetails
 
-                       
+
+
                     }
                 }
-                
+            
+
                 resolve(products)
             })
         } else {
             return new Promise(async (resolve, reject) => {
-                let products = await db.get().collection(collection.products).find({ category: category }).toArray();
-                for(element of products){
-                    discountDetails={}
-                    
-                    if(element.categorydiscount&&element.productdiscount){
-                        categorydiscount=parseInt(element.categorydiscount)
-                        productdiscount=parseInt(element.productdiscount)
-                      
-                        discountDetails.discount=(categorydiscount>productdiscount)?categorydiscount:productdiscount
-                        discountDetails.discountedamount = (element.price)*discountDetails.discount/100
+                let products = await db.get().collection(collection.products).find({ category: category ,quantity: { $ne: 0 } ,disabled:{ $exists : false }}).toArray();
+                for (element of products) {
+                    discountDetails = {}
+
+                    if (element.categorydiscount && element.productdiscount) {
+                        categorydiscount = parseInt(element.categorydiscount)
+                        productdiscount = parseInt(element.productdiscount)
+
+                        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
                         discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails=discountDetails
-                        
-                    }else if(element.categorydiscount){
-                        categorydiscount=parseInt(element.categorydiscount)
-                       
+                        element.discountDetails = discountDetails
+
+                    } else if (element.categorydiscount) {
+                        categorydiscount = parseInt(element.categorydiscount)
+
                         discountDetails.discount = categorydiscount
-                        discountDetails.discountedamount = (element.price)*discountDetails.discount/100
+                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
                         discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails=discountDetails
-                       
-                       
+                        element.discountDetails = discountDetails
 
-                    }else if(element.productdiscount){
-                        productdiscount=parseInt(element.productdiscount)
-                       
+
+
+                    } else if (element.productdiscount) {
+                        productdiscount = parseInt(element.productdiscount)
+
                         discountDetails.discount = productdiscount
-                        discountDetails.discountedamount = (element.price)*discountDetails.discount/100
+                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
                         discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails=discountDetails
-                        
+                        element.discountDetails = discountDetails
 
-                       
+
+
                     }
                 }
                 resolve(products)
@@ -240,49 +242,49 @@ module.exports = {
                 }
             ]).toArray()
 
-           
 
-            for(element of cartProducts){
-              
 
-                
-                discountDetails={}
-                
-                if(element.product.categorydiscount&&element.product.productdiscount){
-                    categorydiscount=parseInt(element.product.categorydiscount)
-                    productdiscount=parseInt(element.product.productdiscount)
-                  
-                    discountDetails.discount=(categorydiscount>productdiscount)?categorydiscount:productdiscount
-                    discountDetails.discountedamount = (element.product.price)*discountDetails.discount/100
+            for (element of cartProducts) {
+
+
+
+                discountDetails = {}
+
+                if (element.product.categorydiscount && element.product.productdiscount) {
+                    categorydiscount = parseInt(element.product.categorydiscount)
+                    productdiscount = parseInt(element.product.productdiscount)
+
+                    discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+                    discountDetails.discountedamount = (element.product.price) * discountDetails.discount / 100
                     discountDetails.currentprice = (element.product.price) - discountDetails.discountedamount
                     discountDetails.subtotal = (element.quantity) * discountDetails.currentprice
-                    element.product.discountDetails=discountDetails
-                    
-                }else if(element.product.categorydiscount){
-                    categorydiscount=parseInt(element.product.categorydiscount)
-                   
+                    element.product.discountDetails = discountDetails
+
+                } else if (element.product.categorydiscount) {
+                    categorydiscount = parseInt(element.product.categorydiscount)
+
                     discountDetails.discount = categorydiscount
-                    discountDetails.discountedamount = (element.product.price)*discountDetails.discount/100
+                    discountDetails.discountedamount = (element.product.price) * discountDetails.discount / 100
                     discountDetails.currentprice = (element.product.price) - discountDetails.discountedamount
                     discountDetails.subtotal = (element.quantity) * discountDetails.currentprice
-                    element.product.discountDetails=discountDetails
-                   
-                   
+                    element.product.discountDetails = discountDetails
 
-                }else if(element.product.productdiscount){
-                    productdiscount=parseInt(element.product.productdiscount)
-                   
+
+
+                } else if (element.product.productdiscount) {
+                    productdiscount = parseInt(element.product.productdiscount)
+
                     discountDetails.discount = productdiscount
-                    discountDetails.discountedamount = (element.product.price)*discountDetails.discount/100
+                    discountDetails.discountedamount = (element.product.price) * discountDetails.discount / 100
                     discountDetails.currentprice = (element.product.price) - discountDetails.discountedamount
                     discountDetails.subtotal = (element.quantity) * discountDetails.currentprice
-                    element.product.discountDetails=discountDetails
-                    
+                    element.product.discountDetails = discountDetails
 
-                   
+
+
                 }
             }
-        
+
 
 
             resolve(cartProducts)
@@ -312,11 +314,11 @@ module.exports = {
             }
         })
     },
-    removeCartProduct: (details) => {
+    removeCartProduct: (userId,productId) => {
         return new Promise((resolve, reject) => {
-            db.get().collection(collection.cart).updateOne({ _id: ObjectId(details.cart) },
+            db.get().collection(collection.cart).updateOne({ user: ObjectId(userId) },
                 {
-                    $pull: { products: { item: ObjectId(details.product) } }
+                    $pull: { products: { item: ObjectId(productId) } }
                 }
             ).then(() => {
                 resolve()
@@ -360,7 +362,7 @@ module.exports = {
 
         return new Promise(async (resolve, reject) => {
             let userAddress = await db.get().collection(collection.usercollection).findOne({ _id: ObjectId(userId) })
-            if (userAddress) {
+            if (userAddress.address) {
                 db.get().collection(collection.usercollection).updateOne({ _id: ObjectId(userId) },
                     {
                         $push: { address: { address } }
@@ -390,29 +392,30 @@ module.exports = {
 
         })
     },
-    placeorder: (orderDetails, products,type) => {
-       
-        return new Promise((resolve, reject) => {
-           
+    placeorder: (orderDetails, products, type) => {
 
-           
-            if(type==='buynow'){
+        return new Promise((resolve, reject) => {
+
+
+
+            if (type === 'buynow') {
+                products = [{
+                    item: ObjectId(products._id),
+                    quantity: 1
+                }]
                 orderObj = {
 
                     deliveryaddress: orderDetails.address,
                     user: ObjectId(orderDetails.user),
                     paymentmethod: orderDetails.paymentmethod,
                     total: orderDetails.total,
-                    products: [{
-                        item:ObjectId(products._id),
-                        quantity:1
-                    }],
+                    products: products,
                     status: 'Order Placed',
                     date: (new Date()).toDateString()
                 }
-            }else{
-                for(let element of products){
-                    element.item=ObjectId(element.item)
+            } else {
+                for (let element of products) {
+                    element.item = ObjectId(element.item)
                 };
                 orderObj = {
 
@@ -421,17 +424,23 @@ module.exports = {
                     paymentmethod: orderDetails.paymentmethod,
                     total: orderDetails.total,
                     products: products,
-                    status:'Order Placed',
+                    status: 'Order Placed',
                     date: (new Date()).toDateString()
                 }
             }
-        
-          
-            db.get().collection(collection.orders).insertOne(orderObj).then((response) => {
-                db.get().collection(collection.cart).deleteOne({ user: ObjectId(orderDetails.user) })
+
+
+            db.get().collection(collection.orders).insertOne(orderObj).then(async(response) => {
+                console.log(products);
+                await db.get().collection(collection.cart).deleteOne({ user: ObjectId(orderDetails.user) })
+                for(let product of products){
+                    db.get().collection(collection.products).updateOne({_id:product.item},{
+                        $inc:{quantity:-product.quantity}
+                    })
+                }
                 resolve(response)
             })
-        
+
         })
     },
     getOrderDetails: (orderId) => {
@@ -461,7 +470,7 @@ module.exports = {
     myOrders: (userId) => {
         return new Promise(async (resolve, reject) => {
             let orders = await db.get().collection(collection.orders).aggregate([
-                { $match:{ user: ObjectId(userId) }},
+                { $match: { user: ObjectId(userId) } },
                 { $unwind: '$products' },
                 {
                     $project: {
@@ -486,9 +495,9 @@ module.exports = {
     search: (searchkey) => {
         return new Promise(async (resolve, reject) => {
             let searchedProducts = await db.get().collection(collection.products).find({
-                product: new RegExp('.*' + searchkey + '.*')
-              
-               
+                product: new RegExp('.*' + searchkey + '.*') , disabled:{ $exists : false }
+
+
             }).toArray()
             console.log(searchedProducts);
             resolve(searchedProducts)
@@ -511,10 +520,15 @@ module.exports = {
         })
     },
     updateuser: (details) => {
+
         return new Promise((resolve, reject) => {
+            addressObj=[]
+            for(let adr of details.address){
+                addressObj.push({address:adr})
+            }
 
             db.get().collection(collection.usercollection).updateOne({ _id: ObjectId(details.userId) }, {
-                $set: { fname: details.fname, email: details.email, mobile: details.mobile }
+                $set: { fname: details.fname, email: details.email, mobile: details.mobile ,address:addressObj}
             }).then(() => {
                 resolve()
             })
@@ -544,51 +558,54 @@ module.exports = {
             })
         })
     },
-    generateRazorpay:(total)=>{
-        return new Promise((resolve,reject)=>{
+    generateRazorpay: (total) => {
+        return new Promise((resolve, reject) => {
             var options = {
-                amount: parseInt(total)*100,  // amount in the smallest currency unit
+                amount: parseInt(total) * 100,  // amount in the smallest currency unit
                 currency: "INR",
                 receipt: "637gfjgwjhjghgjh"
-              };
-              instance.orders.create(options, function(err, order) {
-                  if(err){
-                      console.log(err);
-                  }else{
-                      resolve(order)
-                  }
-              });
+            };
+            instance.orders.create(options, function (err, order) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    resolve(order)
+                }
+            });
         })
     },
-    verifyPayment:(details)=>{
-        return new Promise((resolve,reject)=>{
+    verifyPayment: (details) => {
+        return new Promise((resolve, reject) => {
             var crypto = require("crypto");
             var expectedSignature = crypto.createHmac('sha256', 'lhrJcoiEGENMCMPCxOzHRfJs')
-                                            .update(details['paymentdetails[razorpay_order_id]']+'|'+ details['paymentdetails[razorpay_payment_id]'])
-                                            .digest('hex');
-                                           
-           
-            if(expectedSignature === details['paymentdetails[razorpay_signature]']){
+                .update(details['paymentdetails[razorpay_order_id]'] + '|' + details['paymentdetails[razorpay_payment_id]'])
+                .digest('hex');
+
+
+            if (expectedSignature === details['paymentdetails[razorpay_signature]']) {
                 resolve()
-            }else{
+            } else {
                 reject()
             }
-             
+
         })
     },
-    addOnlinePaymentOrders:()=>{
-      
-    },  
-   
-    cancelOrder:(orderid)=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collection.orders).deleteOne({_id:ObjectId(orderid)}).then(()=>{
+    addOnlinePaymentOrders: () => {
+
+    },
+
+    cancelOrder: (orderid) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.orders).updateOne({ _id: ObjectId(orderid) },
+            {$set:{
+                status:'Cancelled'
+            }}).then(() => {
                 resolve()
             })
         })
     },
-    addtoWishlist: (productId,userId) => {
-        
+    addtoWishlist: (productId, userId) => {
+
         return new Promise(async (resolve, reject) => {
             response = {}
             let userWishlist = await db.get().collection(collection.wishlist).findOne({ user: ObjectId(userId) })
@@ -596,22 +613,27 @@ module.exports = {
                 let proExist = userWishlist.products.findIndex(product => product.item == productId)
 
                 if (proExist != -1) {
-                   
+
                     response.productInWishlist = true
                     resolve(response)
 
                 } else {
-                    db.get().collection(collection.wishlist).updateOne({ user: ObjectId(userId) },
+                   await db.get().collection(collection.wishlist).updateOne({ user: ObjectId(userId) },
                         {
-                            $push: { products:{item:ObjectId(productId)} }
+                            $push: { products: { item: ObjectId(productId) } }
                         })
+
+                    await db.get().collection(collection.products).updateOne({_id:ObjectId(productId)},
+                    {
+                        $set:{wishlist:true}
+                    })
                     response.productInWishlist = false
                     resolve(response)
                 }
             } else {
                 let wishlistObj = {
                     user: ObjectId(userId),
-                    products: [{item:ObjectId(productId)}]
+                    products: [{ item: ObjectId(productId) }]
                 }
                 db.get().collection(collection.wishlist).insertOne(wishlistObj)
                 response.productInWishlist = false
@@ -626,7 +648,7 @@ module.exports = {
                 { $unwind: '$products' },
                 {
                     $project: {
-                        item: '$products.item',  
+                        item: '$products.item',
                     }
                 },
                 {
@@ -639,8 +661,8 @@ module.exports = {
                 },
                 {
                     $project: {
-                       _id:0, product: { $arrayElemAt: ['$product', 0] },
-                       
+                        _id: 0, product: { $arrayElemAt: ['$product', 0] },
+
                     }
                 }
             ]).toArray()
@@ -648,13 +670,17 @@ module.exports = {
             resolve(wishlistProducts)
         })
     },
-    removefromWishlist:(proId,userId)=>{
+    removefromWishlist: (proId, userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.wishlist).updateOne({ user: ObjectId(userId) },
                 {
                     $pull: { products: { item: ObjectId(proId) } }
                 }
-            ).then(() => {
+            ).then(async() => {
+                await db.get().collection(collection.products).updateOne({_id:ObjectId(proId)},
+                    {
+                        $unset:{wishlist:true}
+                    })
                 resolve()
             })
         })
@@ -669,80 +695,78 @@ module.exports = {
             resolve(count)
         })
     },
-    getAllCoupons:(userId)=>{
-        return new Promise(async(resolve,reject)=>{
+    getAllCoupons: (userId) => {
+        return new Promise(async (resolve, reject) => {
             let coupons = await db.get().collection(collection.coupons).find().toArray()
-           
+
             let date = Date.now();
-          nonexpiredCoupons=[]
-        for(let element of coupons){
-            if(new Date(element.expirydate)<date){
-                await db.get().collection(collection.coupons).deleteOne({_id:element._id})
-            }else{
-                applied = await db.get().collection(collection.usercollection).findOne({_id:ObjectId(userId), appliedcoupons:{coupon:element.couponcode}})
-            
-                if(!applied){
-                    nonexpiredCoupons.push(element)
+            nonexpiredCoupons = []
+            for (let element of coupons) {
+                if (new Date(element.expirydate) < date) {
+                    await db.get().collection(collection.coupons).deleteOne({ _id: element._id })
+                } else {
+                    applied = await db.get().collection(collection.usercollection).findOne({ _id: ObjectId(userId), appliedcoupons: { coupon: element.couponcode } })
+
+                    if (!applied) {
+                        nonexpiredCoupons.push(element)
+                    }
                 }
             }
-        }
             resolve(nonexpiredCoupons)
         })
     },
-    verifyOfferExpiry:()=>{
-        return new Promise(async(resolve,reject)=>{
+    verifyOfferExpiry: () => {
+        return new Promise(async (resolve, reject) => {
             let offers = await db.get().collection(collection.offers).find().toArray()
             let date = Date.now();
-            for(let element of offers){
-                if(new Date(element.expirydate)<date){
+            for (let element of offers) {
+                if (new Date(element.expirydate) < date) {
                     vendorhelper.deleteOffer(element._id)
                 }
             }
             resolve()
         })
     },
-    addAppliedCoupons:(userId,couponcode)=>{
-        return new Promise((resolve,reject)=>{
-            db.get().collection(collection.usercollection).updateOne({_id:ObjectId(userId)},
-            {
-                $push:{appliedcoupons:{coupon:couponcode}}
-            }).then(()=>{
-                resolve()
-            })
+    addAppliedCoupons: (userId, couponcode) => {
+        return new Promise((resolve, reject) => {
+            db.get().collection(collection.usercollection).updateOne({ _id: ObjectId(userId) },
+                {
+                    $push: { appliedcoupons: { coupon: couponcode } }
+                }).then(() => {
+                    resolve()
+                })
         })
     },
-    priceFilter:(first,last)=>{
-        return new Promise(async(resolve,reject)=>{
-           
-            let priceFilteredProducts
-            if(last==='above50000'){
-                first = parseInt(first)
-                priceFilteredProducts = await db.get().collection(collection.products).find({price : {$gte : first}}).toArray()
-            }else{
-                first = parseInt(first)
-                last = parseInt(last)
-                priceFilteredProducts = await  db.get().collection(collection.products).find({price : {$lt :last, $gte : first}}).toArray()
-
-            }
-            resolve(priceFilteredProducts)
-        })
-    },
-    brandFilter:(value)=>{
-        return new Promise(async(resolve,reject)=>{
-            let brandFilteredProducts = await db.get().collection(collection.products).find({brand:value}).toArray()
-            resolve(brandFilteredProducts)
-        })
-    },
-    sortProducts:(value)=>{
-        return new Promise(async(resolve,reject)=>{
+   
+    sortProducts: (value) => {
+        return new Promise(async (resolve, reject) => {
             let sortedProducts
-            if(value==='lowToHigh'){
-                sortedProducts = await db.get().collection(collection.products).find().sort({price:1}).toArray()
-            }else{
-                sortedProducts = await db.get().collection(collection.products).find().sort({price:-1}).toArray()   
+            if (value === 'lowToHigh') {
+                sortedProducts = await db.get().collection(collection.products).find({disabled:{ $exists : false }}).sort({ price: 1 }).toArray()
+            } else {
+                sortedProducts = await db.get().collection(collection.products).find({disabled:{ $exists : false }}).sort({ price: -1 }).toArray()
             }
 
             resolve(sortedProducts)
+        })
+    },
+    submitreview: (details) => {
+        return new Promise(async (resolve, reject) => {
+         db.get().collection(collection.reviews).insertOne(details).then(()=>{
+             resolve()
+         })
+        })
+    },
+    getReviews:()=>{
+        return new Promise(async(resolve , reject)=>{
+            let reviews = await db.get().collection(collection.reviews).find().toArray()
+            resolve(reviews)
+        })
+    },
+    getHomeProducts:(count)=>{
+        return new Promise(async(resolve,reject)=>{
+            let products = await db.get().collection(collection.products).find({disabled:{ $exists : false }}).limit(count*8).toArray()
+            resolve(products)
         })
     }
 }

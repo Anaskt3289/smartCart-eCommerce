@@ -285,7 +285,7 @@ module.exports = {
             averagePurchasesPerMonth = parseFloat(count / 12)
             productsThisMonth = []
             MonthwiseProfits = []
-            
+
 
 
             for (let element of months) {
@@ -318,7 +318,7 @@ module.exports = {
     getTopSelling: (vendorId) => {
         return new Promise(async (resolve, reject) => {
             let categories = await db.get().collection(collection.categories).find().toArray()
-            if(vendorId==='admin'){
+            if (vendorId === 'admin') {
                 orders = await db.get().collection(collection.orders).aggregate([
 
                     { $unwind: '$products' },
@@ -336,8 +336,8 @@ module.exports = {
                             foreignField: '_id',
                             as: 'product'
                         }
-                    },{
-                      $project:{product:1,companyid:'$product.companyid'}  
+                    }, {
+                        $project: { product: 1, companyid: '$product.companyid' }
                     },
                     {
                         $lookup: {
@@ -352,17 +352,17 @@ module.exports = {
                             productname: '$product.product',
                             category: '$product.category',
                             brand: '$product.brand',
-                            vendors:'$vendordetails.vname',
-                        
+                            vendors: '$vendordetails.vname',
+
                         }
                     }
-    
+
                 ]).toArray()
 
 
 
 
-            }else{
+            } else {
                 orders = await db.get().collection(collection.orders).aggregate([
 
                     { $unwind: '$products' },
@@ -380,11 +380,11 @@ module.exports = {
                             foreignField: '_id',
                             as: 'product'
                         }
-                    },{
-                      $project:{product:1,companyid:'$product.companyid'}  
+                    }, {
+                        $project: { product: 1, companyid: '$product.companyid' }
                     },
                     {
-                        $match:{companyid:vendorId}
+                        $match: { companyid: vendorId }
                     },
                     {
                         $lookup: {
@@ -399,18 +399,18 @@ module.exports = {
                             productname: '$product.product',
                             category: '$product.category',
                             brand: '$product.brand',
-                            vendors:'$vendordetails.vname',
-                        
+                            vendors: '$vendordetails.vname',
+
                         }
                     }
-    
+
                 ]).toArray()
-                
+
             }
-            
-            
+
+
             topsellingCat = []
-           
+
             for (let categoryname of categories[0].category) {
                 let count = 0
 
@@ -425,68 +425,68 @@ module.exports = {
 
                 topsellingCat.push({ category: categoryname.category, count: count })
             }
-        
+
 
             topsellingCat.sort((a, b) => {
                 return b.count - a.count;
             });
 
 
-            for(i=0;i<orders.length;i++){
+            for (i = 0; i < orders.length; i++) {
                 productcount = 1;
                 productmaxcount = 0
-                for(j=i+1;j<orders.length;j++){
-                    if(orders[i].productname[0]===orders[j].productname[0]){
+                for (j = i + 1; j < orders.length; j++) {
+                    if (orders[i].productname[0] === orders[j].productname[0]) {
                         productcount++
-                        orders[j].productname[0]=null
-                    }  
+                        orders[j].productname[0] = null
+                    }
                 }
-                if(productcount>productmaxcount&&orders[i].productname[0]!=null){
-                    productmaxcount=productcount;
+                if (productcount > productmaxcount && orders[i].productname[0] != null) {
+                    productmaxcount = productcount;
                     maxproduct = orders[i].productname[0]
                 }
             }
 
-            for(i=0;i<orders.length;i++){
+            for (i = 0; i < orders.length; i++) {
                 brandcount = 1;
                 brandmaxcount = 0
-                for(j=i+1;j<orders.length;j++){
-                    if(orders[i].brand[0]===orders[j].brand[0]){
+                for (j = i + 1; j < orders.length; j++) {
+                    if (orders[i].brand[0] === orders[j].brand[0]) {
                         brandcount++
-                        orders[j].brand[0]=null
-                    }  
+                        orders[j].brand[0] = null
+                    }
                 }
-                if(brandcount>brandmaxcount&&orders[i].brand[0]!=null){
-                    brandmaxcount=brandcount;
+                if (brandcount > brandmaxcount && orders[i].brand[0] != null) {
+                    brandmaxcount = brandcount;
                     maxbrand = orders[i].brand[0]
                 }
             }
 
 
-            for(i=0;i<orders.length;i++){
+            for (i = 0; i < orders.length; i++) {
                 vendorcount = 1;
                 vendormaxcount = 0
-                for(j=i+1;j<orders.length;j++){
-                    if(orders[i].vendors[0]===orders[j].vendors[0]){
+                for (j = i + 1; j < orders.length; j++) {
+                    if (orders[i].vendors[0] === orders[j].vendors[0]) {
                         vendorcount++
-                        orders[j].vendors[0]=null
-                    }  
+                        orders[j].vendors[0] = null
+                    }
                 }
-                if(vendorcount>vendormaxcount&&orders[i].vendors[0]!=null){
-                    vendormaxcount=vendorcount;
+                if (vendorcount > vendormaxcount && orders[i].vendors[0] != null) {
+                    vendormaxcount = vendorcount;
                     maxvendor = orders[i].vendors[0]
                 }
             }
-            
-            
 
-            resolve({topsellingCat:topsellingCat,maxproduct:maxproduct,maxbrand:maxbrand,maxvendor:maxvendor})
+
+
+            resolve({ topsellingCat: topsellingCat, maxproduct: maxproduct, maxbrand: maxbrand, maxvendor: maxvendor })
 
         })
     },
-    recentOrders:()=>{
-        return new Promise(async(resolve,reject)=>{
-            let recentOrders =await db.get().collection(collection.orders).aggregate([
+    recentOrders: () => {
+        return new Promise(async (resolve, reject) => {
+            let recentOrders = await db.get().collection(collection.orders).aggregate([
 
                 { $unwind: '$products' },
                 {
@@ -503,8 +503,8 @@ module.exports = {
                         foreignField: '_id',
                         as: 'product'
                     }
-                },{
-                  $project:{ total: 1, status: 1, date: 1,product:1,companyid:'$product.companyid'}  
+                }, {
+                    $project: { total: 1, status: 1, date: 1, product: 1, companyid: '$product.companyid' }
                 },
                 {
                     $lookup: {
@@ -518,19 +518,186 @@ module.exports = {
                     $project: {
                         total: 1, status: 1, date: 1,
                         productname: '$product.product',
-                        vendors:'$vendors.vname'
+                        vendors: '$vendors.vname'
                     }
                 }
-            ]).sort({_id:-1}).limit(10).toArray()
+            ]).sort({ _id: -1 }).limit(10).toArray()
 
-            for(let element of recentOrders){
-                element.profit=parseInt((element.total*7)/100)
+            for (let element of recentOrders) {
+                element.profit = parseInt((element.total * 7) / 100)
             }
 
-           resolve(recentOrders)
-           
+            resolve(recentOrders)
+
 
         })
+    },
+
+    getSalesReport: (dates) => {
+        return new Promise(async (resolve, reject) => {
+            let details = await db.get().collection(collection.orders).aggregate([
+                {
+                    $project: {
+                        date: 1, total: { $toInt: '$total' }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$date',
+                        totalAmountofDay: { $sum: '$total' },
+                        count: { $count: {} }
+                    }
+                }
+            ]).toArray()
+
+            sales = []
+            for (let element of details) {
+                date = new Date(element._id)
+                date.setHours(5)
+                date.setMinutes(30)
+                date.setSeconds(0)
+                date.setMilliseconds(0)
+
+                element.profit = parseInt((element.totalAmountofDay * 7) / 100)
+                if (date >= new Date(dates.from) || date <= new Date(dates.to)) {
+                    sales.push(element)
+                }
+            }
+
+
+
+            datesbetween = []
+            let dateFrom = new Date(dates.from)
+            let dateTo = new Date(dates.to)
+
+            currentdate = new Date(dateFrom)
+            while (currentdate <= dateTo) {
+                datesbetween.push(currentdate);
+                currentdate = new Date(
+                    currentdate.getFullYear(),
+                    currentdate.getMonth(),
+                    currentdate.getDate() + 1,
+                    currentdate.getHours(),
+                    currentdate.getMinutes()
+                );
+            }
+            
+            let salesreport = []
+            for (let dates of datesbetween) {
+                flag = 0
+                for (let salesdate of sales) {
+                    dateSale = new Date(salesdate._id)
+                    dateSale.setHours(5)
+                    dateSale.setMinutes(30)
+                    if(dates.getTime() === dateSale.getTime()){
+                        console.log(dates.getDate());
+                        if(dates.getDate()<10){
+                            formattedDate = "0"+dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                        }else{
+
+                            formattedDate = dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                        }
+                        salesreport.push({date:formattedDate,count:salesdate.count,totalAmountofDay:salesdate.totalAmountofDay,profit:salesdate.profit})
+                     flag=1
+                  }
+                }
+                if(flag===0){
+                    if(dates.getDate()<10){
+                        formattedDate = "0"+dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                    }else{
+
+                        formattedDate = dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                    }
+                   
+                    salesreport.push({date:formattedDate,count:0,totalAmountofDay:0,profit:0})
+                }
+            }
+           resolve(salesreport)
+        })
+    },
+
+    getUserReport:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let users = await db.get().collection(collection.usercollection).find().toArray()
+            let orders = await db.get().collection(collection.orders).find().toArray()
+
+            let userReport = []
+            for(let user of users){
+                count = 0 
+                totalAmount = 0
+                for(let order of orders){
+                    if(user._id+"" === order.user+""){
+                        count ++
+                        totalAmount = totalAmount + parseInt(order.total)
+                    }
+                }
+                userReport.push({user:user.fname,mobile:user.mobile,email:user.email,count:count,totalAmount:totalAmount})
+            }
+            resolve(userReport)
+        })
+    },
+    getVendorReport:()=>{
+        return new Promise(async(resolve,reject)=>{
+            let vendors = await db.get().collection(collection.vendorcollection).find().toArray()
+          
+            let orders = await db.get().collection(collection.orders).aggregate([
+
+                { $unwind: '$products' },
+                {
+                    $project: {
+                        deliveryaddress: 1, paymentmethod: 1, total: 1, status: 1, date: 1,
+                        item: '$products.item',
+                        quantity: '$products.quantity'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: collection.products,
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                }, {
+                    $project: { product: 1, total: 1, companyid: '$product.companyid' }
+                }
+            ]).toArray()
+
+            let vendorReport = []
+            for(let vendor of vendors){
+                count = 0 
+                totalAmount = 0
+                for(let order of orders){
+                    if(vendor._id+"" === order.companyid+""){
+                        count ++
+                        totalAmount = totalAmount + parseInt(order.total)
+                    }
+                }
+                vendorReport.push({vendor:vendor.vname,mobile:vendor.mobile,email:vendor.email,count:count,totalAmount:totalAmount})
+            }
+            resolve(vendorReport)
+
+        })
+    },
+    disableOrEnableproduct:(productId,type)=>{
+        return new Promise((resolve,reject)=>{
+            if(type==='disable'){
+                db.get().collection(collection.products).updateOne({_id:ObjectId(productId)},
+                {
+                    $set:{disabled:true}
+                }).then(()=>{
+                    resolve()
+                })
+
+            }else{
+                db.get().collection(collection.products).updateOne({_id:ObjectId(productId)},
+                {
+                    $unset:{disabled:true}
+                }).then(()=>{
+                    resolve()
+                })
+            }
+        })
     }
+
 
 }

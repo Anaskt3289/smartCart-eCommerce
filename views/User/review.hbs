@@ -1,0 +1,18 @@
+<div class="container-fluid productspage pl-5 ">
+    <div class="row pt-5 mt-5 pb-5 mb-5" >
+        <div class="col-md-12 col-lg-7 mt-5 mb-5" style="height: 400px;">
+            <div>
+<h3 class="ml-5 mt-5">Leave a Review</h3>
+<form action="/submitReview" method="post">
+    <input type="text" name="productid" value="{{productId}}" hidden>
+    <input type="text" name="userid" value="{{userid}}" hidden>
+<textarea name="review" id="" class="ml-5 mt-4 p-4" cols="90" rows="10" style="background-color: rgba(13, 14, 14, 0.089);"></textarea>
+<div class="row mt-5 pr-5" style="float: right;">
+    <a href="">Cancel</a>
+<button type="submit" class="btn btn-success ml-5 mr-5">Submit</button>
+</div>
+</form>
+            </div>
+        </div>
+    </div>
+</div>

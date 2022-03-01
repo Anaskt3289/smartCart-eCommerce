@@ -1,0 +1,69 @@
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<div class="page-inner">
+    <div class="page-title">
+        <h3>User Report</h3>
+        <div class="page-breadcrumb">
+            <ol class="breadcrumb">
+                <li><a href="/admin">Home</a></li>
+                <li><a href="#">User Report</a></li>
+            </ol>
+        </div>
+    </div>
+    <div id="main-wrapper">
+        <div class="row" >
+            <div class="col-md-12">
+                <div class="panel panel-white">
+                    <div class="panel-heading clearfix">
+                        
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive pr-4" style="overflow-x: hidden;width: 80%;margin-left: auto;margin-right: auto;">
+                            <table class="table" id="admintable" style="font-size: 13px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">User</th>
+                                        <th scope="col">Mobile</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Purchases</th>
+                                        <th scope="col">Amount Spend</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each userReport}}
+                                    <tr>
+
+                                        <td>{{this.user}}</td>
+                                        <td>{{this.mobile}}</td>
+                                        <td>{{this.email}}</td>
+                                        <td>{{this.count}}</td>
+                                        <td>₹ {{this.totalAmount}}</td>
+                                        
+                                    </tr>
+                                    {{/each}}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- Row -->
+    </div><!-- Main Wrapper -->
+    <div class="page-footer">
+        <p class="no-s">2015 &copy; Modern by Steelcoders.</p>
+    </div>
+
+<script>
+$(document).ready(function() {
+    $('#admintable').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
+</script>

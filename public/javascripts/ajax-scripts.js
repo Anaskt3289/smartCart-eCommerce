@@ -48,22 +48,7 @@ function changeQuantity(cartId,productId,userId,count){
         }
     })
 }
-function removeCartProduct(cartId,productId){
-    $.ajax({
-        url:'/removeCartProduct',
-        data:{
-            cart:cartId,
-            product:productId
-        },
-        method:'post',
-        success:(response)=>{
-            if(response.status){
-                alert('Product removed from cart')
-                location.reload()
-            }
-        }
-    })
-}
+
 
 function addtoWishlist(prodId) {
     
@@ -73,13 +58,34 @@ function addtoWishlist(prodId) {
         success:(response)=>{
             if(response.status){
                 if(response.productInWishlist){
-                    alert("Product already in wishlist")
+                  
+                    removefromWishlist(prodId)
+                   
+
                 }else{
                     let count = document.getElementById("wishlist-count").getAttribute("data-notify");
                     count=parseInt(count)+1
                     document.getElementById("wishlist-count").setAttribute("data-notify", count);
-                    alert("Product added to wishlist")
+                    document.getElementById("wishlisticon1"+prodId).src = "images/icons/icon-heart-02.png";
+                    document.getElementById("wishlisticon2"+prodId).src = "images/icons/icon-heart-01.png";
+                  
                 }
+            }
+        }
+    })
+}
+
+function removefromWishlist(prodId){
+    $.ajax({
+        url:'/removefromWishlist?id='+prodId,
+        method:'get',
+        success:(response)=>{
+            if(response.status){
+                let count = document.getElementById("wishlist-count").getAttribute("data-notify");
+                    count=parseInt(count)-1
+                    document.getElementById("wishlist-count").setAttribute("data-notify", count);
+                document.getElementById("wishlisticon1"+prodId).src = "images/icons/icon-heart-01.png";
+                document.getElementById("wishlisticon2"+prodId).src = "images/icons/icon-heart-02.png";
             }
         }
     })

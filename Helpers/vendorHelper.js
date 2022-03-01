@@ -325,5 +325,111 @@ module.exports = {
 
             resolve(response)
         })
+    },
+    getSalesReport: (dates,vendorId) => {
+        return new Promise(async (resolve, reject) => {
+            let details = await db.get().collection(collection.orders).aggregate([
+                { $unwind: '$products' },
+                {
+                    $project: {
+                       total: 1,date: 1,
+                        item: '$products.item'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: collection.products,
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                }, {
+                    $project: {  total: { $toInt: '$total' }, date: 1, product: 1, companyid: '$product.companyid' }
+                },
+                {
+                    $lookup: {
+                        from: collection.vendorcollection,
+                        localField: 'companyid',
+                        foreignField: '_id',
+                        as: 'vendordetails'
+                    }
+                }, {
+                    $project: {  total: { $toInt: '$total' }, date: 1, companyid: '$vendordetails._id' }
+                },{
+                    $match:{companyid:ObjectId(vendorId)}
+                },
+                
+                {
+                    $group: {
+                        _id: '$date',
+                        totalAmountofDay: { $sum: '$total' },
+                        count: { $count: {} }
+                    }
+                }
+            ]).toArray()
+            
+
+            sales = []
+            for (let element of details) {
+                date = new Date(element._id)
+                date.setHours(5)
+                date.setMinutes(30)
+                date.setSeconds(0)
+                date.setMilliseconds(0)
+
+                element.profit = parseInt(element.totalAmountofDay-((element.totalAmountofDay * 7) / 100))
+                if (date >= new Date(dates.from) || date <= new Date(dates.to)) {
+                    sales.push(element)
+                }
+            }
+
+
+
+            datesbetween = []
+            let dateFrom = new Date(dates.from)
+            let dateTo = new Date(dates.to)
+
+            currentdate = new Date(dateFrom)
+            while (currentdate <= dateTo) {
+                datesbetween.push(currentdate);
+                currentdate = new Date(
+                    currentdate.getFullYear(),
+                    currentdate.getMonth(),
+                    currentdate.getDate() + 1,
+                    currentdate.getHours(),
+                    currentdate.getMinutes()
+                );
+            }
+            
+            let salesreport = []
+            for (let dates of datesbetween) {
+                flag = 0
+                for (let salesdate of sales) {
+                    dateSale = new Date(salesdate._id)
+                    dateSale.setHours(5)
+                    dateSale.setMinutes(30)
+                    if(dates.getTime() === dateSale.getTime()){
+                        if(dates.getDate()<10){
+                            formattedDate = "0"+dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                        }else{
+    
+                            formattedDate = dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                        }
+                        salesreport.push({date:formattedDate,count:salesdate.count,totalAmountofDay:salesdate.totalAmountofDay,profit:salesdate.profit})
+                     flag=1
+                  }
+                }
+                if(flag===0){
+                    if(dates.getDate()<10){
+                        formattedDate = "0"+dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                    }else{
+
+                        formattedDate = dates.getDate()+"-"+(dates.getMonth()+1)+"-"+dates.getFullYear()
+                    }
+                    salesreport.push({date:formattedDate,count:0,totalAmountofDay:0,profit:0})
+                }
+            }
+           resolve(salesreport)
+        })
     }
 }

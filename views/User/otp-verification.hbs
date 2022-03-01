@@ -13,7 +13,7 @@
                     <div class="field-group mb-2">
                         <span class="fa fa-lock" aria-hidden="true"></span>
                         <div class="wthree-field">
-                            <input name="otp" id="myInput" type="number" placeholder="Enter your OTP" required>
+                            <input name="otp" id="myInput" type="text" class="number" placeholder="Enter your OTP" required maxlength="6" minlength="6">
                         </div>
                     </div>
                     {{#if invalidOtp}}
@@ -48,3 +48,10 @@
         }
         }
 </script>
+
+<script>
+    $('.numbers').keyup(function () {
+        this.value = this.value.replace(/[^0-9\.]/g, '');
+    });
+</script>
+

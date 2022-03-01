@@ -20,6 +20,9 @@ $(document).ready(function() {
               required:true,
               minlength:10,
               maxlength:10
+           },
+           address:{
+              required:true,
            }
         },
         messages:{

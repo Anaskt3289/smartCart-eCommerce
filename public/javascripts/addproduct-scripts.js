@@ -4,6 +4,7 @@ function viewImage1(event){
     let file = event.target.files[0].name
      let extension = file.split('.').pop()
       if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+        document.getElementById('errmsg1').style.display='none'
     document.getElementById('imagePreview1').src=URL.createObjectURL(event.target.files[0])
      document.getElementById('imagePreview1').style.display='block'
 
@@ -62,6 +63,7 @@ function viewImage1(event){
    let file = event.target.files[0].name
      let extension = file.split('.').pop()
       if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+        document.getElementById('errmsg2').style.display='none'
     document.getElementById('imagePreview2').src=URL.createObjectURL(event.target.files[0])
      document.getElementById('imagePreview2').style.display='block'
       
@@ -118,6 +120,7 @@ function viewImage1(event){
     let file = event.target.files[0].name
      let extension = file.split('.').pop()
       if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+        document.getElementById('errmsg3').style.display='none'
     document.getElementById('imagePreview3').src=URL.createObjectURL(event.target.files[0])
      document.getElementById('imagePreview3').style.display='block'
      
@@ -174,6 +177,7 @@ function viewImage1(event){
     let file = event.target.files[0].name
      let extension = file.split('.').pop()
       if (extension == 'jpeg' || extension == 'png' || extension == 'jpg'){
+        document.getElementById('errmsg4').style.display='none'
     document.getElementById('imagePreview4').src=URL.createObjectURL(event.target.files[0])
      document.getElementById('imagePreview4').style.display='block'
       

@@ -1,12 +1,10 @@
-
-
 <!-- Product -->
 <div class="bg0 m-t-80 productspage">
 	<div class="container ">
 		<div class="flex-w flex-sb-m p-b-52">
 			<div class="flex-w flex-l-m filter-tope-group m-tb-10 productCategories">
-				<a href="/showallproducts?category=Allproducts"
-					class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 " style="text-decoration: none;">
+				<a href="/showallproducts?category=Allproducts" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 "
+					style="text-decoration: none;">
 					All Products
 				</a>
 
@@ -41,48 +39,41 @@
 					Filter
 				</div>
 
-				<div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
-					<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
-					<i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-					Search
-				</div>
+				
 			</div>
 
-			<!-- Search product -->
-			<div class="dis-none panel-search w-full p-t-10 p-b-15">
-				<div class="bor8 dis-flex p-l-15">
-					<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-						<i class="zmdi zmdi-search"></i>
-					</button>
-
-					<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product"
-						placeholder="Search">
-					<button type="submit" class="btn btn-dark zmdi zmdi-search" style="width: 40px;"></button>
-				</div>
-			</div>
 
 			<!-- Filter -->
 			<div class="dis-none panel-filter w-full p-t-10 filters">
 				<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
 					<div class="filter-col1 p-r-15 p-b-27">
+
+
+					<form action="/applyFilter" method="post">
 						<div class="mtext-102 cl2 p-b-15">
 							Sort By
 						</div>
 
 						<ul>
-							
+
 
 
 							<li class="p-b-6">
-								<a href="/filter?type=sort&value=lowToHigh" class="filter-link stext-106 trans-04">
-									Price: Low to High
-								</a>
+								
+								<div style="display: flex;">
+
+									<input type="radio" name="sort" id="pricelowtohigh" class="mr-2 mt-1" value="lowToHigh">
+									<label for="pricelowtohigh">Price: Low to High</label>
+								</div>
 							</li>
 
 							<li class="p-b-6">
-								<a href="/filter?type=sort&value=highToLow" class="filter-link stext-106 trans-04">
-									Price: High to Low
-								</a>
+								
+								<div style="display: flex;">
+
+									<input type="radio" name="sort" id="pricehightolow" class="mr-2 mt-1" value="highToLow">
+									<label for="pricehightolow">Price: High to Low</label>
+								</div>
 							</li>
 						</ul>
 					</div>
@@ -93,51 +84,75 @@
 						</div>
 
 						<ul>
-							<li class="p-b-6">
-								<a href="/showallproducts?category=Allproducts" class="filter-link stext-106 trans-04 filter-link-active">
-									All
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="/filter?type=price&first=0&last=5000" class="filter-link stext-106 trans-04">
-									Below ₹5000
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="/filter?type=price&first=5000&last=10000" class="filter-link stext-106 trans-04">
-									₹5000 - ₹10000
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="/filter?type=price&first=10000&last=20000" class="filter-link stext-106 trans-04">
-									₹10000 - ₹20000
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="/filter?type=price&first=20000&last=30000" class="filter-link stext-106 trans-04">
-									₹20000 - ₹30000
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="/filter?type=price&first=30000&last=50000" class="filter-link stext-106 trans-04">
-									₹30000 - ₹50000
-								</a>
-							</li>
 							
+
 							<li class="p-b-6">
-								<a href="/filter?type=price&first=50000&last=above50000" class="filter-link stext-106 trans-04">
-									Above ₹50000
-								</a>
+								
+
+								<div style="display: flex;">
+									<input type="radio" name="pricerange" id="pricerange1" class="mr-3 mt-1" value="below5000">
+									<label for="pricerange1">Below 5000</label>
+								</div>
+							</li>
+
+							<li class="p-b-6">
+								<div style="display: flex;">
+									<input type="radio" name="pricerange" id="pricerange2" class="mr-2 mt-1" value="5000-10000">
+									<label for="pricerange2">₹5000 - ₹10000</label>
+								</div>
+							</li>
+
+							<li class="p-b-6">
+								<div style="display: flex;">
+									<input type="radio" name="pricerange" id="pricerange3" class="mr-2 mt-1" value="10000-20000">
+									<label for="pricerange3">₹10000 - ₹20000</label>
+								</div>
+							</li>
+
+							<li class="p-b-6">
+								<div style="display: flex;">
+									<input type="radio" name="pricerange" id="pricerange4" class="mr-2 mt-1" value="20000-30000">
+									<label for="pricerange4">₹20000 - ₹30000</label>
+								</div>
+							</li>
+
+							<li class="p-b-6">
+								<div style="display: flex;">
+									<input type="radio" name="pricerange" id="pricerange5" class="mr-2 mt-1" value="30000-50000">
+									<label for="pricerange5">₹30000 - ₹50000</label>
+								</div>
+							</li>
+
+							<li class="p-b-6">
+								<div style="display: flex;">
+									<input type="radio" name="pricerange" id="pricerange6" class="mr-3 mt-1" value="above50000">
+									<label for="pricerange6">Above ₹50000</label>
+								</div>
 							</li>
 						</ul>
 					</div>
 
-					
+					<div class="filter-col4 p-b-27">
+						<div class="mtext-102 cl2 p-b-15">
+							Categories
+						</div>
+
+						<div class="flex-w p-t-4 m-r--5">
+							{{#each categories}}
+
+
+							<label
+								class="btn flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+								style="display: flex;">
+								<input type="radio" name="category" id="option1" autocomplete="off" class="mr-2" value="{{this.category}}"> {{this.category}}
+							</label>
+
+							{{/each}}
+
+
+						</div>
+					</div>
+
 
 					<div class="filter-col4 p-b-27">
 						<div class="mtext-102 cl2 p-b-15">
@@ -145,22 +160,22 @@
 						</div>
 
 						<div class="flex-w p-t-4 m-r--5">
-							<a href="/filter?type=brand&value=Apple"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Apple
-							</a>
+							{{#each brands}}
+							<div class="btn-group btn-group-toggle" id="brands" data-toggle="buttons"
+								onclick="filterRadio()">
 
-							<a href="/filter?type=brand&value=Samsung"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Samsung
-							</a>
+								<label
+									class="btn flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+									<input type="radio" name="brand" autocomplete="off" value="{{this.brand}}"> {{this.brand}}
+								</label>
+							</div>
+							{{/each}}
 
-							<a href="/filter?type=brand&value=Oneplus"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Oneplus
-							</a>
+
 						</div>
 					</div>
+				<button type="submit" class="btn btn-dark mb-3" style="margin-left: auto;">Apply</button>
+</form>
 				</div>
 			</div>
 		</div>
@@ -181,7 +196,7 @@
 
 		{{#if loggined}}
 		<div class="row isotope-grid">
-			{{#each products}}
+			{{#each categoryfilter}}
 			<div class="col-sm-6 col-md-6 col-lg-3 p-b-35 isotope-item women">
 				<!-- Block2 -->
 				<div class="block2">
@@ -203,31 +218,46 @@
 
 							{{#if this.discountDetails}}
 							<span class="stext-105 cl3">
-								<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.discountDetails.currentprice}}
+								<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+								</span>{{this.discountDetails.currentprice}}
 							</span>
 							<span class="stext-105 cl3">
 								<div style="display: flex;">
-								<strike><span style="font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.price}}</strike><p class="ml-4 text-success"> {{this.discountDetails.discount}}% Off</p>
+									<strike><span
+											style="font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+										</span>{{this.price}}</strike>
+									<p class="ml-4 text-success"> {{this.discountDetails.discount}}% Off</p>
 								</div>
 							</span>
 							{{else}}
 							<span class="stext-105 cl3">
-								<span style="font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.price}}
+								<span style="font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+								</span>{{this.price}}
 							</span>
 							{{/if}}
 
-							
+
 						</div>
 
 						<div class="block2-txt-child2 flex-r p-t-3">
 
+							{{#if this.wishlist}}
+								
+								<button class="btn-addwish-b2 dis-block pos-relative" onclick="removefromWishlist('{{this._id}}')">
+
+								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}" src="images/icons/icon-heart-02.png" alt="ICON">
+									<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}" src="images/icons/icon-heart-01.png" alt="ICON">
+								</button>
+								
+								{{else}}
 							<button class="btn-addwish-b2 dis-block pos-relative"
 								onclick="addtoWishlist('{{this._id}}')">
-								<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
+								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}" src="images/icons/icon-heart-01.png"
 									alt="ICON">
-								<img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png"
+								<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}" src="images/icons/icon-heart-02.png"
 									alt="ICON">
 							</button>
+									{{/if}}
 
 						</div>
 					</div>
@@ -242,7 +272,7 @@
 
 		{{else}}
 		<div class="row isotope-grid">
-			{{#each products}}
+			{{#each categoryfilter}}
 			<div class="col-sm-6 col-md-6 col-lg-3 p-b-35 isotope-item women">
 				<!-- Block2 -->
 				<div class="block2">
@@ -264,16 +294,21 @@
 
 							{{#if this.discountDetails}}
 							<span class="stext-105 cl3">
-								<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.discountDetails.currentprice}}
+								<span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+								</span>{{this.discountDetails.currentprice}}
 							</span>
 							<span class="stext-105 cl3">
 								<div style="display: flex;">
-								<strike><span style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.price}}</strike><p class="ml-4 text-success"> {{this.discountDetails.discount}}% Off</p>
+									<strike><span
+											style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+										</span>{{this.price}}</strike>
+									<p class="ml-4 text-success"> {{this.discountDetails.discount}}% Off</p>
 								</div>
 							</span>
 							{{else}}
 							<span class="stext-105 cl3">
-								<span style="font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹ </span>{{this.price}}
+								<span style="font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">₹
+								</span>{{this.price}}
 							</span>
 							{{/if}}
 						</div>
@@ -299,55 +334,7 @@
 
 
 
-		<div class="row">
-			{{#each searchedProducts}}
-			<div class="col-sm-6 col-md-6 col-lg-3 p-b-35 isotope-item women">
-				<!-- Block2 -->
-
-				<div class="block2">
-					<div class="block2-pic hov-img0">
-						<img src="/product-images/{{this._id}}1.jpg" alt="IMG-PRODUCT">
-						{{#if loggined}}
-
-						<button class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 "
-							onclick="addToCart('{{product._id}}',1)">
-							Add to Cart
-						</button>
-						{{else}}
-						<a href="/login"
-							class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 ">
-							Add to Cart
-						</a>
-
-						{{/if}}
-					</div>
-
-					<div class="block2-txt flex-w flex-t p-t-14">
-						<div class="block2-txt-child1 flex-col-l ">
-							<a href="/productdetails?id={{{this._id}}}"
-								class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-								{{this.product}}
-							</a>
-
-							<span class="stext-105 cl3">
-								<span style="font-family: Anton;">₹ </span>{{this.price}}
-							</span>
-						</div>
-
-						<div class="block2-txt-child2 flex-r p-t-3">
-							<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-								<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-									alt="ICON">
-								<img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png"
-									alt="ICON">
-							</a>
-						</div>
-					</div>
-				</div>
-
-			</div>
-			{{/each}}
-		</div>
+		
 
 	</div>
 </div>

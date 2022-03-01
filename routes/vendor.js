@@ -11,20 +11,21 @@ const fs = require('fs');
 const { ObjectId } = require('mongodb');
 const async = require('hbs/lib/async');
 
+
 const verifyBlocked = async (req, res, next) => {
- 
-    let vendor = await vendorhelper.getvendor(req.session.vendorId)
-    if (vendor) {
-      if (vendor.blocked) {
-        req.session.vendor = false
-      } else {
-        req.session.vendorname =vendor.vname
-        req.session.vendorId = vendor._id
-      }
-    } else {
+
+  let vendor = await vendorhelper.getvendor(req.session.vendorId)
+  if (vendor) {
+    if (vendor.blocked) {
       req.session.vendor = false
+    } else {
+      req.session.vendorname = vendor.vname
+      req.session.vendorId = vendor._id
     }
-  
+  } else {
+    req.session.vendor = false
+  }
+
   next()
 }
 
@@ -36,35 +37,35 @@ const verifyLogin = (req, res, next) => {
   }
 }
 
-const verifyOfferExpiry = async(req, res, next) => {
+const verifyOfferExpiry = async (req, res, next) => {
   await userhelper.verifyOfferExpiry()
   next()
- }
+}
 
 
-router.get('/',verifyBlocked,async function (req, res, next) {
+router.get('/', verifyBlocked, async function (req, res, next) {
 
-  
+
   if (req.session.vendor == true) {
     let orders = await vendorhelper.getOrderedVendorProducts()
-      let  pendingorders=[]
-      activeOrders=0
-      totalPurchases=0
-      for(let element of orders){
-        if(element.companyId+""===req.session.vendorId+""){
-          totalPurchases++
-          if(element.status==='Order Placed'){
-            pendingorders.push(element)
-            activeOrders++
-          }
+    let pendingorders = []
+    activeOrders = 0
+    totalPurchases = 0
+    for (let element of orders) {
+      if (element.companyId + "" === req.session.vendorId + "") {
+        totalPurchases++
+        if (element.status === 'Order Placed') {
+          pendingorders.push(element)
+          activeOrders++
         }
       }
-      pendingorders=pendingorders.reverse()
+    }
+    pendingorders = pendingorders.reverse()
 
-     
+
     let products = await producthelper.getproducts(req.session.vendorId)
     let totalproducts = products.length
-    res.render('Vendor/Vendorhome', { 'vendor': true, 'vendorname': req.session.vendorname ,'activeOrders':activeOrders,'totalproducts':totalproducts,'totalPurchases':totalPurchases,pendingorders});
+    res.render('Vendor/Vendorhome', { 'vendor': true, 'vendorname': req.session.vendorname, 'activeOrders': activeOrders, 'totalproducts': totalproducts, 'totalPurchases': totalPurchases, pendingorders });
   } else {
     res.render('Vendor/vendorlogin', { 'notapproved': req.session.vendornotapproved, 'blocked': req.session.vendorblocked, 'loginerr': req.session.vendorlogerr });
     req.session.vendornotapproved = false
@@ -82,17 +83,17 @@ router.get('/signup', function (req, res, next) {
 });
 router.post('/vendorsignup', function (req, res, next) {
   vendorhelper.addvendor(req.body).then((response) => {
-    
+
     if (response.vendorfound) {
       req.session.registeredvendor = true
       res.redirect('/vendor/signup')
     } else {
-     
-        req.session.vendorId = response.insertedId
-        let license = req.files.license
-        license.mv('./public/vendorlicense/' + response.insertedId + '.jpg')
-        res.redirect('/vendor')
-      
+
+      req.session.vendorId = response.insertedId
+      let license = req.files.license
+      license.mv('./public/vendorlicense/' + response.insertedId + '.jpg')
+      res.redirect('/vendor')
+
     }
   })
 });
@@ -125,49 +126,49 @@ router.get('/logout', function (req, res, next) {
 
 });
 
-router.get('/addproduct',verifyLogin,verifyBlocked, function (req, res, next) {
-  adminhelper.getCategoryBrandProducts().then((response)=>{
-    if(response.category){
+router.get('/addproduct', verifyLogin, verifyBlocked, function (req, res, next) {
+  adminhelper.getCategoryBrandProducts().then((response) => {
+    if (response.category) {
       category = response.category
     }
-    if(response.brand){
+    if (response.brand) {
       brand = response.brand
     }
-   
-    res.render('Vendor/addproduct', { 'vendorid': req.session.vendorId,category,brand, 'productfound': req.session.productfound })
-   
+
+    res.render('Vendor/addproduct', { 'vendorid': req.session.vendorId, category, brand, 'productfound': req.session.productfound })
+
   })
-   
+
 });
 router.post('/addproduct', function (req, res, next) {
   producthelper.addproduct(req.body).then((response) => {
-   
-  
+
+
     if (response.productfound) {
       req.session.productfound = true
       res.redirect('/vendor/addproduct')
     } else {
-        let image1 = req.files.productimage1
-        let image2 = req.files.productimage2
-        let image3 = req.files.productimage3
-        let image4 = req.files.productimage4
-        image1.mv('./public/product-images/' + response.insertedId + '1.jpg')
-        image2.mv('./public/product-images/' + response.insertedId + '2.jpg')
-        image3.mv('./public/product-images/' + response.insertedId + '3.jpg')
-        image4.mv('./public/product-images/' + response.insertedId + '4.jpg')
+      let image1 = req.files.productimage1
+      let image2 = req.files.productimage2
+      let image3 = req.files.productimage3
+      let image4 = req.files.productimage4
+      image1.mv('./public/product-images/' + response.insertedId + '1.jpg')
+      image2.mv('./public/product-images/' + response.insertedId + '2.jpg')
+      image3.mv('./public/product-images/' + response.insertedId + '3.jpg')
+      image4.mv('./public/product-images/' + response.insertedId + '4.jpg')
 
-        res.redirect('/vendor')
-     
+      res.redirect('/vendor')
+
     }
   })
 
 });
-router.get('/viewproducts',verifyLogin,verifyBlocked, function (req, res, next) {
- 
-    producthelper.getproducts(req.session.vendorId).then((products) => {
-      res.render('Vendor/vendorproducts', { vendor: true, products, 'vendorname': req.session.vendorname });
-    })
- 
+router.get('/viewproducts', verifyLogin, verifyBlocked, function (req, res, next) {
+
+  producthelper.getproducts(req.session.vendorId).then((products) => {
+    res.render('Vendor/vendorproducts', { vendor: true, products, 'vendorname': req.session.vendorname });
+  })
+
 });
 router.get('/deleteproduct/', function (req, res, next) {
   producthelper.deleteproduct(req.query.id)
@@ -177,179 +178,229 @@ router.get('/deleteproduct/', function (req, res, next) {
   fs.unlinkSync('./public/product-images/' + req.query.id + '4.jpg')
   res.redirect('/vendor/viewproducts')
 })
-router.get('/editproduct/:id',verifyLogin, async function (req, res, next) {
+router.get('/editproduct/:id', verifyLogin, async function (req, res, next) {
   let product = await producthelper.getoneproduct(req.params.id)
-  adminhelper.getCategoryBrandProducts().then((response)=>{
-    if(response.category){
+  adminhelper.getCategoryBrandProducts().then((response) => {
+    if (response.category) {
       category = response.category
     }
-    if(response.brand){
+    if (response.brand) {
       brand = response.brand
     }
-   
-    res.render('Vendor/edit-product', { product,category,brand })
+
+    res.render('Vendor/edit-product', { product, category, brand })
   })
-   
-  
+
+
 });
 
 router.post('/updateproduct/:id', async function (req, res, next) {
   producthelper.updateproduct(req.params.id, req.body).then(() => {
-    if(req.files){
-    if (req.files.productimage1) {
-      let image1 = req.files.productimage1
-      image1.mv('./public/product-images/' + req.params.id + '1.jpg')
+    if (req.files) {
+      if (req.files.productimage1) {
+        let image1 = req.files.productimage1
+        image1.mv('./public/product-images/' + req.params.id + '1.jpg')
+      }
+      if (req.files.productimage2) {
+        let image2 = req.files.productimage2
+        image2.mv('./public/product-images/' + req.params.id + '2.jpg')
+      }
+      if (req.files.productimage3) {
+        let image3 = req.files.productimage3
+        image3.mv('./public/product-images/' + req.params.id + '3.jpg')
+      }
+      if (req.files.productimage4) {
+        let image4 = req.files.productimage4
+        image4.mv('./public/product-images/' + req.params.id + '4.jpg')
+      }
     }
-    if (req.files.productimage2) {
-      let image2 = req.files.productimage2
-      image2.mv('./public/product-images/' + req.params.id + '2.jpg')
-    }
-    if (req.files.productimage3) {
-      let image3 = req.files.productimage3
-      image3.mv('./public/product-images/' + req.params.id + '3.jpg')
-    }
-    if (req.files.productimage4) {
-      let image4 = req.files.productimage4
-      image4.mv('./public/product-images/' + req.params.id + '4.jpg')
-    }
-  }
     res.redirect('/vendor/viewproducts')
   })
 });
 
-router.get('/vendorprofile',verifyLogin,verifyBlocked, async function (req, res, next) {
-  vendorhelper.getvendor(req.session.vendorId).then((vendordetail)=>{
+router.get('/vendorprofile', verifyLogin, verifyBlocked, async function (req, res, next) {
+  vendorhelper.getvendor(req.session.vendorId).then((vendordetail) => {
 
-    res.render('vendor/vendor-profile',{vendor:true,vendordetail})
+    res.render('vendor/vendor-profile', { vendor: true, vendordetail })
   })
 });
-router.post('/updatevendor',function (req, res, next) {
-  vendorhelper.updatevendor(req.body).then(()=>{
+router.post('/updatevendor', function (req, res, next) {
+  vendorhelper.updatevendor(req.body).then(() => {
     res.redirect('/vendor/vendorprofile')
   })
 });
 
-router.get('/changepassword',verifyLogin,verifyBlocked, function (req, res, next) {
- res.render('Vendor/change-vendorpassword',{vendor:true,'pwordNoMatch':req.session.vendorpwordNoMatch})
+router.get('/changepassword', verifyLogin, verifyBlocked, function (req, res, next) {
+  res.render('Vendor/change-vendorpassword', { vendor: true, 'pwordNoMatch': req.session.vendorpwordNoMatch })
 });
 
-router.post('/changepassword',function (req, res, next) {
-  vendorhelper.changepassword(req.session.vendorId,req.body).then((response)=>{
-    if(response.vendorpwordNoMatch){
-      req.session.vendorpwordNoMatch=true
+router.post('/changepassword', function (req, res, next) {
+  vendorhelper.changepassword(req.session.vendorId, req.body).then((response) => {
+    if (response.vendorpwordNoMatch) {
+      req.session.vendorpwordNoMatch = true
       res.redirect('/vendor/changepassword')
-    }else{
+    } else {
 
       res.redirect('/vendor/vendorprofile')
     }
   })
- });
+});
 
- router.get('/orders',verifyLogin,verifyBlocked, function (req, res, next) {
-   vendorhelper.getOrderedVendorProducts().then((orders)=>{
-     let vendorproducts=[]
-     for(let element of orders){
-       if(element.companyId+""===req.session.vendorId+""){
-         vendorproducts.push(element)
-       }
-     }
-     vendorproducts=vendorproducts.reverse()
+router.get('/orders', verifyLogin, verifyBlocked, function (req, res, next) {
+  vendorhelper.getOrderedVendorProducts().then((orders) => {
+    let vendorproducts = []
+    for (let element of orders) {
+      if (element.companyId + "" === req.session.vendorId + "") {
+        vendorproducts.push(element)
+      }
+    }
+    vendorproducts = vendorproducts.reverse()
 
-     res.render('Vendor/orders',{vendor:true,'vendorname': req.session.vendorname,vendorproducts})
-   })
- });
-
-
- router.get('/cancelorder/', function (req, res, next) {
-  userhelper.cancelOrder(req.query.id).then(() => {
-   res.redirect('/vendor/orders')
+    res.render('Vendor/orders', { vendor: true, 'vendorname': req.session.vendorname, vendorproducts })
   })
- 
+});
+
+
+router.get('/cancelorder/', function (req, res, next) {
+  userhelper.cancelOrder(req.query.id).then(() => {
+    res.redirect('/vendor/orders')
+  })
+
 });
 
 
 router.get('/changeorderstatus/:id/:state', function (req, res, next) {
-  vendorhelper.changeOrderStatus(req.params.id,req.params.state).then(()=>{
+  vendorhelper.changeOrderStatus(req.params.id, req.params.state).then(() => {
     res.redirect("/vendor/orders")
   })
- 
+
 });
 
-router.get('/coupons',verifyLogin,verifyBlocked, function (req, res, next) {
+router.get('/coupons', verifyLogin, verifyBlocked, function (req, res, next) {
 
-  adminhelper.getCoupons(req.session.vendorId+"").then((vendorcoupons)=>{
-  
-    
-    res.render('Vendor/coupons-vendor',{vendor:true,vendorcoupons,'couponExist':req.session.couponExist})
-    req.session.couponExist=false;
+  adminhelper.getCoupons(req.session.vendorId + "").then((vendorcoupons) => {
+
+
+    res.render('Vendor/coupons-vendor', { vendor: true, vendorcoupons, 'couponExist': req.session.couponExist })
+    req.session.couponExist = false;
 
   })
 });
 
-router.post('/addvendorcoupon',function (req, res, next) {
-  adminhelper.addcoupon(req.body,req.session.vendorId).then((response)=>{
-    if(response.couponExist){
-      req.session.couponExist=true
-      
+router.post('/addvendorcoupon', function (req, res, next) {
+  adminhelper.addcoupon(req.body, req.session.vendorId).then((response) => {
+    if (response.couponExist) {
+      req.session.couponExist = true
+
     }
 
-      res.redirect('/vendor/coupons')
-    
-  })
- })
+    res.redirect('/vendor/coupons')
 
- router.get('/offers',verifyOfferExpiry,verifyLogin,async function (req, res, next) {
-  adminhelper.getCategoryBrandProducts().then((response)=>{
-    if(response.category){
-      categories=response.category
+  })
+})
+
+router.get('/offers', verifyOfferExpiry, verifyLogin, async function (req, res, next) {
+  adminhelper.getCategoryBrandProducts().then((response) => {
+    if (response.category) {
+      categories = response.category
     }
     producthelper.getproducts(req.session.vendorId).then((products) => {
-      vendorhelper.getoffers(req.session.vendorId).then((offers)=>{
+      vendorhelper.getoffers(req.session.vendorId).then((offers) => {
         let categoryoffers = offers.categoryoffers
         let productoffers = offers.productoffers
-        res.render('Vendor/offers',{vendor:true,categoryoffers,productoffers, products,categories,'vendorId':req.session.vendorId, 'categoryOfferExist': req.session.categoryOfferExist ,'productOfferExist':req.session.productOfferExist})
-        req.session.categoryOfferExist=null
-        req.session.productOfferExist=null
+        res.render('Vendor/offers', { vendor: true, categoryoffers, productoffers, products, categories, 'vendorId': req.session.vendorId, 'categoryOfferExist': req.session.categoryOfferExist, 'productOfferExist': req.session.productOfferExist })
+        req.session.categoryOfferExist = null
+        req.session.productOfferExist = null
       })
     })
   })
- })
-
-
-
- router.post('/addOffer',verifyLogin,async function (req, res, next) {
-  vendorhelper.addOffer(req.body).then((response)=>{
-    if(response.categoryOfferExist){
-      req.session.categoryOfferExist=true
-  
-      
-    }
-    if(response.productOfferExist){
-      req.session.productOfferExist=true
-  
-    }
-
-      res.redirect('/vendor/offers')
-    
-  })
- })
-
- router.get('/deleteoffer/',verifyLogin,verifyBlocked, function (req, res, next) {
-vendorhelper.deleteOffer(req.query.id).then(()=>{
-  res.redirect('/vendor/offers')
 })
+
+
+
+router.post('/addOffer', verifyLogin, async function (req, res, next) {
+  vendorhelper.addOffer(req.body).then((response) => {
+    if (response.categoryOfferExist) {
+      req.session.categoryOfferExist = true
+
+
+    }
+    if (response.productOfferExist) {
+      req.session.productOfferExist = true
+
+    }
+
+    res.redirect('/vendor/offers')
+
+  })
+})
+
+router.get('/deleteoffer/', verifyLogin, verifyBlocked, function (req, res, next) {
+  vendorhelper.deleteOffer(req.query.id).then(() => {
+    res.redirect('/vendor/offers')
+  })
 
 });
 
-router.get('/getchartdata',verifyLogin,verifyBlocked,async function (req, res, next) {
+router.get('/getchartdata', verifyLogin, verifyBlocked, async function (req, res, next) {
   // let orderdetails = await adminhelper.getOrderDetails()
 
   let vendorDashboardDetails = await vendorhelper.getVendorDashboardDetails(req.session.vendorId)
- 
+
   let topselling = await adminhelper.getTopSelling(req.session.vendorId)
   // console.log(topselling.topsellingCat);
-  res.json({vendorDashboardDetails:vendorDashboardDetails,topselling:topselling})
-  
-  });
+  res.json({ vendorDashboardDetails: vendorDashboardDetails, topselling: topselling })
+
+});
+
+router.get('/salesReport', verifyLogin, verifyBlocked, function (req, res, next) {
+  let details
+  if (req.session.vendorDateSelected) {
+    details = req.session.vendorDateSelected
+
+  } else {
+    var today = new Date();
+    var nextdate = new Date(today)
+    nextdate.setDate(nextdate.getDate() - 7)
+    console.log(nextdate);
+    details = { from: nextdate, to: today }
+
+  }
+
+  vendorhelper.getSalesReport(details, req.session.vendorId).then((salesreport) => {
+
+    from = new Date(details.from)
+    to = new Date(details.to)
+
+    if (from.getDate() < 10) {
+      formattedDatefrom = "0" + from.getDate() + "-" + (from.getMonth() + 1) + "-" + from.getFullYear()
+    } else {
+
+      formattedDatefrom = from.getDate() + "-" + (from.getMonth() + 1) + "-" + from.getFullYear()
+    }
+
+    if (to.getDate() < 10) {
+      formattedDateto = "0" + to.getDate() + "-" + (to.getMonth() + 1) + "-" + to.getFullYear()
+    } else {
+
+      formattedDateto = to.getDate() + "-" + (to.getMonth() + 1) + "-" + to.getFullYear()
+    }
+
+
+
+    res.render('Vendor/sales-report', { vendor: true, salesreport, 'from': formattedDatefrom, 'to': formattedDateto })
+    req.session.vendorDateSelected = null
+  })
+ 
+
+})
+
+router.post('/getsalesreport', verifyLogin, verifyBlocked, function (req, res, next) {
+
+  req.session.vendorDateSelected = { from: new Date(req.body.from), to: new Date(req.body.to) }
+  res.redirect('/vendor/salesreport')
+
+})
+
 
 module.exports = router;

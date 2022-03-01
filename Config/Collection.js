@@ -10,5 +10,6 @@ module.exports={
     brands:'brands',
     categories:'categories',
     coupons:'coupons',
-    offers:'offers'
+    offers:'offers',
+    reviews:'reviews'
     }

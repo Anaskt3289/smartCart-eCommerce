@@ -56,6 +56,13 @@ module.exports = {
     getproducts: (cmpid) => {
         return new Promise(async (resolve, reject) => {
             let products = await db.get().collection(collection.products).find({ companyid: ObjectId(cmpid) }).toArray();
+            for(let element of products){
+                if(element.quantity===0){
+                    element.stock='Out of stock'
+                }else{
+                    element.stock='In stock'
+                }
+            }
             resolve(products)
         })
 

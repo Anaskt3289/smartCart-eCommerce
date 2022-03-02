@@ -25,7 +25,7 @@ paypal.configure({
   'client_secret': paypalSecret
 });
 
-
+//function to verify the user is blocked or deleted
 const verifyBlocked = async (req, res, next) => {
   if (req.session.useractiveMobile) {
     let userblocked = await userhelper.getdata(req.session.useractiveMobile)
@@ -43,6 +43,7 @@ const verifyBlocked = async (req, res, next) => {
   next()
 }
 
+//function to verify the user is logged in or not
 const verifyLogin = (req, res, next) => {
   if (req.session.user) {
     next()
@@ -51,6 +52,7 @@ const verifyLogin = (req, res, next) => {
   }
 }
 
+//function to get the cart count
 let getcartcount = async (req, res, next) => {
   cartCount = null;
   if (req.session.user) {
@@ -59,6 +61,7 @@ let getcartcount = async (req, res, next) => {
   next()
 }
 
+//function to get the wishlist count
 let wishlistcount = async (req, res, next) => {
   wishCount = null;
   if (req.session.user) {
@@ -67,6 +70,7 @@ let wishlistcount = async (req, res, next) => {
   next()
 }
 
+//function to get the verify the offer is expired or not
 const verifyOfferExpiry = async (req, res, next) => {
   await userhelper.verifyOfferExpiry()
   next()
@@ -101,6 +105,7 @@ if(req.session.pagination){
       req.session.pagination = false
 });
 
+//user login page
 router.get('/login', function (req, res, next) {
   if (req.session.user == true) {
     res.redirect('/')
@@ -110,9 +115,10 @@ router.get('/login', function (req, res, next) {
     req.session.blocked = false;
 
   }
-
 });
 
+
+//user signup
 router.get('/signup', function (req, res, next) {
   if (req.session.user == true) {
     res.redirect('/login')
@@ -122,6 +128,7 @@ router.get('/signup', function (req, res, next) {
   }
 });
 
+//user signup submission
 router.post('/signup', function (req, res, next) {
   let No = req.body.mobile
   let Mobile = `+91${No}`
@@ -155,6 +162,7 @@ router.post('/signup', function (req, res, next) {
   })
 });
 
+//user login submission
 router.post('/login', function (req, res, next) {
   userhelper.userlogin(req.body).then((response) => {
     if (response.status) {
@@ -173,12 +181,14 @@ router.post('/login', function (req, res, next) {
     }
   })
 });
+
+//login page to login with otp
 router.get('/otplogin', (req, res) => {
   res.render('User/otp-login', { 'noMobile': req.session.mobilenotregistered })
   req.session.mobilenotregistered = false
 })
 
-
+//login with otp submission
 router.post('/otplogin', (req, res) => {
   let No = req.body.mobile
   let Mobile = `+91${No}`
@@ -202,6 +212,8 @@ router.post('/otplogin', (req, res) => {
     }
   })
 })
+
+//resend otp
 router.get('/resendotp', (req, res) => {
   req.session.otplogin = true
   client.verify
@@ -215,8 +227,9 @@ router.get('/resendotp', (req, res) => {
       console.log(err);
     })
 })
-router.get('/otp', (req, res) => {
 
+//otp get
+router.get('/otp', (req, res) => {
   if (req.session.user) {
     res.redirect('/')
   } else {
@@ -224,6 +237,8 @@ router.get('/otp', (req, res) => {
     req.session.inavlidloginOtp = false
   }
 })
+
+//otp validate 
 router.post('/otp', (req, res) => {
   let otp = req.body.otp
   let number = req.session.number
@@ -239,10 +254,9 @@ router.post('/otp', (req, res) => {
           req.session.user = true
           req.session.otplogin = false
         } else {
-          userhelper.adduserdetails(req.session.signupdetails).then((response) => {
+          await userhelper.adduserdetails(req.session.signupdetails).then((response) => {
 
-            req.session.useractiveMobile = `+91${req.session.signupdetails.mobile}`
-
+            req.session.useractiveMobile = req.session.number
             req.session.user = true
 
             var oldPath = './public/temp-userProfilePics/propic.jpg'
@@ -251,9 +265,9 @@ router.post('/otp', (req, res) => {
             fs.rename(oldPath, newPath, function (err) {
               if (err) throw err
             })
-
+            
           })
-
+          
         }
         res.redirect('/')
       } else {
@@ -266,17 +280,19 @@ router.post('/otp', (req, res) => {
     })
 })
 
+
+//user logout
 router.get('/userlogout', async function (req, res, next) {
   req.session.user = false;
   res.redirect('/login')
 });
 
+
+//product details page
 router.get('/productdetails/', getcartcount, wishlistcount, async function (req, res, next) {
   let reviews = await userhelper.getReviews()
   let users = await adminhelper.getusers()
-
   let userReviews = []
-
   for (let review of reviews) {
     for (let user of users) {
       if (review.productid === req.query.id || review.productid === req.session.productDetailId) {
@@ -303,7 +319,7 @@ router.get('/productdetails/', getcartcount, wishlistcount, async function (req,
   }
 });
 
-
+//shop page which shows all products
 router.get('/showallproducts/', getcartcount, wishlistcount, async function (req, res, next) {
 
   let products;
@@ -405,10 +421,10 @@ router.get('/showallproducts/', getcartcount, wishlistcount, async function (req
   req.session.filterpricerange = null
   req.session.filterbrand = null
   req.session.filtercategory = null
-
-
 });
 
+
+//cart page
 router.get('/cart', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
 
   userhelper.getCartProducts(req.session.userId).then((products) => {
@@ -420,13 +436,7 @@ router.get('/cart', verifyBlocked, verifyLogin, getcartcount, wishlistcount, asy
       }
       total = total + element.subtotal
     }
-
-
-
     grandtotal = total + 80
-
-
-
     if (cartCount === 0) {
       var noCartProducts = true
     }else{
@@ -438,7 +448,9 @@ router.get('/cart', verifyBlocked, verifyLogin, getcartcount, wishlistcount, asy
   })
 });
 
-router.get('/addToCart/:id/:quantity', verifyLogin, function (req, res, next) {
+
+//add products to cart
+router.get('/addToCart/:id/:quantity', verifyBlocked, verifyLogin, function (req, res, next) {
 
   userhelper.addToCart(req.params.id, req.params.quantity, req.session.userId).then((response) => {
     if (response.productInCart) {
@@ -449,7 +461,9 @@ router.get('/addToCart/:id/:quantity', verifyLogin, function (req, res, next) {
   })
 });
 
-router.post('/changeCartQuantity', function (req, res, next) {
+
+//change quantity of the products in cart
+router.post('/changeCartQuantity',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.changeCartQuantity(req.body).then(async (response) => {
     subtotal = await userhelper.getCartProducts(req.session.userId)
     console.log(subtotal);
@@ -470,12 +484,16 @@ router.post('/changeCartQuantity', function (req, res, next) {
     res.json(response)
   })
 });
-router.get('/removeCartProduct/', function (req, res, next) {
+
+//remove cart product
+router.get('/removeCartProduct/',verifyBlocked, verifyLogin, function (req, res, next) {
 
   userhelper.removeCartProduct(req.session.userId,req.query.id).then((response) => {
     res.redirect('/cart')
   })
 });
+
+//checkout page
 router.get('/checkout', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
   let coupons = await userhelper.getAllCoupons(req.session.userId)
   userhelper.getaddress(req.session.userId).then((address) => {
@@ -539,17 +557,13 @@ router.get('/checkout', verifyBlocked, verifyLogin, getcartcount, wishlistcount,
           req.session.grandtotal = grandtotal
         }
         res.render('User/checkout', { user: true, address, coupons, 'wishlistCount': wishCount, 'subtotal': total, 'total': grandtotal, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'discount': discount, 'couponcode': couponcode })
-
-
       })
-
     }
-
   })
 });
 
-
-router.post('/addAddress', function (req, res, next) {
+//add address of the user
+router.post('/addAddress',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.addAddress(req.session.userId, req.body).then((response) => {
     if (req.body.page === 'profile') {
       res.redirect('userprofile')
@@ -560,6 +574,8 @@ router.post('/addAddress', function (req, res, next) {
   })
 });
 
+
+//place order submission
 router.post('/placeorder', verifyBlocked, verifyLogin, async function (req, res, next) {
   if (req.session.buynow) {
     products = await producthelper.getoneproduct(req.session.buynow)
@@ -628,10 +644,10 @@ router.post('/placeorder', verifyBlocked, verifyLogin, async function (req, res,
       }
     });
   }
-
-
 });
 
+
+//success page after order is placed
 router.get('/successpage/', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
   if (req.query.method === 'paypal') {
     await userhelper.placeorder(req.session.orderDetails.details, req.session.orderDetails.products, req.session.orderDetails.type).then(async (response) => {
@@ -643,14 +659,13 @@ router.get('/successpage/', verifyBlocked, verifyLogin, getcartcount, wishlistco
       }
     })
   }
-
   userhelper.getOrderDetails(req.session.orderId).then((order) => {
     res.render('User/success-page', { user: true, 'wishlistCount': wishCount, order, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
   })
-
 });
 
 
+//my orders page
 router.get('/myorders', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
 
   userhelper.myOrders(req.session.userId).then((orders) => {
@@ -660,15 +675,16 @@ router.get('/myorders', verifyBlocked, verifyLogin, getcartcount, wishlistcount,
         element.delivered = true
       }
     }
-
-    res.render('User/my-orders', { user: true, orders, 'wishlistCount': wishCount, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount })
-
+    if(orders.length===0){
+      noUserOrders = true
+    }
+    res.render('User/my-orders', { user: true, orders, 'wishlistCount': wishCount, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount ,'noUserOrders':noUserOrders})
   })
 });
 
+
+//detail page of ordered products
 router.post('/viewOrderedProduct', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
-
-
   userhelper.getOrderDetails(req.body.orderId).then((order) => {
     let product = null
     for (let element of order[0].product) {
@@ -693,10 +709,10 @@ router.post('/viewOrderedProduct', verifyBlocked, verifyLogin, getcartcount, wis
     shipped = false
     delivered = false
   })
-
-
 });
 
+
+//search products
 router.post('/search', getcartcount, wishlistcount, async function (req, res, next) {
   if (req.body.searchkey) {
 
@@ -706,28 +722,30 @@ router.post('/search', getcartcount, wishlistcount, async function (req, res, ne
       req.session.searchkey = req.body.searchkey
     }
   }
-
-  res.redirect('/showallproducts/')
-
-  
+  res.redirect('/showallproducts/') 
 });
 
+
+//user profile page
 router.get('/userprofile', verifyBlocked, verifyLogin, getcartcount, wishlistcount, function (req, res, next) {
   userhelper.getUser(req.session.userId).then((user) => {
     let useraddress = user.address
     res.render('User/user-profile', { user: true, 'username': req.session.username, 'wishlistCount': wishCount, 'loggined': req.session.user, user, useraddress, 'cartCount': cartCount })
-
   })
 });
 
-router.get('/removeaddress/', function (req, res, next) {
+
+//remove address of the user
+router.get('/removeaddress/',verifyBlocked, verifyLogin, function (req, res, next) {
 
   userhelper.removeaddress(req.session.userId, req.query.value).then(() => {
     res.redirect("/userprofile")
   })
 });
 
-router.post('/updateuserdetails', function (req, res, next) {
+
+//update the details of user
+router.post('/updateuserdetails',verifyBlocked, verifyLogin, function (req, res, next) {
 
   userhelper.updateuser(req.body).then(() => {
     req.session.useractiveMobile = `+91${req.body.mobile}`
@@ -739,11 +757,15 @@ router.post('/updateuserdetails', function (req, res, next) {
   })
 });
 
+
+//user can change existing password and create a new one
 router.get('/changePassword', verifyBlocked, verifyLogin, getcartcount, wishlistcount, function (req, res, next) {
   res.render('User/change-password', { user: true, 'loggined': req.session.user, 'wishlistCount': wishCount, 'username': req.session.username, 'userId': req.session.userId, 'pwordNoMatch': req.session.pwordNoMatch, 'cartCount': cartCount })
 });
 
-router.post('/changePassword', function (req, res, next) {
+
+//change password submission
+router.post('/changePassword',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.changepassword(req.session.userId, req.body).then((response) => {
     if (response.pwordDoesNotMatch) {
       req.session.pwordNoMatch = true
@@ -755,15 +777,17 @@ router.post('/changePassword', function (req, res, next) {
   })
 });
 
-router.get('/buynow/', function (req, res, next) {
+
+//buy now option
+router.get('/buynow/',verifyBlocked, verifyLogin, function (req, res, next) {
   req.session.buynow = req.query.id
   req.session.couponapplied = null
   res.redirect('/checkout')
 });
 
 
-router.post('/verifyPayment', function (req, res, next) {
-
+//function to verify the payment through razorpay
+router.post('/verifyPayment',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.verifyPayment(req.body).then(() => {
     userhelper.placeorder(req.session.orderDetails.details, req.session.orderDetails.products, req.session.orderDetails.type).then(async (response) => {
       req.session.orderId = response.insertedId
@@ -780,77 +804,79 @@ router.post('/verifyPayment', function (req, res, next) {
   })
 });
 
-router.get('/cancelorder/', function (req, res, next) {
+
+//cancel orders
+router.get('/cancelorder/',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.cancelOrder(req.query.id).then(() => {
     res.redirect('/myorders')
   })
 
 });
 
-
-router.get('/wishlist', verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
+//wislist page
+router.get('/wishlist',verifyBlocked, verifyLogin, verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
 
   userhelper.getWishlistProducts(req.session.userId).then((products) => {
-
     if (wishCount === 0) {
       req.session.noWishlistProducts = true
     }
-
     res.render('User/wishlist', { user: true, 'loggined': req.session.user, products, 'wishlistCount': wishCount, 'username': req.session.username, 'cartCount': cartCount, 'noWishlist': req.session.noWishlistProducts })
     req.session.noWishlistProducts = false
   })
 });
 
-router.get('/addtoWishlist/', function (req, res, next) {
 
+//add products to wishlist
+router.get('/addtoWishlist/',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.addtoWishlist(req.query.id, req.session.userId).then((response) => {
-    
     response.productInWishlist
     response.status = true
     res.json(response)
   })
 });
 
-
-router.get('/removefromWishlist/', function (req, res, next) {
-
+//remove products from wishlist using ajax in home and product page
+router.get('/removefromWishlist/',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.removefromWishlist(req.query.id, req.session.userId).then(() => {
     res.json({status:true})
   })
 });
-router.get('/removeproductfromWishlist/', function (req, res, next) {
 
+//remove products from wishlist in wishlist page
+router.get('/removeproductfromWishlist/',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.removefromWishlist(req.query.id, req.session.userId).then(() => {
     res.redirect('/wishlist')
   })
 });
 
-router.get('/applyCoupon/:couponcode', function (req, res, next) {
+
+//apply coupons
+router.get('/applyCoupon/:couponcode',verifyBlocked, verifyLogin, function (req, res, next) {
   req.session.couponapplied = req.params.couponcode
   res.redirect('/checkout')
 });
 
-
-router.get('/removecoupon', function (req, res, next) {
+//remove coupon applied
+router.get('/removecoupon',verifyBlocked, verifyLogin, function (req, res, next) {
   req.session.couponapplied = null
   res.redirect('/checkout')
 });
 
-
-
-
-
-router.get('/reviewpage/', verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
+//page to write the review
+router.get('/reviewpage/',verifyBlocked, verifyLogin, verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
   productId = req.query.id
   res.render('User/review', { user: true, 'productId': productId, 'userid': req.session.userId })
 });
 
-router.post('/submitReview', function (req, res, next) {
+//review submission
+router.post('/submitReview',verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.submitreview(req.body).then(() => {
     res.redirect('/myorders')
   })
 });
 
+
+//apply filters
 router.post('/applyFilter', function (req, res, next) {
   console.log(req.body);
   if (req.body) {
@@ -871,7 +897,7 @@ router.post('/applyFilter', function (req, res, next) {
   res.redirect('/showallproducts')
 });
 
-
+//users home pagination (load more)
 router.get('/paginateUserHome', function (req, res, next) {
   req.session.pagination = true
  if(req.session.paginateCount){

@@ -1,3 +1,5 @@
+//add product page validation
+
 $(document).ready(function() {
 
      $("#addproduct").validate({

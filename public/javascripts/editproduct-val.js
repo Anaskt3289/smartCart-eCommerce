@@ -1,3 +1,5 @@
+//edit product page validation
+
 $(document).ready(function() {
 
     $("#editproduct").validate({

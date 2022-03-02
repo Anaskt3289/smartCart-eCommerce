@@ -27,6 +27,7 @@
       </tr>
     </thead>
     <tbody>
+     
       {{#each orders}}
       <tr>
         <form action="/viewOrderedProduct" method="post">
@@ -89,6 +90,11 @@
       {{/each}}
     </tbody>
   </table>
+   {{#if noUserOrders}}
+   <div class="pt-5 pb-5" style="text-align: center;">
+<h3>No Orders</h3>
+   </div>
+      {{/if}}
 </div>
 
 

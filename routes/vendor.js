@@ -12,8 +12,8 @@ const { ObjectId } = require('mongodb');
 const async = require('hbs/lib/async');
 
 
+//verify the vendor is blocked , deleted 
 const verifyBlocked = async (req, res, next) => {
-
   let vendor = await vendorhelper.getvendor(req.session.vendorId)
   if (vendor) {
     if (vendor.blocked) {
@@ -25,10 +25,10 @@ const verifyBlocked = async (req, res, next) => {
   } else {
     req.session.vendor = false
   }
-
   next()
 }
 
+//verify the vendor is logged in or not
 const verifyLogin = (req, res, next) => {
   if (req.session.vendor) {
     next()
@@ -37,15 +37,14 @@ const verifyLogin = (req, res, next) => {
   }
 }
 
+//verify the offer is expired or not
 const verifyOfferExpiry = async (req, res, next) => {
   await userhelper.verifyOfferExpiry()
   next()
 }
 
-
+//vendor home page
 router.get('/', verifyBlocked, async function (req, res, next) {
-
-
   if (req.session.vendor == true) {
     let orders = await vendorhelper.getOrderedVendorProducts()
     let pendingorders = []
@@ -74,6 +73,8 @@ router.get('/', verifyBlocked, async function (req, res, next) {
   }
 
 });
+
+//vendor signup
 router.get('/signup', function (req, res, next) {
   if (req.session.vendor) {
     res.redirect('/vendor')
@@ -81,6 +82,8 @@ router.get('/signup', function (req, res, next) {
     res.render('Vendor/vendorsignup')
   }
 });
+
+//vendor signup submission
 router.post('/vendorsignup', function (req, res, next) {
   vendorhelper.addvendor(req.body).then((response) => {
 
@@ -97,6 +100,8 @@ router.post('/vendorsignup', function (req, res, next) {
     }
   })
 });
+
+//vendor login
 router.post('/vendorlogin', function (req, res, next) {
   vendorhelper.vendorlogin(req.body).then((response) => {
     if (response.status) {
@@ -120,12 +125,16 @@ router.post('/vendorlogin', function (req, res, next) {
     }
   })
 });
+
+//vendor logout
 router.get('/logout', function (req, res, next) {
   req.session.vendor = false;
   res.redirect('/vendor')
 
 });
 
+
+//add products of the vendor
 router.get('/addproduct', verifyLogin, verifyBlocked, function (req, res, next) {
   adminhelper.getCategoryBrandProducts().then((response) => {
     if (response.category) {
@@ -138,11 +147,11 @@ router.get('/addproduct', verifyLogin, verifyBlocked, function (req, res, next) 
     res.render('Vendor/addproduct', { 'vendorid': req.session.vendorId, category, brand, 'productfound': req.session.productfound })
 
   })
-
 });
+
+//add product submission
 router.post('/addproduct', function (req, res, next) {
   producthelper.addproduct(req.body).then((response) => {
-
 
     if (response.productfound) {
       req.session.productfound = true
@@ -161,8 +170,9 @@ router.post('/addproduct', function (req, res, next) {
 
     }
   })
-
 });
+
+//products view in vendor side
 router.get('/viewproducts', verifyLogin, verifyBlocked, function (req, res, next) {
 
   producthelper.getproducts(req.session.vendorId).then((products) => {
@@ -170,6 +180,8 @@ router.get('/viewproducts', verifyLogin, verifyBlocked, function (req, res, next
   })
 
 });
+
+//vendors can delete products
 router.get('/deleteproduct/', function (req, res, next) {
   producthelper.deleteproduct(req.query.id)
   fs.unlinkSync('./public/product-images/' + req.query.id + '1.jpg')
@@ -178,6 +190,8 @@ router.get('/deleteproduct/', function (req, res, next) {
   fs.unlinkSync('./public/product-images/' + req.query.id + '4.jpg')
   res.redirect('/vendor/viewproducts')
 })
+
+//vendors  can edit product details
 router.get('/editproduct/:id', verifyLogin, async function (req, res, next) {
   let product = await producthelper.getoneproduct(req.params.id)
   adminhelper.getCategoryBrandProducts().then((response) => {
@@ -187,13 +201,12 @@ router.get('/editproduct/:id', verifyLogin, async function (req, res, next) {
     if (response.brand) {
       brand = response.brand
     }
-
     res.render('Vendor/edit-product', { product, category, brand })
   })
-
-
 });
 
+
+//update product details
 router.post('/updateproduct/:id', async function (req, res, next) {
   producthelper.updateproduct(req.params.id, req.body).then(() => {
     if (req.files) {
@@ -218,22 +231,30 @@ router.post('/updateproduct/:id', async function (req, res, next) {
   })
 });
 
+
+//vendor profile page
 router.get('/vendorprofile', verifyLogin, verifyBlocked, async function (req, res, next) {
   vendorhelper.getvendor(req.session.vendorId).then((vendordetail) => {
 
     res.render('vendor/vendor-profile', { vendor: true, vendordetail })
   })
 });
+
+//update vendor details
 router.post('/updatevendor', function (req, res, next) {
   vendorhelper.updatevendor(req.body).then(() => {
     res.redirect('/vendor/vendorprofile')
   })
 });
 
+
+//vendors can change their old password and create a new one
 router.get('/changepassword', verifyLogin, verifyBlocked, function (req, res, next) {
   res.render('Vendor/change-vendorpassword', { vendor: true, 'pwordNoMatch': req.session.vendorpwordNoMatch })
 });
 
+
+//change password submission
 router.post('/changepassword', function (req, res, next) {
   vendorhelper.changepassword(req.session.vendorId, req.body).then((response) => {
     if (response.vendorpwordNoMatch) {
@@ -246,6 +267,8 @@ router.post('/changepassword', function (req, res, next) {
   })
 });
 
+
+//vendors orders page where orders to vendor is displayed
 router.get('/orders', verifyLogin, verifyBlocked, function (req, res, next) {
   vendorhelper.getOrderedVendorProducts().then((orders) => {
     let vendorproducts = []
@@ -260,7 +283,7 @@ router.get('/orders', verifyLogin, verifyBlocked, function (req, res, next) {
   })
 });
 
-
+//vendors can cancel the order
 router.get('/cancelorder/', function (req, res, next) {
   userhelper.cancelOrder(req.query.id).then(() => {
     res.redirect('/vendor/orders')
@@ -268,7 +291,7 @@ router.get('/cancelorder/', function (req, res, next) {
 
 });
 
-
+//vendors can change the status of order as shipped, delivered etc.
 router.get('/changeorderstatus/:id/:state', function (req, res, next) {
   vendorhelper.changeOrderStatus(req.params.id, req.params.state).then(() => {
     res.redirect("/vendor/orders")
@@ -276,29 +299,31 @@ router.get('/changeorderstatus/:id/:state', function (req, res, next) {
 
 });
 
+
+//vendors coupon page
 router.get('/coupons', verifyLogin, verifyBlocked, function (req, res, next) {
 
   adminhelper.getCoupons(req.session.vendorId + "").then((vendorcoupons) => {
-
-
     res.render('Vendor/coupons-vendor', { vendor: true, vendorcoupons, 'couponExist': req.session.couponExist })
     req.session.couponExist = false;
 
   })
 });
 
+
+//add coupons by vendors
 router.post('/addvendorcoupon', function (req, res, next) {
   adminhelper.addcoupon(req.body, req.session.vendorId).then((response) => {
     if (response.couponExist) {
       req.session.couponExist = true
 
     }
-
     res.redirect('/vendor/coupons')
-
   })
 })
 
+
+//offers page
 router.get('/offers', verifyOfferExpiry, verifyLogin, async function (req, res, next) {
   adminhelper.getCategoryBrandProducts().then((response) => {
     if (response.category) {
@@ -317,42 +342,40 @@ router.get('/offers', verifyOfferExpiry, verifyLogin, async function (req, res, 
 })
 
 
-
+//add offer to category or products
 router.post('/addOffer', verifyLogin, async function (req, res, next) {
   vendorhelper.addOffer(req.body).then((response) => {
     if (response.categoryOfferExist) {
       req.session.categoryOfferExist = true
-
-
     }
     if (response.productOfferExist) {
       req.session.productOfferExist = true
-
     }
-
     res.redirect('/vendor/offers')
-
   })
 })
 
+
+//delete offers 
 router.get('/deleteoffer/', verifyLogin, verifyBlocked, function (req, res, next) {
   vendorhelper.deleteOffer(req.query.id).then(() => {
     res.redirect('/vendor/offers')
   })
-
 });
 
-router.get('/getchartdata', verifyLogin, verifyBlocked, async function (req, res, next) {
-  // let orderdetails = await adminhelper.getOrderDetails()
 
+//function to get vendor dashboard details through ajax
+router.get('/getchartdata', verifyLogin, verifyBlocked, async function (req, res, next) {
+ 
   let vendorDashboardDetails = await vendorhelper.getVendorDashboardDetails(req.session.vendorId)
 
   let topselling = await adminhelper.getTopSelling(req.session.vendorId)
-  // console.log(topselling.topsellingCat);
   res.json({ vendorDashboardDetails: vendorDashboardDetails, topselling: topselling })
 
 });
 
+
+//sales report in vendor side
 router.get('/salesReport', verifyLogin, verifyBlocked, function (req, res, next) {
   let details
   if (req.session.vendorDateSelected) {
@@ -364,7 +387,6 @@ router.get('/salesReport', verifyLogin, verifyBlocked, function (req, res, next)
     nextdate.setDate(nextdate.getDate() - 7)
     console.log(nextdate);
     details = { from: nextdate, to: today }
-
   }
 
   vendorhelper.getSalesReport(details, req.session.vendorId).then((salesreport) => {
@@ -391,10 +413,10 @@ router.get('/salesReport', verifyLogin, verifyBlocked, function (req, res, next)
     res.render('Vendor/sales-report', { vendor: true, salesreport, 'from': formattedDatefrom, 'to': formattedDateto })
     req.session.vendorDateSelected = null
   })
- 
-
 })
 
+
+//dates submission for sales report
 router.post('/getsalesreport', verifyLogin, verifyBlocked, function (req, res, next) {
 
   req.session.vendorDateSelected = { from: new Date(req.body.from), to: new Date(req.body.to) }

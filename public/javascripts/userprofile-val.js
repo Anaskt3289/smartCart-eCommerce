@@ -1,3 +1,5 @@
+//user profile page validation
+
 $(document).ready(function() {
     jQuery.validator.addMethod('mypassword', function(value, element) 
  {

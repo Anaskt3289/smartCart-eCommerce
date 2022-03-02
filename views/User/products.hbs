@@ -39,7 +39,7 @@
 					Filter
 				</div>
 
-				
+
 			</div>
 
 
@@ -49,33 +49,35 @@
 					<div class="filter-col1 p-r-15 p-b-27">
 
 
-					<form action="/applyFilter" method="post">
-						<div class="mtext-102 cl2 p-b-15">
-							Sort By
-						</div>
+						<form action="/applyFilter" method="post">
+							<div class="mtext-102 cl2 p-b-15">
+								Sort By
+							</div>
 
-						<ul>
+							<ul>
 
 
 
-							<li class="p-b-6">
-								
-								<div style="display: flex;">
+								<li class="p-b-6">
 
-									<input type="radio" name="sort" id="pricelowtohigh" class="mr-2 mt-1" value="lowToHigh">
-									<label for="pricelowtohigh">Price: Low to High</label>
-								</div>
-							</li>
+									<div style="display: flex;">
 
-							<li class="p-b-6">
-								
-								<div style="display: flex;">
+										<input type="radio" name="sort" id="pricelowtohigh" class="mr-2 mt-1"
+											value="lowToHigh">
+										<label for="pricelowtohigh">Price: Low to High</label>
+									</div>
+								</li>
 
-									<input type="radio" name="sort" id="pricehightolow" class="mr-2 mt-1" value="highToLow">
-									<label for="pricehightolow">Price: High to Low</label>
-								</div>
-							</li>
-						</ul>
+								<li class="p-b-6">
+
+									<div style="display: flex;">
+
+										<input type="radio" name="sort" id="pricehightolow" class="mr-2 mt-1"
+											value="highToLow">
+										<label for="pricehightolow">Price: High to Low</label>
+									</div>
+								</li>
+							</ul>
 					</div>
 
 					<div class="filter-col2 p-r-15 p-b-27">
@@ -84,48 +86,54 @@
 						</div>
 
 						<ul>
-							
+
 
 							<li class="p-b-6">
-								
+
 
 								<div style="display: flex;">
-									<input type="radio" name="pricerange" id="pricerange1" class="mr-3 mt-1" value="below5000">
+									<input type="radio" name="pricerange" id="pricerange1" class="mr-3 mt-1"
+										value="below5000">
 									<label for="pricerange1">Below 5000</label>
 								</div>
 							</li>
 
 							<li class="p-b-6">
 								<div style="display: flex;">
-									<input type="radio" name="pricerange" id="pricerange2" class="mr-2 mt-1" value="5000-10000">
+									<input type="radio" name="pricerange" id="pricerange2" class="mr-2 mt-1"
+										value="5000-10000">
 									<label for="pricerange2">₹5000 - ₹10000</label>
 								</div>
 							</li>
 
 							<li class="p-b-6">
 								<div style="display: flex;">
-									<input type="radio" name="pricerange" id="pricerange3" class="mr-2 mt-1" value="10000-20000">
+									<input type="radio" name="pricerange" id="pricerange3" class="mr-2 mt-1"
+										value="10000-20000">
 									<label for="pricerange3">₹10000 - ₹20000</label>
 								</div>
 							</li>
 
 							<li class="p-b-6">
 								<div style="display: flex;">
-									<input type="radio" name="pricerange" id="pricerange4" class="mr-2 mt-1" value="20000-30000">
+									<input type="radio" name="pricerange" id="pricerange4" class="mr-2 mt-1"
+										value="20000-30000">
 									<label for="pricerange4">₹20000 - ₹30000</label>
 								</div>
 							</li>
 
 							<li class="p-b-6">
 								<div style="display: flex;">
-									<input type="radio" name="pricerange" id="pricerange5" class="mr-2 mt-1" value="30000-50000">
+									<input type="radio" name="pricerange" id="pricerange5" class="mr-2 mt-1"
+										value="30000-50000">
 									<label for="pricerange5">₹30000 - ₹50000</label>
 								</div>
 							</li>
 
 							<li class="p-b-6">
 								<div style="display: flex;">
-									<input type="radio" name="pricerange" id="pricerange6" class="mr-3 mt-1" value="above50000">
+									<input type="radio" name="pricerange" id="pricerange6" class="mr-3 mt-1"
+										value="above50000">
 									<label for="pricerange6">Above ₹50000</label>
 								</div>
 							</li>
@@ -144,7 +152,8 @@
 							<label
 								class="btn flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
 								style="display: flex;">
-								<input type="radio" name="category" id="option1" autocomplete="off" class="mr-2" value="{{this.category}}"> {{this.category}}
+								<input type="radio" name="category" id="option1" autocomplete="off" class="mr-2"
+									value="{{this.category}}"> {{this.category}}
 							</label>
 
 							{{/each}}
@@ -166,7 +175,8 @@
 
 								<label
 									class="btn flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-									<input type="radio" name="brand" autocomplete="off" value="{{this.brand}}"> {{this.brand}}
+									<input type="radio" name="brand" autocomplete="off" value="{{this.brand}}">
+									{{this.brand}}
 								</label>
 							</div>
 							{{/each}}
@@ -174,8 +184,8 @@
 
 						</div>
 					</div>
-				<button type="submit" class="btn btn-dark mb-3" style="margin-left: auto;">Apply</button>
-</form>
+					<button type="submit" class="btn btn-dark mb-3" style="margin-left: auto;">Apply</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -201,17 +211,35 @@
 				<!-- Block2 -->
 				<div class="block2">
 					<div class="block2-pic hov-img0">
-						<img src="/product-images/{{this._id}}1.jpg" alt="IMG-PRODUCT">
-
+						<a href="/productdetails?id={{this._id}}">
+							<img src="/product-images/{{this._id}}1.jpg" alt="IMG-PRODUCT">
+						</a>
 						<button class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 "
-							onclick="addToCart('{{this._id}}',1)">
+							onclick="addToCart('{{this._id}}',1)" data-toggle="modal" data-target="#exampleModalCenter">
 							Add to Cart
 						</button>
+
+						<!-- Modal -->
+						<div class="modal fade mt-5 pt-3" id="exampleModalCenter" tabindex="-1" role="dialog"
+							aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog mt-5" role="document" style="float: right;">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalCenterTitle">Item added to
+											cart</h5>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+
+
 					</div>
 
 					<div class="block2-txt flex-w flex-t p-t-14">
 						<div class="block2-txt-child1 flex-col-l ">
-							<a href="/productdetails?id={{{this._id}}}"
+							<a href="/productdetails?id={{this._id}}"
 								class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 								{{this.product}}
 							</a>
@@ -242,22 +270,25 @@
 						<div class="block2-txt-child2 flex-r p-t-3">
 
 							{{#if this.wishlist}}
-								
-								<button class="btn-addwish-b2 dis-block pos-relative" onclick="removefromWishlist('{{this._id}}')">
 
-								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}" src="images/icons/icon-heart-02.png" alt="ICON">
-									<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}" src="images/icons/icon-heart-01.png" alt="ICON">
-								</button>
-								
-								{{else}}
+							<button class="btn-addwish-b2 dis-block pos-relative"
+								onclick="removefromWishlist('{{this._id}}')">
+
+								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}"
+									src="images/icons/icon-heart-02.png" alt="ICON">
+								<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}"
+									src="images/icons/icon-heart-01.png" alt="ICON">
+							</button>
+
+							{{else}}
 							<button class="btn-addwish-b2 dis-block pos-relative"
 								onclick="addtoWishlist('{{this._id}}')">
-								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}" src="images/icons/icon-heart-01.png"
-									alt="ICON">
-								<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}" src="images/icons/icon-heart-02.png"
-									alt="ICON">
+								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}"
+									src="images/icons/icon-heart-01.png" alt="ICON">
+								<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}"
+									src="images/icons/icon-heart-02.png" alt="ICON">
 							</button>
-									{{/if}}
+							{{/if}}
 
 						</div>
 					</div>
@@ -277,7 +308,9 @@
 				<!-- Block2 -->
 				<div class="block2">
 					<div class="block2-pic hov-img0">
-						<img src="/product-images/{{this._id}}1.jpg" alt="IMG-PRODUCT">
+						<a href="/productdetails?id={{this._id}}">
+							<img src="/product-images/{{this._id}}1.jpg" alt="IMG-PRODUCT">
+						</a>
 
 						<a href="/login"
 							class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 ">
@@ -287,7 +320,7 @@
 
 					<div class="block2-txt flex-w flex-t p-t-14">
 						<div class="block2-txt-child1 flex-col-l ">
-							<a href="/productdetails?id={{{this._id}}}"
+							<a href="/productdetails?id={{this._id}}"
 								class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
 								{{this.product}}
 							</a>
@@ -334,7 +367,7 @@
 
 
 
-		
+
 
 	</div>
 </div>

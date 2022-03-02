@@ -1,4 +1,4 @@
-
+//javascript to image validation , image preview ,crop image on add product and edit product pages
 
 function viewImage1(event){
     let file = event.target.files[0].name

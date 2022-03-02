@@ -1,3 +1,5 @@
+//sign up validation
+
 $(document).ready(function() {
    jQuery.validator.addMethod('mypassword', function(value, element) 
 {

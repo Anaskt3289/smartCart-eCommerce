@@ -1,5 +1,5 @@
 
-
+//ajax function to add products to cart
 function addToCart(prodId, count) {
    
     if(count==1){
@@ -21,6 +21,7 @@ function addToCart(prodId, count) {
 }
 
 
+//ajax function to change the cart quantity
 function changeQuantity(cartId,productId,userId,count){
     let quantity=parseInt(document.getElementById(productId).value)
     count=parseInt(count)
@@ -49,7 +50,7 @@ function changeQuantity(cartId,productId,userId,count){
     })
 }
 
-
+//add to wishlist
 function addtoWishlist(prodId) {
     
     $.ajax({
@@ -75,6 +76,8 @@ function addtoWishlist(prodId) {
     })
 }
 
+
+//remove product from wishlist
 function removefromWishlist(prodId){
     $.ajax({
         url:'/removefromWishlist?id='+prodId,

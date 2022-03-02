@@ -1,5 +1,5 @@
 
-
+//ajax function to place the order
 
 $('#checkout-form').submit((e)=>{
     e.preventDefault()
@@ -22,6 +22,7 @@ $('#checkout-form').submit((e)=>{
     
 })
 
+//razorpay function
 function razorpayment(order){
     var options = {
         "key": "rzp_test_P71kVccMvd0JVS", // Enter the Key ID generated from the Dashboard
@@ -59,13 +60,14 @@ function razorpayment(order){
             alert(response.error.metadata.order_id);
             alert(response.error.metadata.payment_id);
     });
-    // document.getElementById('rzp-button1').onclick = function(e){
+   
         rzp1.open();
-    //     e.preventDefault();
-    // }
+   
 
 }
 
+
+//calling ajax route to verify razorpay payment
 function verifyPayment(paymentdetails,order){
 
  $.ajax({

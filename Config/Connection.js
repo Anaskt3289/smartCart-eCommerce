@@ -3,7 +3,7 @@ const state={
     db:null
 }
 module.exports.connect=function(done){
-    const url='mongodb://localhost:27017'
+    const url='mongodb+srv://anaskt:Kl53n3289@cluster0.lbdzo.mongodb.net/smartCart?retryWrites=true&w=majority'
     const dbname='smartCart'
 
     MongoClient.connect(url,(err,data)=>{

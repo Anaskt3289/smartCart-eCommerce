@@ -8,28 +8,15 @@
 					All Products
 				</a>
 
-				<a href="/showallproducts?category=Mobiles" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-					style="text-decoration: none;">
-					Mobiles
-				</a>
+				{{#each categories}}
 
-				<a href="/showallproducts?category=Laptops" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
+				<a href="/showallproducts?category={{this.category}}" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
 					style="text-decoration: none;">
-					Laptops
+					{{this.category}}
 				</a>
+				{{/each}}
 
-				<a href="/showallproducts?category=Cameras" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-					style="text-decoration: none;">
-					Cameras
-				</a>
-				<a href="/showallproducts?category=Television" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-					style="text-decoration: none;">
-					Television
-				</a>
-				<a href="/showallproducts?category=Accessories" class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-					style="text-decoration: none;">
-					Accesssories
-				</a>
+				
 			</div>
 
 			<div class="flex-w flex-c-m m-tb-10">
@@ -275,18 +262,18 @@
 								onclick="removefromWishlist('{{this._id}}')">
 
 								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}"
-									src="images/icons/icon-heart-02.png" alt="ICON">
+									src="/images/icons/icon-heart-02.png" alt="ICON">
 								<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}"
-									src="images/icons/icon-heart-01.png" alt="ICON">
+									src="/images/icons/icon-heart-01.png" alt="ICON">
 							</button>
 
 							{{else}}
 							<button class="btn-addwish-b2 dis-block pos-relative"
 								onclick="addtoWishlist('{{this._id}}')">
 								<img class="icon-heart1 dis-block trans-04" id="wishlisticon1{{this._id}}"
-									src="images/icons/icon-heart-01.png" alt="ICON">
+									src="/images/icons/icon-heart-01.png" alt="ICON">
 								<img class="icon-heart2 dis-block trans-04 ab-t-l" id="wishlisticon2{{this._id}}"
-									src="images/icons/icon-heart-02.png" alt="ICON">
+									src="/images/icons/icon-heart-02.png" alt="ICON">
 							</button>
 							{{/if}}
 
@@ -348,9 +335,9 @@
 
 						<div class="block2-txt-child2 flex-r p-t-3">
 							<a href="/login" class="btn-addwish-b2 dis-block pos-relative ">
-								<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
+								<img class="icon-heart1 dis-block trans-04" src="/images/icons/icon-heart-01.png"
 									alt="ICON">
-								<img class="icon-heart2 dis-block trans-04 ab-t-l" src="images/icons/icon-heart-02.png"
+								<img class="icon-heart2 dis-block trans-04 ab-t-l" src="/images/icons/icon-heart-02.png"
 									alt="ICON">
 							</a>
 						</div>

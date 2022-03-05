@@ -721,7 +721,7 @@ router.post('/search', getcartcount, wishlistcount, async function (req, res, ne
       req.session.searchkey = req.body.searchkey
     }
   }
-  res.redirect('/showallproducts/') 
+  res.redirect('/showallproducts/')
 });
 
 

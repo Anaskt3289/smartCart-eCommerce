@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var db = require('./Config/Connection')
 var session = require('express-session')
+var MongoDBStore = require('connect-mongodb-session')(session);
 var fileUpload = require('express-fileupload')
 require('dotenv').config()
 var hbs = require('hbs')
@@ -16,6 +17,14 @@ var adminRouter = require('./routes/admin');
 var vendorRouter = require('./routes/vendor');
 
 var app = express();
+var store = new MongoDBStore({
+  uri: 'mongodb+srv://anaskt:Kl53n3289@cluster0.lbdzo.mongodb.net/smartCart?retryWrites=true&w=majority',
+  collection: 'mySessions'
+});
+
+store.on('error', function(error) {
+  console.log(error);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,7 +44,10 @@ db.connect((err)=>{
   if(err) console.log("Connection Error"+err);
   else console.log("Database connected");
 })
-app.use(session({secret:'smartCart369',cookie:{maxAge:2628002880}}))
+app.use(session({secret:'smartCart369',cookie:{maxAge:2628002880},
+store: store,
+resave: true,
+saveUninitialized: true}))
 app.use(function(req, res, next) { res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0'); next(); });
 
 app.use('/', usersRouter);

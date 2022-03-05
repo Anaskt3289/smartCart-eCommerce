@@ -16,7 +16,7 @@ const async = require('hbs/lib/async');
 const verifyBlocked = async (req, res, next) => {
   let vendor = await vendorhelper.getvendor(req.session.vendorId)
   if (vendor) {
-    if (vendor.blocked) {
+    if (vendor.blocked) { 
       req.session.vendor = false
     } else {
       req.session.vendorname = vendor.vname
@@ -236,7 +236,7 @@ router.post('/updateproduct/:id', async function (req, res, next) {
 router.get('/vendorprofile', verifyLogin, verifyBlocked, async function (req, res, next) {
   vendorhelper.getvendor(req.session.vendorId).then((vendordetail) => {
 
-    res.render('vendor/vendor-profile', { vendor: true, vendordetail })
+    res.render('Vendor/vendor-profile', { vendor: true, vendordetail })
   })
 });
 

@@ -1,5 +1,4 @@
 var express = require('express');
-const { response } = require('../app');
 var router = express.Router();
 const userhelper = require('../Helpers/userHelper')
 const producthelper = require('../Helpers/productHelper')
@@ -667,7 +666,7 @@ router.get('/successpage/', verifyBlocked, verifyLogin, getcartcount, wishlistco
 
 //my orders page
 router.get('/myorders', verifyBlocked, verifyLogin, getcartcount, wishlistcount, async function (req, res, next) {
-
+  let noUserOrders
   userhelper.myOrders(req.session.userId).then((orders) => {
     orders = orders.reverse()
     for (let element of orders) {

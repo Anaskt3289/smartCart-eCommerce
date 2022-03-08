@@ -175,8 +175,8 @@
 
 
                                     <label for="" class="mt-3"><b>Valid Upto</b></label>
-                                    <input type="date" name="expirydate" class="form-control" style="font-size: 16px;"
-                                        id="dtpick" required>
+                                    <input type="date" name="expirydate" class="form-control" id="dtpick" style="font-size: 16px;"
+                                         required>
 
                                 </div>
                                 <div class="modal-footer pt-3">
@@ -222,15 +222,15 @@
 
 
                                     <label for="" class="mt-3"><b>Valid Upto</b></label>
-                                    <input type="date" name="expirydate" class="form-control" style="font-size: 16px;"
-                                        id="dtpick" required>
+                                    <input type="date" name="expirydate" class="form-control" id="dtpick1" style="font-size: 16px;"
+                                         required>
 
                                 </div>
                                 <div class="modal-footer pt-3">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
                                         style="font-size: 14px;">Close</button>
                                     <button type="Submit" class="btn btn-primary" style="font-size: 14px;">Add
-                                        Coupon</button>
+                                        Offer</button>
                                 </div>
                             </form>
 
@@ -264,5 +264,26 @@
             today = year + '-' + month + '-' + date;
 
             document.getElementById("dtpick").setAttribute("min", today);
+        })
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var today = new Date();
+            var nextdate=new Date(today)
+            nextdate.setDate(nextdate.getDate()+1)
+            var year = nextdate.getFullYear()
+            var month = nextdate.getMonth() + 1
+           var date = nextdate.getDate()
+            if (date < 10) {
+                date = '0' + date;
+            }
+
+            if (month < 10) {
+                month = '0' + month;
+            }
+            today = year + '-' + month + '-' + date;
+
+            document.getElementById("dtpick1").setAttribute("min", today);
         })
     </script>

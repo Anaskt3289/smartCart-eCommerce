@@ -71,83 +71,12 @@ module.exports = {
             return new Promise(async (resolve, reject) => {
                 products = await db.get().collection(collection.products).find({ quantity: { $ne: 0 }, disabled: { $exists: false } }).toArray();
 
-
-                for (element of products) {
-
-                    discountDetails = {}
-
-                    if (element.categorydiscount && element.productdiscount) {
-                        categorydiscount = parseInt(element.categorydiscount)
-                        productdiscount = parseInt(element.productdiscount)
-
-                        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
-                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-                        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails = discountDetails
-
-                    } else if (element.categorydiscount) {
-                        categorydiscount = parseInt(element.categorydiscount)
-
-                        discountDetails.discount = categorydiscount
-                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-                        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails = discountDetails
-
-
-
-                    } else if (element.productdiscount) {
-                        productdiscount = parseInt(element.productdiscount)
-
-                        discountDetails.discount = productdiscount
-                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-                        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails = discountDetails
-
-
-
-                    }
-                }
-
-
                 resolve(products)
             })
         } else {
             return new Promise(async (resolve, reject) => {
                 let products = await db.get().collection(collection.products).find({ category: category, quantity: { $ne: 0 }, disabled: { $exists: false } }).toArray();
-                for (element of products) {
-                    discountDetails = {}
-
-                    if (element.categorydiscount && element.productdiscount) {
-                        categorydiscount = parseInt(element.categorydiscount)
-                        productdiscount = parseInt(element.productdiscount)
-
-                        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
-                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-                        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails = discountDetails
-
-                    } else if (element.categorydiscount) {
-                        categorydiscount = parseInt(element.categorydiscount)
-
-                        discountDetails.discount = categorydiscount
-                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-                        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails = discountDetails
-
-
-
-                    } else if (element.productdiscount) {
-                        productdiscount = parseInt(element.productdiscount)
-
-                        discountDetails.discount = productdiscount
-                        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-                        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-                        element.discountDetails = discountDetails
-
-
-
-                    }
-                }
+               
                 resolve(products)
             })
         }

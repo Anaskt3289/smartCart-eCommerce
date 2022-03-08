@@ -200,11 +200,11 @@ module.exports = {
         response = {}
         return new Promise(async (resolve, reject) => {
 
-            response.categoryoffers = await db.get().collection(collection.offers).find({ companyid: vendorId, category: true }).toArray()
+            response.categoryoffers = await db.get().collection(collection.offers).find({ companyid: vendorId+"", category: true }).toArray()
 
-            response.productoffers = await db.get().collection(collection.offers).find({ companyid: vendorId, product: true }).toArray()
+            response.productoffers = await db.get().collection(collection.offers).find({ companyid: vendorId+"", product: true }).toArray()
 
-            resolve(response)
+            resolve(response) 
         })
     },
     deleteOffer: (offerId) => {

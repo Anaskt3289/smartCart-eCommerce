@@ -6,6 +6,8 @@ const userhelper = require('../Helpers/userHelper')
 const producthelper = require('../Helpers/productHelper');
 const fs = require('fs');
 const async = require('hbs/lib/async');
+const s3 = require('../Config/s3')
+
 
 
 //function to verify admin is logged in or not
@@ -186,10 +188,17 @@ router.get('/editbanners/', function (req, res, next) {
 //admin can update banners and sliders
 router.post('/updatebanners', function (req, res, next) {
   console.log(req.body);
-  adminhelper.updatebanner(req.body.bannerId, req.body).then(() => {
+  adminhelper.updatebanner(req.body.bannerId, req.body).then(async() => {
     if (req.files) {
       let image1 = req.files.bannerpic
-      image1.mv('./public/banners/' + req.body.banner + '.jpg')
+      await image1.mv('./public/banners/' + req.body.banner + '.jpg')
+
+      let file = {
+        path : './public/banners/' + req.body.banner + '.jpg',
+        filename : "banners/"+req.body.banner+'.jpeg'
+      }
+     
+      result = await s3.upload(file)
     }
     res.redirect('/admin/banners')
   })

@@ -430,7 +430,10 @@ module.exports = {
             topsellingCat.sort((a, b) => {
                 return b.count - a.count;
             });
-
+           
+            let maxproduct
+            let maxbrand
+            let maxvendor
 
             for (i = 0; i < orders.length; i++) {
                 productcount = 1;

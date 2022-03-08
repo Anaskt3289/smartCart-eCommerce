@@ -12,6 +12,7 @@ const async = require('hbs/lib/async');
 const { ObjectId } = require('mongodb');
 const client = require('twilio')(accountSID, authTocken)
 const fs = require('fs');
+const s3 = require('../Config/s3')
 
 const paypal = require('paypal-rest-sdk');
 const paypalSecret = process.env.paypalSecret
@@ -85,6 +86,44 @@ if(req.session.pagination){
     req.session.paginateCount=null
   }
 
+
+  for (element of products) {
+
+    discountDetails = {}
+
+    if (element.categorydiscount && element.productdiscount) {
+        categorydiscount = parseInt(element.categorydiscount)
+        productdiscount = parseInt(element.productdiscount)
+
+        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+        element.discountDetails = discountDetails
+
+    } else if (element.categorydiscount) {
+        categorydiscount = parseInt(element.categorydiscount)
+
+        discountDetails.discount = categorydiscount
+        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+        element.discountDetails = discountDetails
+
+
+
+    } else if (element.productdiscount) {
+        productdiscount = parseInt(element.productdiscount)
+
+        discountDetails.discount = productdiscount
+        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+        element.discountDetails = discountDetails
+
+
+
+    }
+}
+  
+
     if (req.session.user) {
       for (let element of products) {
         element.loggined = true
@@ -92,12 +131,12 @@ if(req.session.pagination){
 
     }
    let banners = await adminhelper.getbanners()
-      Slider01 = banners[0]
-      Slider02 = banners[1]
-      Slider03 = banners[2]
-      Banner01 = banners[3]
-      Banner02 = banners[4]
-      Banner03 = banners[5]
+      Slider01 = banners[1]
+      Slider02 = banners[4]
+      Slider03 = banners[3]
+      Banner01 = banners[2]
+      Banner02 = banners[5]
+      Banner03 = banners[0]
 
       res.render('User/index', { 'user': true, 'username': req.session.username, 'loggined': req.session.user, 'cartCount': cartCount, products, Slider01, Slider02, Slider03, Banner01, Banner02, Banner03, 'wishlistCount': wishCount })
 
@@ -253,7 +292,7 @@ router.post('/otp', (req, res) => {
           req.session.user = true
           req.session.otplogin = false
         } else {
-          await userhelper.adduserdetails(req.session.signupdetails).then((response) => {
+          await userhelper.adduserdetails(req.session.signupdetails).then(async(response) => {
 
             req.session.useractiveMobile = req.session.number
             req.session.user = true
@@ -261,9 +300,18 @@ router.post('/otp', (req, res) => {
             var oldPath = './public/temp-userProfilePics/propic.jpg'
             var newPath = './public/User-Profile-Pics/' + response.insertedId + '.jpg'
 
-            fs.rename(oldPath, newPath, function (err) {
-              if (err) throw err
-            })
+            fs.rename(oldPath, newPath,function (err) {
+                if (err)
+                  throw err;
+              })
+
+            let file = {
+              path : './public/User-Profile-Pics/' + response.insertedId + '.jpg',
+              filename : "userProfilePicture/"+response.insertedId+'.jpeg'
+            }
+           
+            result = await s3.upload(file)
+           
             
           })
           
@@ -327,16 +375,20 @@ router.get('/showallproducts/', getcartcount, wishlistcount, async function (req
   let categoryBrandDetails = await adminhelper.getCategoryBrandProducts()
   let brands = categoryBrandDetails.brand
   let categories = categoryBrandDetails.category
+  
   if (req.query.category) {
     category = req.query.category
   } else {
     category = 'Allproducts'
   }
   if (req.session.searchkey) {
+    
     products = await userhelper.search(req.session.searchkey)
   } else if (req.session.filtersort) {
+    
     products = await userhelper.sortProducts(req.session.filtersort)
   } else {
+
     products = await userhelper.getproducts(category)
   }
 
@@ -408,6 +460,42 @@ router.get('/showallproducts/', getcartcount, wishlistcount, async function (req
     categoryfilter = brandfilter
   }
 
+  for (element of categoryfilter) {
+
+    discountDetails = {}
+
+    if (element.categorydiscount && element.productdiscount) {
+        categorydiscount = parseInt(element.categorydiscount)
+        productdiscount = parseInt(element.productdiscount)
+
+        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+        element.discountDetails = discountDetails
+
+    } else if (element.categorydiscount) {
+        categorydiscount = parseInt(element.categorydiscount)
+
+        discountDetails.discount = categorydiscount
+        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+        element.discountDetails = discountDetails
+
+
+
+    } else if (element.productdiscount) {
+        productdiscount = parseInt(element.productdiscount)
+
+        discountDetails.discount = productdiscount
+        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+        element.discountDetails = discountDetails
+
+
+
+    }
+}
+
 
 
 
@@ -417,6 +505,7 @@ router.get('/showallproducts/', getcartcount, wishlistcount, async function (req
   res.render('User/products', { 'user': true, categoryfilter, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noProducts': req.session.noproducts, 'wishlistCount': wishCount, brands, categories })
   req.session.noproducts = false
   req.session.searchkey = null
+  req.session.filtersort = null
   req.session.filterpricerange = null
   req.session.filterbrand = null
   req.session.filtercategory = null
@@ -746,11 +835,17 @@ router.get('/removeaddress/',verifyBlocked, verifyLogin, function (req, res, nex
 //update the details of user
 router.post('/updateuserdetails',verifyBlocked, verifyLogin, function (req, res, next) {
 
-  userhelper.updateuser(req.body).then(() => {
+  userhelper.updateuser(req.body).then(async() => {
     req.session.useractiveMobile = `+91${req.body.mobile}`
     if (req.files) {
       let image = req.files.profilepic
-      image.mv('./public/User-Profile-Pics/' + req.body.userId + '.jpg')
+      await image.mv('./public/User-Profile-Pics/' + req.body.userId + '.jpg')
+      let file = {
+        path : './public/User-Profile-Pics/' + req.body.userId  + '.jpg',
+        filename : "userProfilePicture/"+req.body.userId +'.jpeg'
+      }
+      
+      result = await s3.upload(file)
     }
     res.redirect('/userprofile')
   })

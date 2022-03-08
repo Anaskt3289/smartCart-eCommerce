@@ -4,6 +4,7 @@ const vendorhelper = require('../Helpers/vendorHelper')
 const producthelper = require('../Helpers/productHelper');
 const adminhelper = require('../Helpers/adminHelper');
 const userhelper = require('../Helpers/userHelper')
+const s3 = require('../Config/s3')
 
 
 const { redirect } = require('express/lib/response');
@@ -79,13 +80,14 @@ router.get('/signup', function (req, res, next) {
   if (req.session.vendor) {
     res.redirect('/vendor')
   } else {
-    res.render('Vendor/vendorsignup')
+    res.render('Vendor/vendorsignup',{'vendorExist':req.session.registeredvendor})
+    req.session.registeredvendor = false
   }
 });
 
 //vendor signup submission
 router.post('/vendorsignup', function (req, res, next) {
-  vendorhelper.addvendor(req.body).then((response) => {
+  vendorhelper.addvendor(req.body).then(async(response) => {
 
     if (response.vendorfound) {
       req.session.registeredvendor = true
@@ -94,7 +96,14 @@ router.post('/vendorsignup', function (req, res, next) {
 
       req.session.vendorId = response.insertedId
       let license = req.files.license
-      license.mv('./public/vendorlicense/' + response.insertedId + '.jpg')
+      await license.mv('./public/vendorlicense/' + response.insertedId + '.jpg')
+      let file = {
+        path : './public/vendorlicense/' + response.insertedId + '.jpg',
+        filename : "vendorlicense/"+response.insertedId+'.jpeg'
+      }
+     
+      result = await s3.upload(file)
+      console.log(result); 
       res.redirect('/vendor')
 
     }
@@ -151,7 +160,7 @@ router.get('/addproduct', verifyLogin, verifyBlocked, function (req, res, next) 
 
 //add product submission
 router.post('/addproduct', function (req, res, next) {
-  producthelper.addproduct(req.body).then((response) => {
+  producthelper.addproduct(req.body).then(async(response) => {
 
     if (response.productfound) {
       req.session.productfound = true
@@ -161,10 +170,19 @@ router.post('/addproduct', function (req, res, next) {
       let image2 = req.files.productimage2
       let image3 = req.files.productimage3
       let image4 = req.files.productimage4
-      image1.mv('./public/product-images/' + response.insertedId + '1.jpg')
-      image2.mv('./public/product-images/' + response.insertedId + '2.jpg')
-      image3.mv('./public/product-images/' + response.insertedId + '3.jpg')
-      image4.mv('./public/product-images/' + response.insertedId + '4.jpg')
+      await image1.mv('./public/product-images/' + response.insertedId + '1.jpg')
+      await image2.mv('./public/product-images/' + response.insertedId + '2.jpg')
+      await image3.mv('./public/product-images/' + response.insertedId + '3.jpg')
+      await image4.mv('./public/product-images/' + response.insertedId + '4.jpg')
+
+for(let i=1;i<=4;i++){
+  let file = {
+    path : './public/product-images/' + response.insertedId +i+ '.jpg',
+    filename : "productImages/"+response.insertedId+i+'.jpeg'
+  }
+ 
+    result = await s3.upload(file)
+}
 
       res.redirect('/vendor')
 
@@ -207,24 +225,44 @@ router.get('/editproduct/:id', verifyLogin, async function (req, res, next) {
 
 
 //update product details
-router.post('/updateproduct/:id', async function (req, res, next) {
-  producthelper.updateproduct(req.params.id, req.body).then(() => {
+router.post('/updateproduct/:id',function (req, res, next) {
+  producthelper.updateproduct(req.params.id, req.body).then(async() => {
     if (req.files) {
       if (req.files.productimage1) {
         let image1 = req.files.productimage1
-        image1.mv('./public/product-images/' + req.params.id + '1.jpg')
+         await image1.mv('./public/product-images/' + req.params.id + '1.jpg')
+         let file = {
+          path : './public/product-images/' + req.params.id + '1.jpg',
+          filename : "productImages/"+req.params.id+'1.jpeg'
+        }
+       result = await s3.upload(file)
       }
       if (req.files.productimage2) {
         let image2 = req.files.productimage2
-        image2.mv('./public/product-images/' + req.params.id + '2.jpg')
+        await image2.mv('./public/product-images/' + req.params.id + '2.jpg')
+        let file = {
+          path : './public/product-images/' + req.params.id + '2.jpg',
+          filename : "productImages/"+req.params.id+'2.jpeg'
+        }
+       result = await s3.upload(file)
       }
       if (req.files.productimage3) {
         let image3 = req.files.productimage3
-        image3.mv('./public/product-images/' + req.params.id + '3.jpg')
+        await image3.mv('./public/product-images/' + req.params.id + '3.jpg')
+        let file = {
+          path : './public/product-images/' + req.params.id + '3.jpg',
+          filename : "productImages/"+req.params.id+'3.jpeg'
+        }
+       result = await s3.upload(file)
       }
       if (req.files.productimage4) {
         let image4 = req.files.productimage4
-        image4.mv('./public/product-images/' + req.params.id + '4.jpg')
+        await image4.mv('./public/product-images/' + req.params.id + '4.jpg')
+        let file = {
+          path : './public/product-images/' + req.params.id + '4.jpg',
+          filename : "productImages/"+req.params.id+'4.jpeg'
+        }
+       result = await s3.upload(file)
       }
     }
     res.redirect('/vendor/viewproducts')
@@ -302,8 +340,7 @@ router.get('/changeorderstatus/:id/:state', function (req, res, next) {
 
 //vendors coupon page
 router.get('/coupons', verifyLogin, verifyBlocked, function (req, res, next) {
-
-  adminhelper.getCoupons(req.session.vendorId + "").then((vendorcoupons) => {
+  adminhelper.getCoupons(req.session.vendorId+"").then((vendorcoupons) => {
     res.render('Vendor/coupons-vendor', { vendor: true, vendorcoupons, 'couponExist': req.session.couponExist })
     req.session.couponExist = false;
 
@@ -313,14 +350,14 @@ router.get('/coupons', verifyLogin, verifyBlocked, function (req, res, next) {
 
 //add coupons by vendors
 router.post('/addvendorcoupon', function (req, res, next) {
-  adminhelper.addcoupon(req.body, req.session.vendorId).then((response) => {
+  adminhelper.addcoupon(req.body, req.session.vendorId+"").then((response) => {
     if (response.couponExist) {
       req.session.couponExist = true
 
     }
     res.redirect('/vendor/coupons')
   })
-})
+}) 
 
 
 //offers page
@@ -331,6 +368,7 @@ router.get('/offers', verifyOfferExpiry, verifyLogin, async function (req, res, 
     }
     producthelper.getproducts(req.session.vendorId).then((products) => {
       vendorhelper.getoffers(req.session.vendorId).then((offers) => {
+        console.log(offers);
         let categoryoffers = offers.categoryoffers
         let productoffers = offers.productoffers
         res.render('Vendor/offers', { vendor: true, categoryoffers, productoffers, products, categories, 'vendorId': req.session.vendorId, 'categoryOfferExist': req.session.categoryOfferExist, 'productOfferExist': req.session.productOfferExist })

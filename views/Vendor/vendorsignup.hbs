@@ -8,6 +8,11 @@
             <h3 class="text-dark">Welcome to smartCart</h3>
 
 
+            {{#if vendorExist}}
+            <div class="alert alert-warning mt-3" role="alert">
+                Vendor already exists
+            </div>
+            {{/if}}
 
         </div>
         <div class="col-md-9 register-right">
@@ -44,8 +49,8 @@
                                         value="" />
                                 </div>
                                 <div class="form-group mt-4">
-                                    <input type="text" name="mobile" minlength="10" maxlength="10" class="form-control numbers"
-                                        placeholder="Your Phone *" value="" />
+                                    <input type="text" name="mobile" minlength="10" maxlength="10"
+                                        class="form-control numbers" placeholder="Your Phone *" value="" />
                                 </div>
                                 <div class="form-group mt-4">
                                     <textarea placeholder="Enter Address Here.." name="address" rows="3"

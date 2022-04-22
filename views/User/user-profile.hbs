@@ -1,7 +1,3 @@
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
 <section class="py-5 my-5 productspage">
     <div class="container-fluid">
         <div class="bg-white shadow rounded-lg d-block d-sm-flex">
@@ -15,6 +11,10 @@
                                     id="userprofilepic">
                             </div>
                             <h4 class="text-center">{{user.fname}}</h4>
+                            <div class="alert alert-warning mt-3" role="alert" id="errmsg1"
+                                style="display: none; width: 100%;">
+                                Select an image file
+                            </div>
                         </div>
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                             aria-orientation="vertical">
@@ -37,16 +37,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-lg-9">
+
+
+                <div class="col-md-12 col-lg-6" id="profileDetails">
                     <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
                         <div class="tab-pane fade show active" id="account" role="tabpanel"
                             aria-labelledby="account-tab">
 
 
+                            <form action="/updateuserdetails" method="post" enctype="multipart/form-data"
+                                id="userprofile">
 
-                            <form action="/updateuserdetails" method="post" enctype="multipart/form-data" id="userprofile">
-
-                            <input type="text" name="userId" value={{user._id}} hidden>
+                                <input type="text" name="userId" value={{user._id}} hidden>
                                 <div style="display: flex;">
                                     <h3 class="mb-4">Account Settings</h3>
                                     <button type="button" id="changeprofilebtn" class="btn btn-primary"
@@ -60,130 +62,207 @@
                                             profile picture...</label>
                                         <input type="file" class="ml-5 mb-5 " id="profilepic" name="profilepic"
                                             onchange="viewImage1(event)" accept="image/*">
-                                     
-                                            <label>First Name</label>
-                                            <input type="text" class="form-control change-profile-input" name="fname"
-                                                id="change-profile-input" value="{{user.fname}}" readonly>
-                                       
+
+                                        <label>First Name</label>
+                                        <input type="text" class="form-control change-profile-input" name="fname"
+                                            id="change-profile-input" value="{{user.fname}}" readonly>
+
                                     </div>
 
                                     <div class="col-md-12 mt-4">
-                                        
-                                            <label>Email</label>
-                                            <input type="text" class="form-control change-profile-input" name="email"
-                                                id="change-profile-input" value="{{user.email}}" readonly>
-                                      
+
+                                        <label>Email</label>
+                                        <input type="text" class="form-control change-profile-input" name="email"
+                                            id="change-profile-input" value="{{user.email}}" readonly>
+
                                     </div>
                                     <div class="col-md-12 mt-4">
-                                        
-                                            <label>Phone number</label>
-                                            <input type="text" class="form-control change-profile-input numbers" name="mobile"
-                                                id="change-profile-input" value={{user.mobile}} readonly>
-                                     
+
+                                        <label>Phone number</label>
+                                        <input type="text" class="form-control change-profile-input numbers"
+                                            name="mobile" id="change-profile-input" value={{user.mobile}} readonly>
+
                                     </div>
-                                   
+
                             </form>
-                                    <div class="col-md-12 mt-5">
-                                        <h5>Address:</h5>
-                                            {{#each useraddress}}
-                                     
-                                           
-                                        <div style="display: flex;">
-                                           
-                                            <div>
+                            <div class="col-md-12 mt-5">
+                                <h5>Address:</h5>
+                                {{#each useraddress}}
 
-                                            <input type="text" value="{{this.address}}" class="form-control mt-3 change-profile-input" name="address" id="user-address" readonly>
-                                            </div>
-                                            
 
-                                            <a href="/removeaddress?value={{this.address}}" class="text-danger pt-1 mt-4 mr-1 ml-5" >Remove</a>
-                                               
-                                              
-                                        </div>
-                                            {{/each}}
-                                           
-                                        <button type="button" class="btn btn-light  ml-4 mt-3" data-toggle="modal"
-                                            data-target="#exampleModalCenter">
-                                            Add address
-                                        </button>
-                                      
+                                <div style="display: flex;">
 
- </div>
-                                     <div class="mt-5" style="display: flex;">
-                                    <button type="submit" class="btn btn-primary ml-4" id="updateprofilebtn"
-                                        style="display: none;">Update</button>
-                                    <a href="" class="btn btn-light ml-4" id="cancelbtn" style="display: none;">Cancel
-                                        </a>
+                                    <div>
+
+                                        <input type="text" value="{{this.address}}"
+                                            class="form-control mt-3 change-profile-input" name="address"
+                                            id="user-address" readonly>
+                                    </div>
+
+
+                                    <a href="/removeaddress?value={{this.address}}"
+                                        class="text-danger pt-1 mt-4 mr-1 ml-5">Remove</a>
+
 
                                 </div>
-                              
-                               
-                              <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLongTitle">Add address</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form action="/addAddress" method="post" id="addAddress">
-				<div class="modal-body">
-                    <input type="text" name="page" value="profile" hidden>
-					<textarea name="address" id="" cols="50" rows="3" placeholder="Enter your address"
-						style=" border: solid 0.5px rgba(160, 141, 141, 0.356);" required minlength="10"></textarea>
-					<input type="text" name="pin" class="mt-3 numbers" placeholder="PIN Number"
-						style=" border: solid 0.5px rgba(160, 141, 141, 0.356); height: 30px;" pattern=".{4,6}" required title="4 to 6 digits">
-					<input type="text" name="mobile" class="mt-3 numbers" placeholder="Contact Number"
-						style=" border: solid 0.5px rgba(160, 141, 141, 0.356); height: 30px;" pattern=".{10,10}" required title="10 digits"> 
-				</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-primary">Add address</button>
-			</div>
-			</form>
-		</div>
-	</div>
-    </div>
+                                {{/each}}
+
+                                <button type="button" class="btn btn-light  ml-4 mt-3" data-toggle="modal"
+                                    data-target="#exampleModalCenter">
+                                    Add address
+                                </button>
+
+
+                            </div>
+                            <div class="mt-5" style="display: flex;">
+                                <button type="submit" class="btn btn-primary ml-4" id="updateprofilebtn"
+                                    style="display: none;">Update</button>
+                                <a href="" class="btn btn-light ml-4" id="cancelbtn" style="display: none;">Cancel
+                                </a>
+
+                            </div>
+
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Add address</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="/addAddress" method="post" id="addAddress">
+                                            <div class="modal-body">
+                                                <input type="text" name="page" value="profile" hidden>
+                                                <textarea name="address" id="" cols="50" rows="3"
+                                                    placeholder="Enter your address"
+                                                    style=" border: solid 0.5px rgba(160, 141, 141, 0.356);" required
+                                                    minlength="10"></textarea>
+                                                <input type="text" name="pin" class="mt-3 numbers"
+                                                    placeholder="PIN Number"
+                                                    style=" border: solid 0.5px rgba(160, 141, 141, 0.356); height: 30px;"
+                                                    pattern=".{4,6}" required title="4 to 6 digits">
+                                                <input type="text" name="mobile" class="mt-3 numbers"
+                                                    placeholder="Contact Number"
+                                                    style=" border: solid 0.5px rgba(160, 141, 141, 0.356); height: 30px;"
+                                                    pattern=".{10,10}" required title="10 digits">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Add address</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
             </div>
+
+
+            <div class="col-md-4 col-lg-3">
+                <div id="image-box" style="width: 300px; height: 300px; display: none;"></div>
+                <button class="btn btn-primary mt-3 mr-3" type="button" style="float: right;display: none;"
+                    id="crop-btn">Crop</button>
+
+            </div>
+
+
         </div>
     </div>
-    
+
+
+
 </section>
 
 
 
-    <script>
-        function viewImage1(event) {
+<script>
+    async function viewImage1(event) {
+
+
+
+        let file = event.target.files[0].name
+        let extension = file.split('.').pop()
+        if (extension == 'jpeg' || extension == 'png' || extension == 'jpg') {
+            document.getElementById('errmsg1').style.display = 'none'
             document.getElementById('userprofilepic').src = URL.createObjectURL(event.target.files[0])
 
+
+
+            const imagebox = document.getElementById('image-box')
+            const crop_btn = document.getElementById('crop-btn')
+            var fileInput = document.getElementById('profilepic');
+
+            var filePath = fileInput.value;
+
+            const img_data = fileInput.files[0]
+            const url = URL.createObjectURL(img_data)
+            imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%">`
+            const image = document.getElementById('image')
+            document.getElementById('image-box').style.display = 'block'
+            document.getElementById('crop-btn').style.display = 'block'
+            document.getElementById('updateprofilebtn').style.display = 'none'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 1,
+                scalable: false,
+                zoomable: false,
+                movable: false,
+                aspectRatio: 16 / 17,
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 240,
+            })
+            crop_btn.addEventListener('click', () => {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement = document.getElementById('profilepic');
+                    let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container = new DataTransfer();
+
+                    container.items.add(file);
+                    const img = container.files[0]
+                    var url = URL.createObjectURL(img)
+                    fileInputElement.files = container.files;
+                    document.getElementById('userprofilepic').src = url
+                    document.getElementById('image-box').style.display = 'none'
+                    document.getElementById('crop-btn').style.display = 'none'
+                    document.getElementById('updateprofilebtn').style.display = 'block'
+                });
+
+            });
+
+
+
+        } else {
+
+            document.getElementById('errmsg1').style.display = 'block'
+            $("#prodimg1").val(null);
         }
+    }
+</script>
 
-    </script>
-
-    <script>
-        function editprofile() {
-            document.getElementById('changeuserpic').style.display = 'block'
-            document.getElementById('updateprofilebtn').style.display = 'block'
-            document.getElementById('cancelbtn').style.display = 'block'
-            document.getElementById('changeprofilebtn').style.display = 'none'
-            $(".change-profile-input").attr("readonly", false);
-        }
-
-        {{!-- function editAddress(value){
-           alert('hello')
-    
-        } --}}
-        
-    </script>
+<script>
+    function editprofile() {
+        document.getElementById('changeuserpic').style.display = 'block'
+        document.getElementById('updateprofilebtn').style.display = 'block'
+        document.getElementById('cancelbtn').style.display = 'block'
+        document.getElementById('changeprofilebtn').style.display = 'none'
+        $(".change-profile-input").attr("readonly", false);
+    }
 
 
-    <script>
+</script>
+
+
+<script>
     $('.numbers').keyup(function () {
         this.value = this.value.replace(/[^0-9\.]/g, '');
     });

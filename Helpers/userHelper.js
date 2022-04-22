@@ -452,8 +452,11 @@ module.exports = {
 
         return new Promise((resolve, reject) => {
             addressObj = []
-            for (let adr of details.address) {
-                addressObj.push({ address: adr })
+            if(details.address){
+                for (let adr of details.address) {
+                    addressObj.push({ address: adr })
+                }
+
             }
 
             db.get().collection(collection.usercollection).updateOne({ _id: ObjectId(details.userId) }, {

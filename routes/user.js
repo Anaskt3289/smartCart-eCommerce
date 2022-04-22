@@ -79,11 +79,11 @@ const verifyOfferExpiry = async (req, res, next) => {
 
 /* GET home page. */
 router.get('/', verifyOfferExpiry, verifyBlocked, getcartcount, wishlistcount, async function (req, res, next) {
-if(req.session.pagination){
+  if (req.session.pagination) {
     products = await userhelper.getHomeProducts(req.session.paginateCount)
-}else{
+  } else {
     products = await userhelper.getHomeProducts(1)
-    req.session.paginateCount=null
+    req.session.paginateCount = null
   }
 
 
@@ -92,55 +92,55 @@ if(req.session.pagination){
     discountDetails = {}
 
     if (element.categorydiscount && element.productdiscount) {
-        categorydiscount = parseInt(element.categorydiscount)
-        productdiscount = parseInt(element.productdiscount)
+      categorydiscount = parseInt(element.categorydiscount)
+      productdiscount = parseInt(element.productdiscount)
 
-        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
-        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-        element.discountDetails = discountDetails
+      discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+      discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+      discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+      element.discountDetails = discountDetails
 
     } else if (element.categorydiscount) {
-        categorydiscount = parseInt(element.categorydiscount)
+      categorydiscount = parseInt(element.categorydiscount)
 
-        discountDetails.discount = categorydiscount
-        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-        element.discountDetails = discountDetails
+      discountDetails.discount = categorydiscount
+      discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+      discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+      element.discountDetails = discountDetails
 
 
 
     } else if (element.productdiscount) {
-        productdiscount = parseInt(element.productdiscount)
+      productdiscount = parseInt(element.productdiscount)
 
-        discountDetails.discount = productdiscount
-        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-        element.discountDetails = discountDetails
+      discountDetails.discount = productdiscount
+      discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+      discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+      element.discountDetails = discountDetails
 
 
-
-    }
-}
-  
-
-    if (req.session.user) {
-      for (let element of products) {
-        element.loggined = true
-      }
 
     }
-   let banners = await adminhelper.getbanners()
-      Slider01 = banners[1]
-      Slider02 = banners[4]
-      Slider03 = banners[3]
-      Banner01 = banners[2]
-      Banner02 = banners[5]
-      Banner03 = banners[0]
+  }
 
-      res.render('User/index', { 'user': true, 'username': req.session.username, 'loggined': req.session.user, 'cartCount': cartCount, products, Slider01, Slider02, Slider03, Banner01, Banner02, Banner03, 'wishlistCount': wishCount })
 
-      req.session.pagination = false
+  if (req.session.user) {
+    for (let element of products) {
+      element.loggined = true
+    }
+
+  }
+  let banners = await adminhelper.getbanners()
+  Slider01 = banners[1]
+  Slider02 = banners[4]
+  Slider03 = banners[3]
+  Banner01 = banners[2]
+  Banner02 = banners[5]
+  Banner03 = banners[0]
+
+  res.render('User/index', { 'user': true, 'username': req.session.username, 'loggined': req.session.user, 'cartCount': cartCount, products, Slider01, Slider02, Slider03, Banner01, Banner02, Banner03, 'wishlistCount': wishCount })
+
+  req.session.pagination = false
 });
 
 //user login page
@@ -292,7 +292,7 @@ router.post('/otp', (req, res) => {
           req.session.user = true
           req.session.otplogin = false
         } else {
-          await userhelper.adduserdetails(req.session.signupdetails).then(async(response) => {
+          await userhelper.adduserdetails(req.session.signupdetails).then(async (response) => {
 
             req.session.useractiveMobile = req.session.number
             req.session.user = true
@@ -300,21 +300,21 @@ router.post('/otp', (req, res) => {
             var oldPath = './public/temp-userProfilePics/propic.jpg'
             var newPath = './public/User-Profile-Pics/' + response.insertedId + '.jpg'
 
-            fs.rename(oldPath, newPath,function (err) {
-                if (err)
-                  throw err;
-              })
+            fs.rename(oldPath, newPath, function (err) {
+              if (err)
+                throw err;
+            })
 
             let file = {
-              path : './public/User-Profile-Pics/' + response.insertedId + '.jpg',
-              filename : "userProfilePicture/"+response.insertedId+'.jpeg'
+              path: './public/User-Profile-Pics/' + response.insertedId + '.jpg',
+              filename: "userProfilePicture/" + response.insertedId + '.jpeg'
             }
-           
+
             result = await s3.upload(file)
-           
-            
+
+
           })
-          
+
         }
         res.redirect('/')
       } else {
@@ -375,17 +375,17 @@ router.get('/showallproducts/', getcartcount, wishlistcount, async function (req
   let categoryBrandDetails = await adminhelper.getCategoryBrandProducts()
   let brands = categoryBrandDetails.brand
   let categories = categoryBrandDetails.category
-  
+
   if (req.query.category) {
     category = req.query.category
   } else {
     category = 'Allproducts'
   }
   if (req.session.searchkey) {
-    
+
     products = await userhelper.search(req.session.searchkey)
   } else if (req.session.filtersort) {
-    
+
     products = await userhelper.sortProducts(req.session.filtersort)
   } else {
 
@@ -465,36 +465,36 @@ router.get('/showallproducts/', getcartcount, wishlistcount, async function (req
     discountDetails = {}
 
     if (element.categorydiscount && element.productdiscount) {
-        categorydiscount = parseInt(element.categorydiscount)
-        productdiscount = parseInt(element.productdiscount)
+      categorydiscount = parseInt(element.categorydiscount)
+      productdiscount = parseInt(element.productdiscount)
 
-        discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
-        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-        element.discountDetails = discountDetails
+      discountDetails.discount = (categorydiscount > productdiscount) ? categorydiscount : productdiscount
+      discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+      discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+      element.discountDetails = discountDetails
 
     } else if (element.categorydiscount) {
-        categorydiscount = parseInt(element.categorydiscount)
+      categorydiscount = parseInt(element.categorydiscount)
 
-        discountDetails.discount = categorydiscount
-        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-        element.discountDetails = discountDetails
+      discountDetails.discount = categorydiscount
+      discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+      discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+      element.discountDetails = discountDetails
 
 
 
     } else if (element.productdiscount) {
-        productdiscount = parseInt(element.productdiscount)
+      productdiscount = parseInt(element.productdiscount)
 
-        discountDetails.discount = productdiscount
-        discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
-        discountDetails.currentprice = (element.price) - discountDetails.discountedamount
-        element.discountDetails = discountDetails
+      discountDetails.discount = productdiscount
+      discountDetails.discountedamount = (element.price) * discountDetails.discount / 100
+      discountDetails.currentprice = (element.price) - discountDetails.discountedamount
+      element.discountDetails = discountDetails
 
 
 
     }
-}
+  }
 
 
 
@@ -527,10 +527,10 @@ router.get('/cart', verifyBlocked, verifyLogin, getcartcount, wishlistcount, asy
     grandtotal = total + 80
     if (cartCount === 0) {
       var noCartProducts = true
-    }else{
+    } else {
       var cartHasProducts = true
     }
-    res.render('User/cart', { user: true, products, 'total': total, 'grandtotal': grandtotal, 'wishlistCount': wishCount, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noCartProducts':noCartProducts,'cartHasProducts':cartHasProducts })
+    res.render('User/cart', { user: true, products, 'total': total, 'grandtotal': grandtotal, 'wishlistCount': wishCount, 'userId': req.session.userId, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noCartProducts': noCartProducts, 'cartHasProducts': cartHasProducts })
     req.session.noCartProducts = false
 
   })
@@ -551,7 +551,7 @@ router.get('/addToCart/:id/:quantity', verifyBlocked, verifyLogin, function (req
 
 
 //change quantity of the products in cart
-router.post('/changeCartQuantity',verifyBlocked, verifyLogin, function (req, res, next) {
+router.post('/changeCartQuantity', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.changeCartQuantity(req.body).then(async (response) => {
     subtotal = await userhelper.getCartProducts(req.session.userId)
     console.log(subtotal);
@@ -574,9 +574,9 @@ router.post('/changeCartQuantity',verifyBlocked, verifyLogin, function (req, res
 });
 
 //remove cart product
-router.get('/removeCartProduct/',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/removeCartProduct/', verifyBlocked, verifyLogin, function (req, res, next) {
 
-  userhelper.removeCartProduct(req.session.userId,req.query.id).then((response) => {
+  userhelper.removeCartProduct(req.session.userId, req.query.id).then((response) => {
     res.redirect('/cart')
   })
 });
@@ -651,7 +651,7 @@ router.get('/checkout', verifyBlocked, verifyLogin, getcartcount, wishlistcount,
 });
 
 //add address of the user
-router.post('/addAddress',verifyBlocked, verifyLogin, function (req, res, next) {
+router.post('/addAddress', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.addAddress(req.session.userId, req.body).then((response) => {
     if (req.body.page === 'profile') {
       res.redirect('userprofile')
@@ -763,10 +763,10 @@ router.get('/myorders', verifyBlocked, verifyLogin, getcartcount, wishlistcount,
         element.delivered = true
       }
     }
-    if(orders.length===0){
+    if (orders.length === 0) {
       noUserOrders = true
     }
-    res.render('User/my-orders', { user: true, orders, 'wishlistCount': wishCount, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount ,'noUserOrders':noUserOrders})
+    res.render('User/my-orders', { user: true, orders, 'wishlistCount': wishCount, 'loggined': req.session.user, 'username': req.session.username, 'cartCount': cartCount, 'noUserOrders': noUserOrders })
   })
 });
 
@@ -824,7 +824,7 @@ router.get('/userprofile', verifyBlocked, verifyLogin, getcartcount, wishlistcou
 
 
 //remove address of the user
-router.get('/removeaddress/',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/removeaddress/', verifyBlocked, verifyLogin, function (req, res, next) {
 
   userhelper.removeaddress(req.session.userId, req.query.value).then(() => {
     res.redirect("/userprofile")
@@ -833,18 +833,18 @@ router.get('/removeaddress/',verifyBlocked, verifyLogin, function (req, res, nex
 
 
 //update the details of user
-router.post('/updateuserdetails',verifyBlocked, verifyLogin, function (req, res, next) {
+router.post('/updateuserdetails', verifyBlocked, verifyLogin, function (req, res, next) {
 
-  userhelper.updateuser(req.body).then(async() => {
+  userhelper.updateuser(req.body).then(async () => {
     req.session.useractiveMobile = `+91${req.body.mobile}`
     if (req.files) {
       let image = req.files.profilepic
       await image.mv('./public/User-Profile-Pics/' + req.body.userId + '.jpg')
       let file = {
-        path : './public/User-Profile-Pics/' + req.body.userId  + '.jpg',
-        filename : "userProfilePicture/"+req.body.userId +'.jpeg'
+        path: './public/User-Profile-Pics/' + req.body.userId + '.jpg',
+        filename: "userProfilePicture/" + req.body.userId + '.jpeg'
       }
-      
+
       result = await s3.upload(file)
     }
     res.redirect('/userprofile')
@@ -859,7 +859,7 @@ router.get('/changePassword', verifyBlocked, verifyLogin, getcartcount, wishlist
 
 
 //change password submission
-router.post('/changePassword',verifyBlocked, verifyLogin, function (req, res, next) {
+router.post('/changePassword', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.changepassword(req.session.userId, req.body).then((response) => {
     if (response.pwordDoesNotMatch) {
       req.session.pwordNoMatch = true
@@ -873,7 +873,7 @@ router.post('/changePassword',verifyBlocked, verifyLogin, function (req, res, ne
 
 
 //buy now option
-router.get('/buynow/',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/buynow/', verifyBlocked, verifyLogin, function (req, res, next) {
   req.session.buynow = req.query.id
   req.session.couponapplied = null
   res.redirect('/checkout')
@@ -881,7 +881,7 @@ router.get('/buynow/',verifyBlocked, verifyLogin, function (req, res, next) {
 
 
 //function to verify the payment through razorpay
-router.post('/verifyPayment',verifyBlocked, verifyLogin, function (req, res, next) {
+router.post('/verifyPayment', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.verifyPayment(req.body).then(() => {
     userhelper.placeorder(req.session.orderDetails.details, req.session.orderDetails.products, req.session.orderDetails.type).then(async (response) => {
       req.session.orderId = response.insertedId
@@ -900,7 +900,7 @@ router.post('/verifyPayment',verifyBlocked, verifyLogin, function (req, res, nex
 
 
 //cancel orders
-router.get('/cancelorder/',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/cancelorder/', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.cancelOrder(req.query.id).then(() => {
     res.redirect('/myorders')
   })
@@ -908,7 +908,7 @@ router.get('/cancelorder/',verifyBlocked, verifyLogin, function (req, res, next)
 });
 
 //wislist page
-router.get('/wishlist',verifyBlocked, verifyLogin, verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
+router.get('/wishlist', verifyBlocked, verifyLogin, verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
 
   userhelper.getWishlistProducts(req.session.userId).then((products) => {
     if (wishCount === 0) {
@@ -921,7 +921,7 @@ router.get('/wishlist',verifyBlocked, verifyLogin, verifyLogin, verifyBlocked, g
 
 
 //add products to wishlist
-router.get('/addtoWishlist/',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/addtoWishlist/', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.addtoWishlist(req.query.id, req.session.userId).then((response) => {
     response.productInWishlist
     response.status = true
@@ -930,14 +930,14 @@ router.get('/addtoWishlist/',verifyBlocked, verifyLogin, function (req, res, nex
 });
 
 //remove products from wishlist using ajax in home and product page
-router.get('/removefromWishlist/',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/removefromWishlist/', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.removefromWishlist(req.query.id, req.session.userId).then(() => {
-    res.json({status:true})
+    res.json({ status: true })
   })
 });
 
 //remove products from wishlist in wishlist page
-router.get('/removeproductfromWishlist/',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/removeproductfromWishlist/', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.removefromWishlist(req.query.id, req.session.userId).then(() => {
     res.redirect('/wishlist')
   })
@@ -945,25 +945,25 @@ router.get('/removeproductfromWishlist/',verifyBlocked, verifyLogin, function (r
 
 
 //apply coupons
-router.get('/applyCoupon/:couponcode',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/applyCoupon/:couponcode', verifyBlocked, verifyLogin, function (req, res, next) {
   req.session.couponapplied = req.params.couponcode
   res.redirect('/checkout')
 });
 
 //remove coupon applied
-router.get('/removecoupon',verifyBlocked, verifyLogin, function (req, res, next) {
+router.get('/removecoupon', verifyBlocked, verifyLogin, function (req, res, next) {
   req.session.couponapplied = null
   res.redirect('/checkout')
 });
 
 //page to write the review
-router.get('/reviewpage/',verifyBlocked, verifyLogin, verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
+router.get('/reviewpage/', verifyBlocked, verifyLogin, verifyLogin, verifyBlocked, getcartcount, wishlistcount, function (req, res, next) {
   productId = req.query.id
   res.render('User/review', { user: true, 'productId': productId, 'userid': req.session.userId })
 });
 
 //review submission
-router.post('/submitReview',verifyBlocked, verifyLogin, function (req, res, next) {
+router.post('/submitReview', verifyBlocked, verifyLogin, function (req, res, next) {
   userhelper.submitreview(req.body).then(() => {
     res.redirect('/myorders')
   })
@@ -994,12 +994,12 @@ router.post('/applyFilter', function (req, res, next) {
 //users home pagination (load more)
 router.get('/paginateUserHome', function (req, res, next) {
   req.session.pagination = true
- if(req.session.paginateCount){
-  req.session.paginateCount = req.session.paginateCount+1
- }else{
-  req.session.paginateCount = 2
- }
- res.redirect('/')
+  if (req.session.paginateCount) {
+    req.session.paginateCount = req.session.paginateCount + 1
+  } else {
+    req.session.paginateCount = 2
+  }
+  res.redirect('/')
 });
 
 

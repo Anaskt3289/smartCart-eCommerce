@@ -131,12 +131,12 @@ router.get('/', verifyOfferExpiry, verifyBlocked, getcartcount, wishlistcount, a
 
   }
   let banners = await adminhelper.getbanners()
-  Slider01 = banners[1]
-  Slider02 = banners[4]
-  Slider03 = banners[3]
-  Banner01 = banners[2]
-  Banner02 = banners[5]
-  Banner03 = banners[0]
+  Slider01 = banners[0]
+  Slider02 = banners[1]
+  Slider03 = banners[2]
+  Banner01 = banners[3]
+  Banner02 = banners[4]
+  Banner03 = banners[5]
 
   res.render('User/index', { 'user': true, 'username': req.session.username, 'loggined': req.session.user, 'cartCount': cartCount, products, Slider01, Slider02, Slider03, Banner01, Banner02, Banner03, 'wishlistCount': wishCount })
 
